@@ -1,1 +1,0 @@
-# UM-LSIC-project

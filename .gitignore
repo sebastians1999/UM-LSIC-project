@@ -6,3 +6,9 @@ env/
 
 # Pycache
 __pycache__/
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/

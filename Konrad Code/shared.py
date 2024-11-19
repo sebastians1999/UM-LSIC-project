@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session, joinedload
 from database import get_db, User, Chat, Message, Appointment, UserRole
 from datetime import datetime
@@ -42,31 +42,58 @@ class ChatResponse(BaseModel):
     class Config:
         orm_mode = True
 
-@router.post('/users/register')
-def register_user(email: str, password: str, role: UserRole, name: str, db: Session = Depends(get_db)):
-    # Check if the email already exists
-    existing_user = db.query(User).filter(User.email == email).first()
+# Authentication Dependency
+def get_current_user(request: Request):
+    user = request.session.get('user')
+    if user is None:
+        raise HTTPException(status_code=401, detail="User not authenticated")
+    return user
+
+# Admin Dependency
+def get_admin_user(user = Depends(get_current_user)):
+    if user['role'] != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Unauthorized to access this endpoint")
+    return user
+
+# Notice the Depends(get_current_user) in the function signature
+# This is a dependency that ensures the user is authenticated before accessing the endpoint
+# Other endpoints can use this dependency to ensure the user is authenticated
+@router.post('/users/verify')
+def verify_user(request : Request, db : Session = Depends(get_db), current_user = Depends(get_current_user)):
+    # The user should already have been authenticated by accessing the /auth/login endpoint
+    # after which the user information is securely stored in the session.
+    # This endpoint is used to verify whether the user is already registered in the database.
+    # This endpoint gets redirected to from /auth/callback after the user logs in with GitLab.
+
+    # Check if the user is already registered (by email)
+    existing_user = db.query(User).filter(User.email == current_user['email']).first()
     if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
+        # Store the user ID in the session
+        request.session['user']['id'] = existing_user.id
+        return {"message": "User logged in", "user": existing_user}
     
     # Register a new user
     user = User(
-        email=email,
-        password=pwd_context.hash(password),  # Replace with actual hashed password
-        role=role,
-        name=name,
+        email=user['email'],
+        role=user['role'], # 'admin', 'student', 'tutor'
+        name=user['name'],
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
+
     db.add(user)
     db.commit()
     db.refresh(user)
+
+    # Store the user ID in the session
+    request.session['user']['id'] = user.id
+
     return {"message": "User registered", "user": user}
 
 @router.put('/users/profile')
-def update_profile(user_id: int, bio: str, db: Session = Depends(get_db)):
+def update_profile(bio: str, db: Session = Depends(get_db), current_user = Depends(get_current_user)): 
     # Create or update user profile
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.id == current_user['id']).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     if user.role == UserRole.STUDENT:
@@ -76,8 +103,10 @@ def update_profile(user_id: int, bio: str, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Profile updated"}
 
+# For now I am only allowing admins to view user information
+# This can be changed, maybe we should return limited information for non-admin users
 @router.get('/users/{id}')
-def get_user(id: int, db: Session = Depends(get_db)):
+def get_user(id: int, db: Session = Depends(get_db), admin = Depends(get_admin_user)):
     # Retrieve user information
     user = db.query(User).filter(User.id == id).first()
     if not user:
@@ -85,15 +114,15 @@ def get_user(id: int, db: Session = Depends(get_db)):
     return {"user": user}
 
 @router.get('/users')
-def get_all_users(db: Session = Depends(get_db)):
+def get_all_users(db: Session = Depends(get_db), admin = Depends(get_admin_user)):
     # Retrieve all users
     users = db.query(User).all()
     return {"users": users}
 
 @router.get('/chats', response_model=List[ChatResponse])
-def get_chats(user_id: int, db: Session = Depends(get_db)):
+def get_chats(current_user = Depends(get_current_user), db: Session = Depends(get_db)):
     # List all active chats for the logged-in user
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.id == current_user['id']).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     chats = []

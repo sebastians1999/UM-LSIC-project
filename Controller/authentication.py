@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Request
+from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from fastapi.responses import RedirectResponse
 
@@ -15,14 +15,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize app
-app = FastAPI()
+router = APIRouter()
 
 logger = logging.getLogger('uvicorn.error')
 
 # Add session middleware with a secret key to sign the session cookie
-app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "a_random_secret_key"))
+router.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "a_random_secret_key"))
 
 # GitLab OAuth2 environment variables
+# When working locally, these variables should be set in a .env file
+# You can find these values in the GitLab application settings (or ask me - Nate)
+# Never hardcode these values in your code in case you accidentally commit them to GitHub
 GITLAB_CLIENT_ID = os.getenv("GITLAB_CLIENT_ID")
 GITLAB_CLIENT_SECRET = os.getenv("GITLAB_CLIENT_SECRET")
 GITLAB_REDIRECT_URI = os.getenv("GITLAB_REDIRECT_URI")
@@ -52,21 +55,13 @@ def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="User not authenticated")
     return user
 
-@app.get('/')
-async def home(request: Request):
-    # Check if user is authenticated
-    if 'user' in request.session:
-        return {"message": "Hello World! You are logged in. Go to /secure-data to see secure data."}
-
-    return {"message": "Hello World! Go to /login to login with GitLab."}
-
-@app.get("/login")
+@router.get("/auth/login")
 async def login(request: Request):
     # Redirect user to GitLab login page
     redirect_uri = GITLAB_REDIRECT_URI
     return await gitlab.authorize_redirect(request, redirect_uri)
 
-@app.get('/auth/callback')
+@router.get('/auth/callback')
 async def auth_callback(request: Request):
     try:
         # Retrieve the access token from GitLab
@@ -97,14 +92,15 @@ async def auth_callback(request: Request):
             request.session['user']['role'] = role_names[i] # Set role
             break
 
-    return user_data
+    # If the user is an admin redirect to the verify admin page
+    if request.session['user']['role'] == 'admin':
+        return RedirectResponse(url='/admins/verify')
+    # Otherwise if the user is a student or tutor redirect to the verify user page
+    else:
+        return RedirectResponse(url='/users/verify')
 
-@app.get("/logout")
+@router.get("/auth/logout")
 async def logout(request: Request):
     # Clear the session
     request.session.clear()
     return RedirectResponse(url='/')
-
-@app.get("/secure-data")
-async def secure_data(user: dict = Depends(get_current_user)):
-    return {"message": "This is secure data!", "user": user}

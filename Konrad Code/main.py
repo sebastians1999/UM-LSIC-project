@@ -1,12 +1,15 @@
 from fastapi import FastAPI, Request
-from fastapi.middleware.base import BaseHTTPMiddleware
 from datetime import datetime
 from logger import logger
 from admin import router as admin_router
 from student import router as student_router
 from tutor import router as tutor_router
 from shared import router as shared_router
-from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports
+from authentication import router as auth_router
+from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+import os
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
@@ -30,11 +33,22 @@ app = FastAPI()
 # Add logging middleware
 app.add_middleware(LoggingMiddleware)
 
+# Add session middleware with a secret key to sign the session cookie
+if os.getenv("SECRET_KEY") is None:
+    logger.error("SECRET_KEY environment variable not set")
+    raise SystemExit(1)
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
+
 # Include routers
 app.include_router(admin_router, prefix='/admin', tags=['admin'])
 app.include_router(student_router, prefix='/student', tags=['student'])
 app.include_router(tutor_router, prefix='/tutor', tags=['tutor'])
 app.include_router(shared_router, tags=['shared'])  # Remove the prefix
+app.include_router(auth_router, tags=['auth'])
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Tutoring API!"}
 
 @app.get("/mock/users")
 def get_mock_users():
@@ -70,4 +84,4 @@ async def shutdown_event():
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app)

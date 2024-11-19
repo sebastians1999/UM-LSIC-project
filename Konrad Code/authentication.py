@@ -17,11 +17,6 @@ load_dotenv()
 # Initialize app
 router = APIRouter()
 
-logger = logging.getLogger('uvicorn.error')
-
-# Add session middleware with a secret key to sign the session cookie
-router.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "a_random_secret_key"))
-
 # GitLab OAuth2 environment variables
 # When working locally, these variables should be set in a .env file
 # You can find these values in the GitLab application settings (or ask me - Nate)
@@ -66,15 +61,10 @@ async def auth_callback(request: Request):
     try:
         # Retrieve the access token from GitLab
         token = await gitlab.authorize_access_token(request)
-        logger.info(f"Access token: {token}")
         # Fetch user information
         user_data = token.get('userinfo')
-        logger.info(f"User data: {user_data}")
     except Exception as e:
-        logger.error(f"Failed to get user data: {e}")
         raise HTTPException(status_code=400, detail="Authorization failed")
-
-    logger.info(f"User data: {user_data}")
 
     # Save user information in session
     request.session['user'] = {

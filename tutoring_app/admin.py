@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session, joinedload
-from database import get_db, User, Chat, Message, UserRole, Appointment
+from database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
+from utilities import get_user_by_id, get_chat_with_messages
 from datetime import datetime
-from passlib.context import CryptContext
 from pydantic import BaseModel
 from typing import List, Optional
 import logging
+from authentication import admin_only, limiter
 
 router = APIRouter()
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -49,7 +49,7 @@ class ChatResponse(BaseModel):
 def initialize_admin(db: Session = Depends(get_db)):
     # Check if an admin already exists
     admin_exists = db.query(User).filter(User.role == UserRole.ADMIN).first()
-    if admin_exists:
+    if (admin_exists):
         return {"message": "Admin already initialized"}
     
     # Create admin user
@@ -73,7 +73,8 @@ def admin_login(email: str, password: str, db: Session = Depends(get_db)):
     return {"message": "Admin logged in"}
 
 @router.get('/dashboard')
-def admin_dashboard(db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+async def admin_dashboard(db: Session = Depends(get_db), _=Depends(admin_only)):
     # Fetch admin dashboard data
     user_count = db.query(User).count()
     chat_count = db.query(Chat).count()
@@ -85,30 +86,11 @@ def admin_dashboard(db: Session = Depends(get_db)):
     }
 
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)
-def get_chat_messages(chatID: int, db: Session = Depends(get_db)):
-    try:
-        # Ensure chat exists
-        chat = db.query(Chat).filter(Chat.id == chatID).first()
-        if not chat:
-            raise HTTPException(status_code=404, detail="Chat not found")
-
-        # Load relations with error handling
-        chat = db.query(Chat).options(
-            joinedload(Chat.student),
-            joinedload(Chat.tutor),
-            joinedload(Chat.messages).joinedload(Message.sender)
-        ).filter(Chat.id == chatID).first()
-
-        if not chat.student or not chat.tutor:
-            logger.warning(f"Chat {chatID} has missing student or tutor reference")
-
-        return chat
-    except Exception as e:
-        logger.error(f"Error retrieving messages for chat {chatID}: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+def get_chat_messages(chatID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+    return get_chat_with_messages(db, chatID)
 
 @router.delete('/chats/{chatID}/messages/{messageID}')
-def delete_chat_message(chatID: int, messageID: int, db: Session = Depends(get_db)):
+def delete_chat_message(chatID: int, messageID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
     # Delete a specific message in a chat
     message = db.query(Message).filter(Message.id == messageID, Message.chat_id == chatID).first()
     if not message:
@@ -146,13 +128,8 @@ def get_report(reportID: int, db: Session = Depends(get_db)):
     return {"report": report}
 
 @router.post('/users/{userID}/ban')
-def ban_user(userID: int, ban_until: datetime, db: Session = Depends(get_db)):
-    db.commit()
-    # Ban a specific user
-    user = db.query(User).filter(User.id == userID).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+def ban_user(userID: int, ban_until: datetime, db: Session = Depends(get_db), _=Depends(admin_only)):
+    user = get_user_by_id(db, userID)
     user.is_banned_until = ban_until
     db.commit()
-    return {"message": f"User {userID} banned until {ban_until}"}
     return {"message": f"User {userID} banned until {ban_until}"}

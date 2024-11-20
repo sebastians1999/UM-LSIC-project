@@ -1,6 +1,0 @@
-fastapi
-sqlalchemy
-passlib[bcrypt]
-uvicorn
-requests
-python-logging-handler  # Add this line

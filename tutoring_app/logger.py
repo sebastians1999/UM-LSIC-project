@@ -1,6 +1,6 @@
-
 import logging
 import sys
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -38,5 +38,27 @@ def setup_logger(name: str = "server"):
 
     return logger
 
+class SecurityAuditLogger:
+    def __init__(self):
+        self.logger = logging.getLogger('security_audit')
+        self.logger.setLevel(logging.INFO)
+        handler = logging.FileHandler('security_audit.log')
+        handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s'))
+        self.logger.addHandler(handler)
+
+    def log_security_event(self, event_type: str, user_id: str, details: dict):
+        log_entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "event_type": event_type,
+            "user_id": user_id,
+            "details": details
+        }
+        self.logger.info(json.dumps(log_entry))
+
 # Create global logger instance
 logger = setup_logger()
+
+# Use single logger instance across all files
+# ...existing code...
+
+# Remove logger configurations from admin.py and other files

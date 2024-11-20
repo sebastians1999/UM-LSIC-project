@@ -1,0 +1,12 @@
+fastapi
+sqlalchemy
+passlib[argon2]
+argon2-cffi>=21.3.0
+uvicorn
+requests
+python-logging-handler  # Add this line
+pytest==7.4.0
+httpx==0.24.1
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+coverage==7.3.0

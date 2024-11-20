@@ -1,0 +1,58 @@
+2024-11-20 18:28:43,061 - server - INFO - Server starting up...
+2024-11-20 18:31:09,184 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:31:09,452 - server - ERROR - Error processing request: name 'verify_password_strength' is not defined
+2024-11-20 18:32:17,432 - server - INFO - Server starting up...
+2024-11-20 18:32:22,131 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:32:22,309 - server - ERROR - Error processing request: name 'logger' is not defined
+2024-11-20 18:32:49,026 - server - INFO - Server shutting down...
+2024-11-20 18:33:50,030 - server - INFO - Server starting up...
+2024-11-20 18:33:53,719 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:33:53,925 - server - ERROR - Error creating user: (sqlite3.IntegrityError) NOT NULL constraint failed: users.role
+[SQL: INSERT INTO users (role, email, password, name, created_at, updated_at, is_banned_until) VALUES (?, ?, ?, ?, ?, ?, ?)]
+[parameters: (None, 'testuser@example.com', '$argon2id$v=19$m=65536,t=3,p=4$gLAWohSiNAagtNbam/Peuw$VS6jj1Q+s3/qYT3kBZldQ407U0m4gdVcCzgJblPpx5g', 'Test User', '2024-11-20 18:33:53.843477', '2024-11-20 18:33:53.843477', None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-11-20 18:33:53,930 - server - INFO - Response: 500 - Duration: 0.208s
+2024-11-20 18:35:56,238 - server - INFO - Server shutting down...
+2024-11-20 18:35:59,693 - server - INFO - Server starting up...
+2024-11-20 18:36:03,487 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:36:03,567 - server - INFO - Response: 422 - Duration: 0.081s
+2024-11-20 18:38:32,792 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:38:32,802 - server - INFO - Response: 422 - Duration: 0.010s
+2024-11-20 18:38:40,483 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:38:40,644 - server - INFO - New user created: testuser@example.com
+2024-11-20 18:38:40,645 - server - INFO - Response: 200 - Duration: 0.162s
+2024-11-20 18:39:48,813 - server - INFO - Request: POST http://localhost:8000/auth/login
+2024-11-20 18:39:48,815 - server - INFO - Response: 405 - Duration: 0.003s
+2024-11-20 18:40:30,927 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:40:30,933 - server - INFO - Response: 400 - Duration: 0.006s
+2024-11-20 18:40:37,692 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:40:37,790 - server - INFO - New user created: testuser2@example.com
+2024-11-20 18:40:37,791 - server - INFO - Response: 200 - Duration: 0.098s
+2024-11-20 18:40:48,363 - server - INFO - Request: POST http://localhost:8000/auth/login
+2024-11-20 18:40:48,364 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-20 18:40:49,482 - server - INFO - Request: POST http://localhost:8000/auth/login
+2024-11-20 18:40:49,484 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-20 18:42:17,946 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-20 18:42:17,948 - server - ERROR - Error processing request: name 'logger' is not defined
+2024-11-20 18:43:15,320 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:43:15,326 - server - INFO - Response: 400 - Duration: 0.006s
+2024-11-20 18:43:26,389 - server - INFO - Request: POST http://localhost:8000/users/create
+2024-11-20 18:43:26,479 - server - INFO - New user created: testuser3@example.com
+2024-11-20 18:43:26,480 - server - INFO - Response: 200 - Duration: 0.091s
+2024-11-20 18:43:44,312 - server - INFO - Server shutting down...
+2024-11-20 18:43:56,407 - server - INFO - Server starting up...
+2024-11-20 18:44:11,208 - server - INFO - Server shutting down...
+2024-11-20 18:44:15,249 - server - INFO - Server starting up...
+2024-11-20 18:44:17,946 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-20 18:44:17,948 - server - ERROR - Login error: name 'GITLAB_REDIRECT_URI' is not defined
+2024-11-20 18:44:17,949 - server - INFO - Response: 500 - Duration: 0.004s
+2024-11-20 18:46:19,255 - server - INFO - Server shutting down...
+2024-11-20 18:46:32,463 - server - INFO - Server starting up...
+2024-11-20 18:46:36,422 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-20 18:46:37,472 - server - INFO - Response: 302 - Duration: 1.050s
+2024-11-20 18:47:53,789 - server - INFO - Server shutting down...
+2024-11-20 18:47:55,926 - server - INFO - GitLab OAuth initialized successfully
+2024-11-20 18:47:56,143 - server - INFO - Server starting up...
+2024-11-20 18:48:09,852 - server - INFO - Server shutting down...
+2024-11-20 18:48:14,026 - server - INFO - GitLab OAuth initialized successfully
+2024-11-20 18:48:14,271 - server - INFO - Server starting up...

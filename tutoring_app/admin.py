@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request  # Add Request import
 from sqlalchemy.orm import Session, joinedload
 from database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
 from utilities import get_user_by_id, get_chat_with_messages
@@ -13,6 +13,8 @@ router = APIRouter()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+MAX_ADMINS = 7  # Add this constant at the top after imports
 
 class UserSimpleResponse(BaseModel):
     id: int
@@ -47,12 +49,16 @@ class ChatResponse(BaseModel):
 
 @router.post('/initialize')
 def initialize_admin(db: Session = Depends(get_db)):
-    # Check if an admin already exists
-    admin_exists = db.query(User).filter(User.role == UserRole.ADMIN).first()
-    if (admin_exists):
-        return {"message": "Admin already initialized"}
+    """Initialize first admin if none exist"""
+    # Check current admin count
+    admin_count = db.query(User).filter(User.role == UserRole.ADMIN).count()
+    if admin_count >= MAX_ADMINS:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Maximum number of admins ({MAX_ADMINS}) already reached"
+        )
     
-    # Create admin user
+    # Create admin user if none exist
     admin = User(
         email="admin@example.com",
         password=pwd_context.hash("hashed_password"),  # Replace with actual hashed password
@@ -64,6 +70,51 @@ def initialize_admin(db: Session = Depends(get_db)):
     db.refresh(admin)
     return {"message": "Admin initialized"}
 
+@router.post('/admins')
+def create_admin(
+    email: str, 
+    name: str,
+    password: str,
+    db: Session = Depends(get_db),
+    _=Depends(admin_only)
+):
+    """Create a new admin user (only existing admins can create new admins)"""
+    # Check current admin count
+    admin_count = db.query(User).filter(User.role == UserRole.ADMIN).count()
+    if admin_count >= MAX_ADMINS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Maximum number of admins ({MAX_ADMINS}) already reached"
+        )
+
+    # Check if email already exists
+    if db.query(User).filter(User.email == email).first():
+        raise HTTPException(
+            status_code=400,
+            detail="Email already registered"
+        )
+
+    # Create new admin
+    admin = User(
+        email=email,
+        name=name,
+        password=pwd_context.hash(password),
+        role=UserRole.ADMIN,
+        created_at=datetime.now(),
+        updated_at=datetime.now()
+    )
+    
+    try:
+        db.add(admin)
+        db.commit()
+        db.refresh(admin)
+        logger.info(f"New admin created: {email}")
+        return {"message": "Admin created successfully", "admin_id": admin.id}
+    except Exception as e:
+        logger.error(f"Error creating admin: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error creating admin")
+
 @router.post('/login')
 def admin_login(email: str, password: str, db: Session = Depends(get_db)):
     # Authenticate admin
@@ -74,7 +125,7 @@ def admin_login(email: str, password: str, db: Session = Depends(get_db)):
 
 @router.get('/dashboard')
 @limiter.limit("10/minute")
-async def admin_dashboard(db: Session = Depends(get_db), _=Depends(admin_only)):
+async def admin_dashboard(request: Request, db: Session = Depends(get_db), _=Depends(admin_only)):
     # Fetch admin dashboard data
     user_count = db.query(User).count()
     chat_count = db.query(Chat).count()
@@ -114,13 +165,15 @@ def send_chat_message(chatID: int, content: str, db: Session = Depends(get_db)):
     return {"message": f"Message sent to chat {chatID}"}
 
 @router.get('/reports')
-def get_reports(db: Session = Depends(get_db)):
+@limiter.limit("10/minute")  # Add rate limiting
+def get_reports(request: Request, db: Session = Depends(get_db)):
     # Retrieve all reports
     reports = db.query(Message).filter(Message.is_deleted == True).all()
     return {"reports": reports}
 
 @router.get('/reports/{reportID}')
-def get_report(reportID: int, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")  # Add rate limiting
+def get_report(request: Request, reportID: int, db: Session = Depends(get_db)):
     # Retrieve detailed information about a specific report
     report = db.query(Message).filter(Message.id == reportID, Message.is_deleted == True).first()
     if not report:

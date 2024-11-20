@@ -41,6 +41,23 @@ class ProfileResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class TutorProfileCreate(BaseModel):
+    """Tutor profile creation data"""
+    user_id: int
+    expertise: List[int]  # List of subject IDs
+    hourly_rate: float
+    availability: str
+    bio: str
+    
+    @validator('hourly_rate')
+    def validate_hourly_rate(cls, v):
+        if v < 0:
+            raise ValueError('Hourly rate cannot be negative')
+        return v
+
+    class Config:
+        orm_mode = True
+
 class TutorProfileResponse(ProfileResponse):
     """Tutor profile response"""
     expertise: List[SubjectResponse]

@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from database import get_db, TutorProfile, pwd_context
-from models import TutorProfileResponse
+from database import get_db, TutorProfile, pwd_context, UserRole  # Added UserRole import
+from models import TutorProfileResponse, TutorProfileCreate  # Also add TutorProfileCreate import
 from authentication import tutor_only, require_roles, limiter
 from logger import logger
 
@@ -9,7 +9,7 @@ router = APIRouter()
 
 @router.patch('/availability')
 @limiter.limit("10/minute")
-def update_availability(tutor_id: int, availability: str, db: Session = Depends(get_db), _=Depends(tutor_only)):
+def update_availability(request: Request, tutor_id: int, availability: str, db: Session = Depends(get_db), _=Depends(tutor_only)):
     """
     Update a tutor's availability schedule.
 
@@ -43,7 +43,7 @@ def update_availability(tutor_id: int, availability: str, db: Session = Depends(
 
 @router.get('/availability/{tutor_id}')
 @limiter.limit("10/minute")
-def get_availability(tutor_id: int, db: Session = Depends(get_db), _=Depends(require_roles(UserRole.STUDENT, UserRole.TUTOR))):
+def get_availability(request: Request, tutor_id: int, db: Session = Depends(get_db), _=Depends(require_roles(UserRole.STUDENT, UserRole.TUTOR))):
     """
     Retrieve a tutor's availability schedule.
 
@@ -66,7 +66,7 @@ def get_availability(tutor_id: int, db: Session = Depends(get_db), _=Depends(req
 
 @router.post('/create', response_model=TutorProfileResponse)
 @limiter.limit("10/minute")
-def create_tutor(profile_data: TutorProfileCreate, db: Session = Depends(get_db)):
+def create_tutor(request: Request, profile_data: TutorProfileCreate, db: Session = Depends(get_db)):
     """
     Create a new tutor profile.
 

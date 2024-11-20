@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from datetime import datetime
-import os
+import os, sys
 from dotenv import load_dotenv
 from logger import logger
 from admin import router as admin_router
@@ -35,6 +35,37 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             # Log error
             logger.error(f"Error processing request: {str(e)}")
             raise
+
+def setup_gitlab_oauth():
+    """Interactive setup for GitLab OAuth credentials"""
+    print("\nGitLab OAuth Setup Required")
+    print("---------------------------")
+    print("1. Go to https://gitlab.com/-/profile/applications")
+    print("2. Create a new application with these settings:")
+    print("   - Name: Tutoring Platform")
+    print("   - Redirect URI: http://localhost:8000/auth/callback")
+    print("   - Scopes: read_user, openid, profile, email")
+    print("3. Copy the provided Client ID and Client Secret")
+    
+    client_id = input("\nEnter your GitLab Client ID: ").strip()
+    client_secret = input("Enter your GitLab Client Secret: ").strip()
+    
+    # Update .env file
+    env_path = os.path.join(os.path.dirname(__file__), '.env')
+    with open(env_path, 'a') as f:
+        f.write(f"\nGITLAB_CLIENT_ID={client_id}")
+        f.write(f"\nGITLAB_CLIENT_SECRET={client_secret}")
+        f.write("\nGITLAB_REDIRECT_URI=http://localhost:8000/auth/callback")
+        f.write("\nGITLAB_BASE_URL=https://gitlab.com")
+    
+    print("\nCredentials saved to .env file")
+    print("Restart the application to apply changes")
+    sys.exit(0)
+
+# Add this before app initialization
+load_dotenv()
+if not os.getenv("GITLAB_CLIENT_ID") or not os.getenv("GITLAB_CLIENT_SECRET"):
+    setup_gitlab_oauth()
 
 app = FastAPI()
 

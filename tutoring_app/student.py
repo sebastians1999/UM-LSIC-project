@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from database import get_db, TutorProfile, Chat, pwd_context
 from datetime import datetime
@@ -12,7 +12,7 @@ router = APIRouter()
 
 @router.get('/tutors/{tutor_id}', response_model=TutorProfileResponse)
 @limiter.limit("10/minute")
-def get_tutor(tutor_id: int, db: Session = Depends(get_db)):
+def get_tutor(request: Request, tutor_id: int, db: Session = Depends(get_db)):
     """
     Get detailed information about a specific tutor.
 
@@ -35,7 +35,7 @@ def get_tutor(tutor_id: int, db: Session = Depends(get_db)):
 
 @router.get('/tutors')
 @limiter.limit("10/minute")
-def get_tutors(subject: str = None, availability: str = None, db: Session = Depends(get_db), _=Depends(student_only)):
+def get_tutors(request: Request, subject: str = None, availability: str = None, db: Session = Depends(get_db), _=Depends(student_only)):
     """
     Retrieve a list of available tutors with optional filtering.
 
@@ -66,7 +66,7 @@ def get_tutors(subject: str = None, availability: str = None, db: Session = Depe
 
 @router.post('/chat', response_model=ChatResponse)
 @limiter.limit("10/minute")
-def create_chat(student_id: int, tutor_id: int, db: Session = Depends(get_db), _=Depends(student_only)):
+def create_chat(request: Request, student_id: int, tutor_id: int, db: Session = Depends(get_db), _=Depends(student_only)):
     """
     Create a new chat session between a student and tutor.
 

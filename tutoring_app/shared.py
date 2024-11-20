@@ -1,12 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from database import get_db
+from database import get_db, User, UserRole, verify_password_strength, Message, Appointment
+from pydantic import BaseModel, EmailStr, constr, validator
+from typing import List
 from models import (
     UserCreate, UserResponse, MessageResponse, ChatResponse,
     AppointmentCreate, AppointmentResponse, RatingCreate
 )
 from authentication import require_roles, admin_only, limiter
 from utilities import get_user_by_id, get_chat_with_messages, get_user_chats
+from logger import logger  # Add logger import
+import bleach
+from datetime import datetime
 
 router = APIRouter()
 
@@ -14,7 +19,8 @@ class UserCreateRequest(BaseModel):
     email: EmailStr
     name: constr(min_length=1, max_length=50)
     password: constr(min_length=8)
-    
+    role: UserRole  # Add role field
+
     @validator('name')
     def sanitize_name(cls, v):
         return bleach.clean(v)
@@ -114,7 +120,7 @@ def update_profile(bio: str, db: Session = Depends(get_db), current_user=Depends
 # This can be changed, maybe we should return limited information for non-admin users
 @router.get('/users/{id}', response_model=UserResponse)
 @limiter.limit("10/minute")
-def get_user(id: int, db: Session = Depends(get_db)):
+def get_user(request: Request, id: int, db: Session = Depends(get_db)):
     return {"user": get_user_by_id(db, id)}
 
 @router.get('/users')
@@ -294,6 +300,7 @@ def submit_rating(user_id: int, rating: float, review: str, db: Session = Depend
 @router.post('/support/contact')
 @limiter.limit("5/minute")
 def contact_support(
+    request: Request,
     message: str,
     db: Session = Depends(get_db),
     current_user: dict = Depends(get_current_user)
@@ -311,6 +318,7 @@ def contact_support(
 @router.delete('/users/{userID}')
 @limiter.limit("3/minute")
 def delete_user(
+    request: Request,
     userID: int,
     db: Session = Depends(get_db),
     current_user: dict = Depends(admin_only)
@@ -332,7 +340,7 @@ def delete_user(
 
 @router.post('/users/create')
 @limiter.limit("3/minute")
-def create_user(user_data: UserCreateRequest, db: Session = Depends(get_db)):
+def create_user(request: Request, user_data: UserCreateRequest, db: Session = Depends(get_db)):
     """Create a new user with validation"""
     # Check if user already exists
     if db.query(User).filter(User.email == user_data.email).first():
@@ -349,6 +357,7 @@ def create_user(user_data: UserCreateRequest, db: Session = Depends(get_db)):
     user = User(
         email=user_data.email,
         name=user_data.name,
+        role=user_data.role,  # Add role from request
         created_at=datetime.now(),
         updated_at=datetime.now()
     )

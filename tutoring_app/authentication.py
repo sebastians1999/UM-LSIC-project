@@ -1,14 +1,14 @@
 from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
-
+from typing import List
+from database import UserRole
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
-
+from logger import logger  # Add this import
 import httpx
 import os
-import logging
 from dotenv import load_dotenv
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -20,18 +20,25 @@ load_dotenv()
 
 # Validate required environment variables
 required_env_vars = [
-    'GITLAB_CLIENT_ID',
-    'GITLAB_CLIENT_SECRET',
-    'GITLAB_REDIRECT_URI',
-    'GITLAB_BASE_URL',
     'SECRET_KEY',
     'TOKEN_EXPIRE_MINUTES',
     'REFRESH_TOKEN_EXPIRE_DAYS'
 ]
 
+# Optional OAuth vars that will be set up interactively
+oauth_env_vars = [
+    'GITLAB_CLIENT_ID',
+    'GITLAB_CLIENT_SECRET',
+    'GITLAB_REDIRECT_URI',
+    'GITLAB_BASE_URL',
+]
+
 for var in required_env_vars:
     if not os.getenv(var):
         raise ValueError(f"Missing required environment variable: {var}")
+
+# Add OAuth2 scheme configuration
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Initialize app
 router = APIRouter()
@@ -39,31 +46,38 @@ router = APIRouter()
 # Add rate limiting
 limiter = Limiter(key_func=get_remote_address)
 
-# GitLab OAuth2 environment variables
-# When working locally, these variables should be set in a .env file
-# You can find these values in the GitLab application settings (or ask me - Nate)
-# Never hardcode these values in your code in case you accidentally commit them to GitHub
+# Add OAuth configuration constants
 GITLAB_CLIENT_ID = os.getenv("GITLAB_CLIENT_ID")
 GITLAB_CLIENT_SECRET = os.getenv("GITLAB_CLIENT_SECRET")
 GITLAB_REDIRECT_URI = os.getenv("GITLAB_REDIRECT_URI")
-GITLAB_BASE_URL = os.getenv("GITLAB_BASE_URL")
+GITLAB_BASE_URL = os.getenv("GITLAB_BASE_URL", "https://gitlab.com")
 
-# OAuth2 configuration
-config = Config(environ={
-    "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
-    "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
-    "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
-    "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
-})
-
-oauth = OAuth(config)
-gitlab = oauth.register(
-    name="gitlab",
-    client_id=GITLAB_CLIENT_ID,
-    client_secret=GITLAB_CLIENT_SECRET,
-    server_metadata_url=config.get("GITLAB_SERVER_METADATA_URL"),
-    client_kwargs={"scope": "openid profile email read_user"},
-)
+# Initialize OAuth only if credentials are available
+oauth = None
+gitlab = None
+try:
+    if all([GITLAB_CLIENT_ID, GITLAB_CLIENT_SECRET, GITLAB_REDIRECT_URI]):
+        config = Config(environ={
+            "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
+            "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
+            "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+            "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
+        })
+        
+        oauth = OAuth(config)
+        gitlab = oauth.register(
+            name="gitlab",
+            client_id=GITLAB_CLIENT_ID,
+            client_secret=GITLAB_CLIENT_SECRET,
+            server_metadata_url=f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+            client_kwargs={"scope": "openid profile email read_user"},
+        )
+        logger.info("GitLab OAuth initialized successfully")
+    else:
+        logger.warning("GitLab OAuth not configured - some OAuth features may be unavailable")
+except Exception as e:
+    logger.error(f"Failed to initialize GitLab OAuth: {str(e)}")
+    gitlab = None
 
 # Add these constants
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -141,11 +155,14 @@ async def refresh_token(request: Request):
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 @router.get("/auth/login")
-@limiter.limit("10/minute")  # Updated from 5/minute
+@limiter.limit("10/minute")
 async def login(request: Request):
     """Login endpoint with secure session handling"""
     try:
-        redirect_uri = GITLAB_REDIRECT_URI
+        redirect_uri = os.getenv("GITLAB_REDIRECT_URI")
+        if not redirect_uri:
+            raise ValueError("GITLAB_REDIRECT_URI environment variable not set")
+            
         response = await gitlab.authorize_redirect(request, redirect_uri)
         
         # Set secure cookie options

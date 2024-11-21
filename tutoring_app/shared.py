@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from database import get_db, User, UserRole, verify_password_strength, Message, Appointment
-from pydantic import BaseModel, EmailStr, constr, validator
-from typing import List
+from pydantic import BaseModel, EmailStr, validator, StringConstraints
+from typing import List, Annotated
 from models import (
     UserCreate, UserResponse, MessageResponse, ChatResponse,
     AppointmentCreate, AppointmentResponse, RatingCreate
@@ -10,15 +10,17 @@ from models import (
 from authentication import require_roles, admin_only, limiter
 from utilities import get_user_by_id, get_chat_with_messages, get_user_chats
 from logger import logger  # Add logger import
+from jose import jwt, JWTError
 import bleach
 from datetime import datetime
+import os
+from authentication import ALGORITHM, SECRET_KEY
 
 router = APIRouter()
 
 class UserCreateRequest(BaseModel):
     email: EmailStr
-    name: constr(min_length=1, max_length=50)
-    password: constr(min_length=8)
+    name: Annotated[str, StringConstraints(min_length=1, max_length=50)]
     role: UserRole  # Add role field
 
     @validator('name')
@@ -63,8 +65,19 @@ def verify_user(request : Request, db : Session = Depends(get_db), current_user 
     # This endpoint is used to verify whether the user is already registered in the database.
     # This endpoint gets redirected to from /auth/callback after the user logs in with GitLab.
 
+    # Get the user data from the cookie
+    token = request.cookies.get('access_token')
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    try:
+        # Get the user data from the token
+        user = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
     # Check if the user is already registered (by email)
-    existing_user = db.query(User).filter(User.email == current_user['email']).first()
+    existing_user = db.query(User).filter(User.email == user['email']).first()
     if existing_user:
         # Store the user ID in the session
         request.session['user']['id'] = existing_user.id

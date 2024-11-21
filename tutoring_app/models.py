@@ -1,12 +1,12 @@
-from pydantic import BaseModel, EmailStr, constr, validator
-from typing import List, Optional
+from pydantic import BaseModel, EmailStr, StringConstraints, validator
+from typing import List, Optional, Annotated
 from datetime import datetime
 from database import UserRole
 
 class UserBase(BaseModel):
     """Base user data"""
     email: EmailStr
-    name: constr(min_length=1, max_length=50)
+    name: Annotated[str, StringConstraints(min_length=1, max_length=50)]
 
     @validator('name')
     def sanitize_name(cls, v):
@@ -14,7 +14,6 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     """User creation data"""
-    password: constr(min_length=12)
     role: UserRole
 
 class UserResponse(UserBase):

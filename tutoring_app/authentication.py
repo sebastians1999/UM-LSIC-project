@@ -7,13 +7,15 @@ from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
 from logger import logger  # Add this import
-import httpx
-import os
 from dotenv import load_dotenv
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from database import get_db, User, UserRole, verify_password_strength, Message, Appointment
+import httpx
+import os
+import requests
 
 # Load environment variables
 load_dotenv()
@@ -22,11 +24,7 @@ load_dotenv()
 required_env_vars = [
     'SECRET_KEY',
     'TOKEN_EXPIRE_MINUTES',
-    'REFRESH_TOKEN_EXPIRE_DAYS'
-]
-
-# Optional OAuth vars that will be set up interactively
-oauth_env_vars = [
+    'REFRESH_TOKEN_EXPIRE_DAYS',
     'GITLAB_CLIENT_ID',
     'GITLAB_CLIENT_SECRET',
     'GITLAB_REDIRECT_URI',
@@ -51,33 +49,32 @@ GITLAB_CLIENT_ID = os.getenv("GITLAB_CLIENT_ID")
 GITLAB_CLIENT_SECRET = os.getenv("GITLAB_CLIENT_SECRET")
 GITLAB_REDIRECT_URI = os.getenv("GITLAB_REDIRECT_URI")
 GITLAB_BASE_URL = os.getenv("GITLAB_BASE_URL", "https://gitlab.com")
+GITLAB_API_URL = os.getenv("GITLAB_API_URL", f"{GITLAB_BASE_URL}/oauth/userinfo")
 
 # Initialize OAuth only if credentials are available
 oauth = None
 gitlab = None
+
 try:
-    if all([GITLAB_CLIENT_ID, GITLAB_CLIENT_SECRET, GITLAB_REDIRECT_URI]):
-        config = Config(environ={
-            "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
-            "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
-            "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
-            "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
-        })
-        
-        oauth = OAuth(config)
-        gitlab = oauth.register(
-            name="gitlab",
-            client_id=GITLAB_CLIENT_ID,
-            client_secret=GITLAB_CLIENT_SECRET,
-            server_metadata_url=f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
-            client_kwargs={"scope": "openid profile email read_user"},
-        )
-        logger.info("GitLab OAuth initialized successfully")
-    else:
-        logger.warning("GitLab OAuth not configured - some OAuth features may be unavailable")
+    config = Config(environ={
+        "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
+        "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
+        "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+        "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
+    })
+    
+    oauth = OAuth(config)
+    gitlab = oauth.register(
+        name="gitlab",
+        client_id=GITLAB_CLIENT_ID,
+        client_secret=GITLAB_CLIENT_SECRET,
+        server_metadata_url=f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+        client_kwargs={"scope": "openid profile email read_user"},
+    )
+    logger.info("GitLab OAuth initialized successfully")
 except Exception as e:
     logger.error(f"Failed to initialize GitLab OAuth: {str(e)}")
-    gitlab = None
+    raise e
 
 # Add these constants
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -85,12 +82,43 @@ ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES", "60"))  # Default 60 minutes
 REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))  # Default 7 days
 
-# Authentication Dependency
-def get_current_user(request: Request):
-    user = request.session.get('user')
-    if user is None:
-        raise HTTPException(status_code=401, detail="User not authenticated")
-    return user
+# Token store
+# This is a simple in-memory store for demonstration purposes, we should replace this with a database
+# like Redis
+refresh_token_store = {}
+
+def role_from_gitlab_group(user_groups : list):
+    # Determine role of user
+    group_pre = 'lsit-tutoring-platform/'
+    group_names = [group_pre + group_stub for group_stub in ['admins', 'students', 'tutors']]
+    role_names = ['ADMIN', 'STUDENT', 'TUTOR']
+    role = ""
+    for i, group in enumerate(group_names):
+        if group in user_groups:
+            role = role_names[i]
+            break
+
+    return role
+
+# Authentication dependency using bearer token
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        logger.info(payload)
+
+        if not payload.get("id"):
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        if payload.get("refresh"):
+            raise HTTPException(status_code=401, detail="Invalid token")
+        
+        if payload.get("logged_in") == "false":
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+        return payload
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 # Role-based authentication dependencies
 def verify_user_role(user: dict, allowed_roles: List[UserRole]):
@@ -115,10 +143,23 @@ def tutor_only(current_user: dict = Depends(get_current_user)):
 def admin_only(current_user: dict = Depends(get_current_user)):
     return verify_user_role(current_user, [UserRole.ADMIN])
 
-def create_access_token(data: dict):
+# Function to fetch GitLab user data using the access token
+def get_gitlab_user_data(access_token: str):
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+    }
+
+    response = requests.get(f'{GITLAB_API_URL}', headers=headers)
+
+    if response.status_code != 200:
+        raise HTTPException(status_code=response.status_code, detail="GitLab authentication failed")
+
+    return response.json()
+
+def create_access_token(data: dict, expires_in=TOKEN_EXPIRE_MINUTES):
     """Create a new access token with configurable expiration"""
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=TOKEN_EXPIRE_MINUTES)
+    expire = datetime.utcnow() + timedelta(minutes=expires_in)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -127,13 +168,17 @@ def create_refresh_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire, "refresh": True})
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    # Store the refresh token
+    refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    refresh_token_store[refresh_token] = {"user_id": data["id"], "expires_at": expire}
+    return refresh_token
 
 def verify_token(token: str = Depends(oauth2_scheme)):
+    """Token verification logic"""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return payload
-    except JWTError:
+        return payload # Return the decoded token 
+    except JWTError: # Invalid or expired token
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.post("/auth/refresh")
@@ -150,37 +195,74 @@ async def refresh_token(request: Request):
             
         # Create new access token
         access_token = create_access_token({"sub": payload["sub"]})
-        return {"access_token": access_token}
+
+        return {"access_token": access_token, "token_type": "bearer"}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 @router.get("/auth/login")
 @limiter.limit("10/minute")
-async def login(request: Request):
-    """Login endpoint with secure session handling"""
+async def login(request: Request, gitlab_token = Depends(oauth2_scheme), db = Depends(get_db)):
+    """Login endpoint"""
+    # Fetch user info using the token with the gitlab object
+    if gitlab_token:
+        user_info = get_gitlab_user_data(gitlab_token)
+
+        logger.info(user_info['groups'])
+        role = role_from_gitlab_group(user_info['groups'])
+
+        logger.info(UserRole.__members__)
+        logger.info(role)
+
+        # Check if the user exists
+        user = db.query(User).filter(User.email == user_info['email']).first()
+
+        if user:
+            # Create an access token
+            access_token = create_access_token({
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'role': user.role.name,
+                'logged_in': 'true'
+            }
+            )
+
+            # Create a refresh token
+            refresh_token = create_refresh_token({
+                'id': user.id,
+                'name': user.name,
+                'email': user.email,
+                'role': user.role.name # IDK if a refresh token needs all this info
+            })
+
+            return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
+
+        # If the user does not exist, provide the client with a one time token to create an account
+        token = create_access_token({
+            'id': user_info['sub'],
+            'name': user_info['name'],
+            'email': user_info['email'],
+            'role': role,
+            'logged_in': 'false'
+        }, expires_in=5)
+    
+        return {"message": "New user, sign up required", "status": "signup_required", "redirect_to": "/auth/signup?token=" + token}
+
     try:
         redirect_uri = os.getenv("GITLAB_REDIRECT_URI")
         if not redirect_uri:
             raise ValueError("GITLAB_REDIRECT_URI environment variable not set")
             
         response = await gitlab.authorize_redirect(request, redirect_uri)
-        
-        # Set secure cookie options
-        response.set_cookie(
-            key="session_id",
-            value=request.session.get("session_id"),
-            httponly=True,
-            secure=os.getenv("HTTPS_ENABLED", "True").lower() == "true",
-            samesite="lax",
-            max_age=TOKEN_EXPIRE_MINUTES * 60
-        )
         return response
     except Exception as e:
         logger.error(f"Login error: {str(e)}")
         raise HTTPException(status_code=500, detail="Authentication failed")
 
 @router.get('/auth/callback')
-async def auth_callback(request: Request):
+async def auth_callback(request: Request, db = Depends(get_db)):
+    """Callback endpoint after successful authentication with GitLab. Returns a JWT token which should be used by the client"""
     try:
         # Retrieve the access token from GitLab
         token = await gitlab.authorize_access_token(request)
@@ -189,31 +271,104 @@ async def auth_callback(request: Request):
     except Exception as e:
         raise HTTPException(status_code=400, detail="Authorization failed")
 
-    # Save user information in session
-    request.session['user'] = {
-        'id': user_data['sub'],
-        'name': user_data['name'],
-        'email': user_data['email']
-    }
-
     # Determine role of user
     group_pre = 'lsit-tutoring-platform/'
     group_names = [group_pre + stub for stub in ['admins', 'students', 'tutors']]
     role_names = ['admin', 'student', 'tutor']
+    role = ""
     for i, group in enumerate(group_names):
         if group in user_data['groups_direct']:
-            request.session['user']['role'] = role_names[i] # Set role
+            role = role_names[i]
             break
 
-    # If the user is an admin redirect to the verify admin page
-    if request.session['user']['role'] == 'admin':
-        return RedirectResponse(url='/admins/verify')
-    # Otherwise if the user is a student or tutor redirect to the verify user page
-    else:
-        return RedirectResponse(url='/users/verify')
+    # Check if the user is already in the database, by email
+    user = db.query(User).filter(User.email == user_data['email']).first()
+
+    # If the user exists, log them in by giving them a new access token
+    if user:
+        data = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role,
+            "logged_in": "true"
+        }
+
+        # Create an access token
+        access_token = create_access_token(data)
+
+        # Create a refresh token
+        refresh_token = create_refresh_token(data)
+
+        return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
+
+    # If the user does not exist, provide the client with a one time token to create an account
+    token = create_access_token({
+        "id": user_data['sub'],
+        "name": user_data['name'],
+        "email": user_data['email'],
+        "role": role,
+        'logged_in': 'false'
+    }, expires_in=5)  # 5 minutes
+
+    return {'message': 'New user, sign up required.',
+            'status': 'signup_required',
+            'redirect_to': f'/auth/signup?token={token}'} # Include the token in the redirect URL
+
+@router.post("/auth/signup")
+@limiter.limit("10/minute")
+def signup(request : Request, token: str, db = Depends(get_db)):
+    """Sign up endpoint. Requires a one time JWT token which is generated after successful authentication - see auth_callback."""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        # Check if the user already exists
+        user = db.query(User).filter(User.email == payload['email']).first()
+
+        if user:
+            raise HTTPException(status_code=400, detail="User already exists")
+
+        # Create a new user
+        user = User(
+            name=payload['name'],
+            email=payload['email'],
+            role=payload['role'],
+            created_at = datetime.now(),
+            updated_at = datetime.now()
+        )
+
+        # Add the user to the database
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        # Generate an access token
+        access_token = create_access_token({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role.name,
+            'logged_in': 'true'
+        })
+
+        # Generate a refresh token
+        refresh_token = create_refresh_token({
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "role": user.role.name
+        })
+
+        return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@router.get("/auth/secure")
+def secure_data(user: dict = Depends(get_current_user)):
+    """Secure endpoint that requires a valid token"""
+    return {"message": "You have accessed secure data!", "user": user}
 
 @router.get("/auth/logout")
 async def logout(request: Request):
-    # Clear the session
-    request.session.clear()
+    # Invalidate the access token and refresh token
     return RedirectResponse(url='/')

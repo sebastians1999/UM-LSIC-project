@@ -1,0 +1,370 @@
+2024-11-21 11:49:34,163 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:51:50,628 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:52:06,301 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:53:17,031 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:57:28,564 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:58:27,830 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:59:46,702 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 11:59:56,276 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:04:04,481 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:04:04,657 - server - INFO - Server starting up...
+2024-11-21 12:04:07,615 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-21 12:04:07,618 - server - INFO - Response: 200 - Duration: 0.003s
+2024-11-21 12:04:07,703 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:04:07,704 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:04:07,748 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:04:07,750 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:04:11,681 - server - INFO - Request: GET http://127.0.0.1:8000/login
+2024-11-21 12:04:11,681 - server - INFO - Response: 404 - Duration: 0.000s
+2024-11-21 12:04:11,710 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:04:11,711 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:04:11,721 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:04:11,723 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:04:18,603 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 12:04:18,902 - server - INFO - Response: 302 - Duration: 0.299s
+2024-11-21 12:04:19,702 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=f61a53986f011ccd92b5fad330a756ccb7685297fd04a724c8006c5f3e5fbbeb&state=ad3tWfapRpFlImPzwRZ0Pyz6A2H1T8
+2024-11-21 12:04:19,704 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-21 12:04:19,756 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:04:19,756 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:04:19,778 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:04:19,780 - server - INFO - Response: 404 - Duration: 0.000s
+2024-11-21 12:05:21,567 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:05:21,569 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:05:35,036 - server - INFO - Server shutting down...
+2024-11-21 12:05:38,304 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:05:38,462 - server - INFO - Server starting up...
+2024-11-21 12:06:30,845 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-21 12:06:30,848 - server - INFO - Response: 200 - Duration: 0.004s
+2024-11-21 12:06:30,913 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:06:30,915 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:06:30,935 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:06:30,937 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:06:34,435 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 12:06:34,727 - server - INFO - Response: 302 - Duration: 0.292s
+2024-11-21 12:06:35,380 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=1f18e54a7ccce7b0c7844f67bdce79d6462f95a966e69df947c235417813f972&state=nHy7VmOFZugqPS15qZ18ENhIoooA5R
+2024-11-21 12:06:35,380 - server - INFO - Response: 400 - Duration: 0.000s
+2024-11-21 12:06:35,454 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:06:35,457 - server - INFO - Response: 404 - Duration: 0.003s
+2024-11-21 12:06:35,484 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:06:35,484 - server - INFO - Response: 404 - Duration: 0.000s
+2024-11-21 12:07:17,686 - server - INFO - Server shutting down...
+2024-11-21 12:07:20,250 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:07:20,408 - server - INFO - Server starting up...
+2024-11-21 12:07:29,763 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-21 12:07:30,046 - server - INFO - Response: 302 - Duration: 0.283s
+2024-11-21 12:07:30,577 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=068be13c341b3d65617d5fb4a18a164a0fc37b1961aa4ab0855d19a887b739fc&state=3JsWeyrnlEloIorfCmSuWwzkpDmTs4
+2024-11-21 12:07:31,219 - server - ERROR - Error processing request: type object 'datetime.datetime' has no attribute 'timezone'
+2024-11-21 12:07:31,348 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:07:31,349 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:07:31,370 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:07:31,371 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:08:08,771 - server - INFO - Server shutting down...
+2024-11-21 12:08:10,798 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:08:10,954 - server - INFO - Server starting up...
+2024-11-21 12:08:16,041 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-21 12:08:16,294 - server - INFO - Response: 302 - Duration: 0.253s
+2024-11-21 12:08:16,667 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=49323fbbfbca56d4bc2e413468b4ac64cff4385b1d866bb905601fb4d6755d50&state=SgdCuMqW3bPTR3ni6KmuzupIW8g2sj
+2024-11-21 12:08:17,156 - server - INFO - Response: 200 - Duration: 0.489s
+2024-11-21 12:08:17,209 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:17,210 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:08:17,231 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:17,232 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:08:38,936 - server - INFO - Request: GET http://localhost:8000//auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsInNpZ251cCI6InRydWUiLCJleHAiOjE3MzIxODc1OTd9.33LTlC-wDGdmU0XvvKHV1qQekf9NEnF5an9OMCEftkA
+2024-11-21 12:08:38,938 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:08:38,967 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:38,968 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:08:38,973 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:38,975 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:08:48,551 - server - INFO - Request: GET http://localhost:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsInNpZ251cCI6InRydWUiLCJleHAiOjE3MzIxODc1OTd9.33LTlC-wDGdmU0XvvKHV1qQekf9NEnF5an9OMCEftkA
+2024-11-21 12:08:48,554 - server - INFO - Response: 405 - Duration: 0.003s
+2024-11-21 12:08:48,582 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:48,582 - server - INFO - Response: 404 - Duration: 0.000s
+2024-11-21 12:08:48,585 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:08:48,586 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:09:55,170 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:09:55,171 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:09:55,847 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:09:55,848 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:09:56,424 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-21 12:09:56,425 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:10:03,430 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 12:10:03,439 - server - INFO - Response: 302 - Duration: 0.009s
+2024-11-21 12:33:00,497 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=27d157b5002b168e67e37ca51980f051262350e0a240ad244726cf168b5e20f2
+2024-11-21 12:33:00,498 - server - INFO - Response: 400 - Duration: 0.001s
+2024-11-21 12:33:41,323 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=b36a721a054b44f1c888858f1395f7c8a41bc29e1a956ac253c950576c3a5511
+2024-11-21 12:33:41,326 - server - INFO - Response: 400 - Duration: 0.003s
+2024-11-21 12:45:34,505 - server - INFO - Server shutting down...
+2024-11-21 12:45:35,890 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:45:37,199 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:45:58,867 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:45:59,025 - server - INFO - Server starting up...
+2024-11-21 12:47:02,748 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-21 12:47:02,748 - server - INFO - Response: 200 - Duration: 0.000s
+2024-11-21 12:47:02,840 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:47:02,841 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-21 12:47:02,871 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-21 12:47:02,872 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 12:47:09,237 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-21 12:47:09,238 - server - INFO - Response: 200 - Duration: 0.001s
+2024-11-21 12:47:21,483 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 12:47:21,875 - server - ERROR - Error processing request: 'id_token'
+2024-11-21 12:48:22,849 - server - INFO - Server shutting down...
+2024-11-21 12:48:25,504 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 12:48:25,672 - server - INFO - Server starting up...
+2024-11-21 12:48:28,233 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 12:48:28,234 - server - ERROR - Error processing request: 'str' object has no attribute 'get'
+2024-11-21 12:52:13,019 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=9a234e55f8d25a6ae4129e834cfc15e025127a33bdf270e3bcf42e2300ecddaf
+2024-11-21 12:52:13,021 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-21 12:59:46,216 - server - INFO - Server shutting down...
+2024-11-21 13:01:30,793 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:01:30,961 - server - INFO - Server starting up...
+2024-11-21 13:01:36,262 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:01:36,536 - server - INFO - Response: 404 - Duration: 0.274s
+2024-11-21 13:01:44,090 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=a3f51dda68dd42d24c760354ec02e3253a42b092809782eb4624941cc30ca3de
+2024-11-21 13:01:44,090 - server - INFO - Response: 400 - Duration: 0.000s
+2024-11-21 13:01:46,297 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:01:46,552 - server - INFO - Response: 404 - Duration: 0.255s
+2024-11-21 13:02:47,539 - server - INFO - Server shutting down...
+2024-11-21 13:02:50,251 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:02:50,402 - server - INFO - Server starting up...
+2024-11-21 13:02:53,735 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:02:53,988 - server - INFO - Response: 404 - Duration: 0.253s
+2024-11-21 13:03:30,788 - server - INFO - Server shutting down...
+2024-11-21 13:03:33,345 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:03:33,570 - server - INFO - Server starting up...
+2024-11-21 13:03:37,446 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:03:37,447 - server - INFO - Login endpoint
+2024-11-21 13:03:37,448 - server - INFO - Gitlab token: 8b851b5cb5408eebfa94d78116041ea119d0b5cde90af90318c836560672b5fd
+2024-11-21 13:03:37,701 - server - INFO - Response: 404 - Duration: 0.255s
+2024-11-21 13:06:51,789 - server - INFO - Server shutting down...
+2024-11-21 13:06:54,631 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:06:54,799 - server - INFO - Server starting up...
+2024-11-21 13:06:56,370 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:06:56,372 - server - INFO - Login endpoint
+2024-11-21 13:06:56,372 - server - INFO - Gitlab token: 8b851b5cb5408eebfa94d78116041ea119d0b5cde90af90318c836560672b5fd
+2024-11-21 13:06:56,657 - server - INFO - GitLab user data response: 404
+2024-11-21 13:06:56,657 - server - INFO - <Response [404]>
+2024-11-21 13:06:56,658 - server - INFO - Response: 404 - Duration: 0.288s
+2024-11-21 13:12:03,105 - server - INFO - Server shutting down...
+2024-11-21 13:12:05,443 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:12:05,595 - server - INFO - Server starting up...
+2024-11-21 13:12:39,895 - server - INFO - Server shutting down...
+2024-11-21 13:12:53,600 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:12:53,752 - server - INFO - Server starting up...
+2024-11-21 13:12:56,562 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:12:56,564 - server - INFO - Login endpoint
+2024-11-21 13:12:56,564 - server - INFO - Gitlab token: 8b851b5cb5408eebfa94d78116041ea119d0b5cde90af90318c836560672b5fd
+2024-11-21 13:12:56,875 - server - INFO - GitLab user data response: 404
+2024-11-21 13:12:56,875 - server - INFO - {"error":"404 Not Found"}
+2024-11-21 13:12:56,876 - server - INFO - Response: 404 - Duration: 0.314s
+2024-11-21 13:13:52,782 - server - INFO - Server shutting down...
+2024-11-21 13:13:55,194 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:13:55,344 - server - INFO - Server starting up...
+2024-11-21 13:13:58,704 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:13:58,705 - server - INFO - Login endpoint
+2024-11-21 13:13:58,705 - server - INFO - Gitlab token: 8b851b5cb5408eebfa94d78116041ea119d0b5cde90af90318c836560672b5fd
+2024-11-21 13:13:59,021 - server - INFO - GitLab user data response: 200
+2024-11-21 13:13:59,022 - server - INFO - {"id":20302303,"username":"nateml.mac","name":"Nate Macdonald","state":"active","locked":false,"avatar_url":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","web_url":"https://gitlab.com/nateml.mac","created_at":"2024-02-28T10:20:34.023Z","bio":"","location":"","public_email":null,"skype":"","linkedin":"","twitter":"","discord":"","website_url":"","organization":"","job_title":"","pronouns":null,"bot":false,"work_information":null,"local_time":null,"last_sign_in_at":"2024-11-19T10:46:36.149Z","confirmed_at":"2024-02-28T10:20:50.845Z","last_activity_on":"2024-11-21","email":"nateml.mac@gmail.com","theme_id":3,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2024-11-21T11:28:54.419Z","identities":[{"provider":"google_oauth2","extern_uid":"109297414830910840678","saml_provider_id":null}],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"private_profile":false,"commit_email":"nateml.mac@gmail.com","shared_runners_minutes_limit":null,"extra_shared_runners_minutes_limit":null,"scim_identities":[]}
+2024-11-21 13:13:59,023 - server - INFO - User info: {'id': 20302303, 'username': 'nateml.mac', 'name': 'Nate Macdonald', 'state': 'active', 'locked': False, 'avatar_url': 'https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80&d=identicon', 'web_url': 'https://gitlab.com/nateml.mac', 'created_at': '2024-02-28T10:20:34.023Z', 'bio': '', 'location': '', 'public_email': None, 'skype': '', 'linkedin': '', 'twitter': '', 'discord': '', 'website_url': '', 'organization': '', 'job_title': '', 'pronouns': None, 'bot': False, 'work_information': None, 'local_time': None, 'last_sign_in_at': '2024-11-19T10:46:36.149Z', 'confirmed_at': '2024-02-28T10:20:50.845Z', 'last_activity_on': '2024-11-21', 'email': 'nateml.mac@gmail.com', 'theme_id': 3, 'color_scheme_id': 1, 'projects_limit': 100000, 'current_sign_in_at': '2024-11-21T11:28:54.419Z', 'identities': [{'provider': 'google_oauth2', 'extern_uid': '109297414830910840678', 'saml_provider_id': None}], 'can_create_group': True, 'can_create_project': True, 'two_factor_enabled': False, 'external': False, 'private_profile': False, 'commit_email': 'nateml.mac@gmail.com', 'shared_runners_minutes_limit': None, 'extra_shared_runners_minutes_limit': None, 'scim_identities': []}
+2024-11-21 13:13:59,342 - server - INFO - Response: 302 - Duration: 0.639s
+2024-11-21 13:14:26,506 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=c2a3fcb475cfeb140d22263b3b6b390e4e4d2a9d05c455cbc1a8cd8595f49239
+2024-11-21 13:14:26,509 - server - INFO - Response: 400 - Duration: 0.003s
+2024-11-21 13:14:26,924 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:14:26,925 - server - INFO - Login endpoint
+2024-11-21 13:14:26,926 - server - INFO - Gitlab token: ea70913334c7971ce6557892bf91edf64123c96ed5e7f965b67603e1d039a6e6
+2024-11-21 13:14:27,242 - server - INFO - GitLab user data response: 200
+2024-11-21 13:14:27,242 - server - INFO - {"id":20302303,"username":"nateml.mac","name":"Nate Macdonald","state":"active","locked":false,"avatar_url":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","web_url":"https://gitlab.com/nateml.mac","created_at":"2024-02-28T10:20:34.023Z","bio":"","location":"","public_email":null,"skype":"","linkedin":"","twitter":"","discord":"","website_url":"","organization":"","job_title":"","pronouns":null,"bot":false,"work_information":null,"local_time":null,"last_sign_in_at":"2024-11-19T10:46:36.149Z","confirmed_at":"2024-02-28T10:20:50.845Z","last_activity_on":"2024-11-21","email":"nateml.mac@gmail.com","theme_id":3,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2024-11-21T11:28:54.419Z","identities":[{"provider":"google_oauth2","extern_uid":"109297414830910840678","saml_provider_id":null}],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"private_profile":false,"commit_email":"nateml.mac@gmail.com","shared_runners_minutes_limit":null,"extra_shared_runners_minutes_limit":null,"scim_identities":[]}
+2024-11-21 13:14:27,245 - server - INFO - User info: {'id': 20302303, 'username': 'nateml.mac', 'name': 'Nate Macdonald', 'state': 'active', 'locked': False, 'avatar_url': 'https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80&d=identicon', 'web_url': 'https://gitlab.com/nateml.mac', 'created_at': '2024-02-28T10:20:34.023Z', 'bio': '', 'location': '', 'public_email': None, 'skype': '', 'linkedin': '', 'twitter': '', 'discord': '', 'website_url': '', 'organization': '', 'job_title': '', 'pronouns': None, 'bot': False, 'work_information': None, 'local_time': None, 'last_sign_in_at': '2024-11-19T10:46:36.149Z', 'confirmed_at': '2024-02-28T10:20:50.845Z', 'last_activity_on': '2024-11-21', 'email': 'nateml.mac@gmail.com', 'theme_id': 3, 'color_scheme_id': 1, 'projects_limit': 100000, 'current_sign_in_at': '2024-11-21T11:28:54.419Z', 'identities': [{'provider': 'google_oauth2', 'extern_uid': '109297414830910840678', 'saml_provider_id': None}], 'can_create_group': True, 'can_create_project': True, 'two_factor_enabled': False, 'external': False, 'private_profile': False, 'commit_email': 'nateml.mac@gmail.com', 'shared_runners_minutes_limit': None, 'extra_shared_runners_minutes_limit': None, 'scim_identities': []}
+2024-11-21 13:14:27,256 - server - INFO - Response: 302 - Duration: 0.332s
+2024-11-21 13:14:37,686 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:14:37,687 - server - INFO - Login endpoint
+2024-11-21 13:14:37,687 - server - INFO - Gitlab token: ea70913334c7971ce6557892bf91edf64123c96ed5e7f965b67603e1d039a6e6
+2024-11-21 13:14:38,131 - server - INFO - GitLab user data response: 200
+2024-11-21 13:14:38,132 - server - INFO - {"id":20302303,"username":"nateml.mac","name":"Nate Macdonald","state":"active","locked":false,"avatar_url":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","web_url":"https://gitlab.com/nateml.mac","created_at":"2024-02-28T10:20:34.023Z","bio":"","location":"","public_email":null,"skype":"","linkedin":"","twitter":"","discord":"","website_url":"","organization":"","job_title":"","pronouns":null,"bot":false,"work_information":null,"local_time":null,"last_sign_in_at":"2024-11-19T10:46:36.149Z","confirmed_at":"2024-02-28T10:20:50.845Z","last_activity_on":"2024-11-21","email":"nateml.mac@gmail.com","theme_id":3,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2024-11-21T11:28:54.419Z","identities":[{"provider":"google_oauth2","extern_uid":"109297414830910840678","saml_provider_id":null}],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"private_profile":false,"commit_email":"nateml.mac@gmail.com","shared_runners_minutes_limit":null,"extra_shared_runners_minutes_limit":null,"scim_identities":[]}
+2024-11-21 13:14:38,134 - server - INFO - User info: {'id': 20302303, 'username': 'nateml.mac', 'name': 'Nate Macdonald', 'state': 'active', 'locked': False, 'avatar_url': 'https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80&d=identicon', 'web_url': 'https://gitlab.com/nateml.mac', 'created_at': '2024-02-28T10:20:34.023Z', 'bio': '', 'location': '', 'public_email': None, 'skype': '', 'linkedin': '', 'twitter': '', 'discord': '', 'website_url': '', 'organization': '', 'job_title': '', 'pronouns': None, 'bot': False, 'work_information': None, 'local_time': None, 'last_sign_in_at': '2024-11-19T10:46:36.149Z', 'confirmed_at': '2024-02-28T10:20:50.845Z', 'last_activity_on': '2024-11-21', 'email': 'nateml.mac@gmail.com', 'theme_id': 3, 'color_scheme_id': 1, 'projects_limit': 100000, 'current_sign_in_at': '2024-11-21T11:28:54.419Z', 'identities': [{'provider': 'google_oauth2', 'extern_uid': '109297414830910840678', 'saml_provider_id': None}], 'can_create_group': True, 'can_create_project': True, 'two_factor_enabled': False, 'external': False, 'private_profile': False, 'commit_email': 'nateml.mac@gmail.com', 'shared_runners_minutes_limit': None, 'extra_shared_runners_minutes_limit': None, 'scim_identities': []}
+2024-11-21 13:14:38,145 - server - INFO - Response: 302 - Duration: 0.459s
+2024-11-21 13:20:45,248 - server - INFO - Server shutting down...
+2024-11-21 13:20:47,405 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:20:47,568 - server - INFO - Server starting up...
+2024-11-21 13:20:52,422 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:20:53,025 - server - INFO - Response: 404 - Duration: 0.603s
+2024-11-21 13:23:41,506 - server - INFO - Server shutting down...
+2024-11-21 13:23:44,544 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:23:44,698 - server - INFO - Server starting up...
+2024-11-21 13:23:51,874 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:23:52,452 - server - INFO - Response: 403 - Duration: 0.578s
+2024-11-21 13:24:23,979 - server - INFO - Server shutting down...
+2024-11-21 13:24:26,415 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:24:26,567 - server - INFO - Server starting up...
+2024-11-21 13:24:28,240 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:24:28,588 - server - INFO - {"id":20302303,"username":"nateml.mac","name":"Nate Macdonald","state":"active","locked":false,"avatar_url":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","web_url":"https://gitlab.com/nateml.mac","created_at":"2024-02-28T10:20:34.023Z","bio":"","location":"","public_email":null,"skype":"","linkedin":"","twitter":"","discord":"","website_url":"","organization":"","job_title":"","pronouns":null,"bot":false,"work_information":null,"local_time":null,"last_sign_in_at":"2024-11-19T10:46:36.149Z","confirmed_at":"2024-02-28T10:20:50.845Z","last_activity_on":"2024-11-21","email":"nateml.mac@gmail.com","theme_id":3,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2024-11-21T11:28:54.419Z","identities":[{"provider":"google_oauth2","extern_uid":"109297414830910840678","saml_provider_id":null}],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"private_profile":false,"commit_email":"nateml.mac@gmail.com","shared_runners_minutes_limit":null,"extra_shared_runners_minutes_limit":null,"scim_identities":[]}
+2024-11-21 13:24:28,879 - server - INFO - {"error":"insufficient_scope","error_description":"The request requires higher privileges than provided by the access token.","scope":"api read_api"}
+2024-11-21 13:24:28,880 - server - INFO - Response: 403 - Duration: 0.640s
+2024-11-21 13:26:00,351 - server - INFO - Server shutting down...
+2024-11-21 13:26:03,265 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:26:03,424 - server - INFO - Server starting up...
+2024-11-21 13:26:05,538 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:26:06,235 - server - INFO - {"id":20302303,"username":"nateml.mac","name":"Nate Macdonald","state":"active","locked":false,"avatar_url":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","web_url":"https://gitlab.com/nateml.mac","created_at":"2024-02-28T10:20:34.023Z","bio":"","location":"","public_email":null,"skype":"","linkedin":"","twitter":"","discord":"","website_url":"","organization":"","job_title":"","pronouns":null,"bot":false,"work_information":null,"local_time":null,"last_sign_in_at":"2024-11-19T10:46:36.149Z","confirmed_at":"2024-02-28T10:20:50.845Z","last_activity_on":"2024-11-21","email":"nateml.mac@gmail.com","theme_id":3,"color_scheme_id":1,"projects_limit":100000,"current_sign_in_at":"2024-11-21T11:28:54.419Z","identities":[{"provider":"google_oauth2","extern_uid":"109297414830910840678","saml_provider_id":null}],"can_create_group":true,"can_create_project":true,"two_factor_enabled":false,"external":false,"private_profile":false,"commit_email":"nateml.mac@gmail.com","shared_runners_minutes_limit":null,"extra_shared_runners_minutes_limit":null,"scim_identities":[]}
+2024-11-21 13:26:07,199 - server - ERROR - Error processing request: 'sub'
+2024-11-21 13:27:04,126 - server - INFO - Server shutting down...
+2024-11-21 13:27:07,519 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:27:07,677 - server - INFO - Server starting up...
+2024-11-21 13:27:09,293 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:27:10,180 - server - ERROR - Error processing request: 'sub'
+2024-11-21 13:31:47,067 - server - INFO - Server shutting down...
+2024-11-21 13:31:50,386 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:31:50,558 - server - INFO - Server starting up...
+2024-11-21 13:31:52,483 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:31:54,791 - server - INFO - [{'id': 97694840, 'web_url': 'https://gitlab.com/groups/lsit-tutoring-platform/admins', 'name': 'Admins', 'path': 'admins', 'description': '', 'visibility': 'private', 'share_with_group_lock': False, 'require_two_factor_authentication': False, 'two_factor_grace_period': 48, 'project_creation_level': 'developer', 'auto_devops_enabled': None, 'subgroup_creation_level': 'maintainer', 'emails_disabled': False, 'emails_enabled': True, 'mentions_disabled': None, 'lfs_enabled': True, 'math_rendering_limits_enabled': True, 'lock_math_rendering_limits_enabled': False, 'default_branch': None, 'default_branch_protection': 2, 'default_branch_protection_defaults': {'allowed_to_push': [{'access_level': 40}], 'allow_force_push': False, 'allowed_to_merge': [{'access_level': 40}]}, 'avatar_url': None, 'request_access_enabled': True, 'full_name': 'LSIT Tutoring Platform / Admins', 'full_path': 'lsit-tutoring-platform/admins', 'created_at': '2024-11-19T11:10:42.903Z', 'parent_id': 97694487, 'organization_id': 1, 'shared_runners_setting': 'enabled', 'ldap_cn': None, 'ldap_access': None, 'wiki_access_level': 'enabled'}, {'id': 97694487, 'web_url': 'https://gitlab.com/groups/lsit-tutoring-platform', 'name': 'LSIT Tutoring Platform', 'path': 'lsit-tutoring-platform', 'description': '', 'visibility': 'private', 'share_with_group_lock': False, 'require_two_factor_authentication': False, 'two_factor_grace_period': 48, 'project_creation_level': 'developer', 'auto_devops_enabled': None, 'subgroup_creation_level': 'maintainer', 'emails_disabled': False, 'emails_enabled': True, 'mentions_disabled': None, 'lfs_enabled': True, 'math_rendering_limits_enabled': True, 'lock_math_rendering_limits_enabled': False, 'default_branch': None, 'default_branch_protection': 2, 'default_branch_protection_defaults': {'allowed_to_push': [{'access_level': 40}], 'allow_force_push': False, 'allowed_to_merge': [{'access_level': 40}]}, 'avatar_url': None, 'request_access_enabled': True, 'full_name': 'LSIT Tutoring Platform', 'full_path': 'lsit-tutoring-platform', 'created_at': '2024-11-19T11:04:23.040Z', 'parent_id': None, 'organization_id': 1, 'shared_runners_setting': 'enabled', 'ldap_cn': None, 'ldap_access': None, 'wiki_access_level': 'enabled'}, {'id': 97694514, 'web_url': 'https://gitlab.com/groups/lsit-tutoring-platform/students', 'name': 'Students', 'path': 'students', 'description': '', 'visibility': 'private', 'share_with_group_lock': False, 'require_two_factor_authentication': False, 'two_factor_grace_period': 48, 'project_creation_level': 'developer', 'auto_devops_enabled': None, 'subgroup_creation_level': 'maintainer', 'emails_disabled': False, 'emails_enabled': True, 'mentions_disabled': None, 'lfs_enabled': True, 'math_rendering_limits_enabled': True, 'lock_math_rendering_limits_enabled': False, 'default_branch': None, 'default_branch_protection': 2, 'default_branch_protection_defaults': {'allowed_to_push': [{'access_level': 40}], 'allow_force_push': False, 'allowed_to_merge': [{'access_level': 40}]}, 'avatar_url': None, 'request_access_enabled': True, 'full_name': 'LSIT Tutoring Platform / Students', 'full_path': 'lsit-tutoring-platform/students', 'created_at': '2024-11-19T11:04:49.021Z', 'parent_id': 97694487, 'organization_id': 1, 'shared_runners_setting': 'enabled', 'ldap_cn': None, 'ldap_access': None, 'wiki_access_level': 'enabled'}, {'id': 97694766, 'web_url': 'https://gitlab.com/groups/lsit-tutoring-platform/tutors', 'name': 'Tutors', 'path': 'tutors', 'description': '', 'visibility': 'private', 'share_with_group_lock': False, 'require_two_factor_authentication': False, 'two_factor_grace_period': 48, 'project_creation_level': 'developer', 'auto_devops_enabled': None, 'subgroup_creation_level': 'maintainer', 'emails_disabled': False, 'emails_enabled': True, 'mentions_disabled': None, 'lfs_enabled': True, 'math_rendering_limits_enabled': True, 'lock_math_rendering_limits_enabled': False, 'default_branch': None, 'default_branch_protection': 2, 'default_branch_protection_defaults': {'allowed_to_push': [{'access_level': 40}], 'allow_force_push': False, 'allowed_to_merge': [{'access_level': 40}]}, 'avatar_url': None, 'request_access_enabled': True, 'full_name': 'LSIT Tutoring Platform / Tutors', 'full_path': 'lsit-tutoring-platform/tutors', 'created_at': '2024-11-19T11:08:57.118Z', 'parent_id': 97694487, 'organization_id': 1, 'shared_runners_setting': 'enabled', 'ldap_cn': None, 'ldap_access': None, 'wiki_access_level': 'enabled'}]
+2024-11-21 13:31:54,795 - server - ERROR - Error processing request: 'sub'
+2024-11-21 13:36:39,407 - server - INFO - Server shutting down...
+2024-11-21 13:36:43,014 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:36:43,196 - server - INFO - Server starting up...
+2024-11-21 13:36:45,790 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:36:47,789 - server - ERROR - Error processing request: 'sub'
+2024-11-21 13:39:26,315 - server - INFO - Server shutting down...
+2024-11-21 13:39:29,006 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:39:29,161 - server - INFO - Server starting up...
+2024-11-21 13:39:31,171 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:39:31,528 - server - INFO - {"sub":"20302303","sub_legacy":"9a5b0a429be6fffa2ee28b4596a8a84a9aec37e73ec456a1e16f8a964776a57b","name":"Nate Macdonald","nickname":"nateml.mac","preferred_username":"nateml.mac","email":"nateml.mac@gmail.com","email_verified":true,"profile":"https://gitlab.com/nateml.mac","picture":"https://secure.gravatar.com/avatar/53b2d31ca429919f5ca5070386e30e520e35fa31d936562535b677d8b033cd51?s=80\u0026d=identicon","groups":["lsit-tutoring-platform/students","lsit-tutoring-platform","lsit-tutoring-platform/tutors","lsit-tutoring-platform/admins","lsit-ken3239/students"],"https://gitlab.org/claims/groups/owner":["lsit-ken3239/students","lsit-tutoring-platform","lsit-tutoring-platform/students","lsit-tutoring-platform/tutors","lsit-tutoring-platform/admins"]}
+2024-11-21 13:39:31,842 - server - INFO - Response: 403 - Duration: 0.672s
+2024-11-21 13:40:57,022 - server - INFO - Server shutting down...
+2024-11-21 13:40:59,491 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:40:59,672 - server - INFO - Server starting up...
+2024-11-21 13:41:01,031 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:41:01,345 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 13:41:01,350 - server - INFO - Response: 200 - Duration: 0.319s
+2024-11-21 13:53:09,558 - server - INFO - Server shutting down...
+2024-11-21 13:53:13,485 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:53:13,664 - server - INFO - Server starting up...
+2024-11-21 13:53:16,757 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 13:53:17,085 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 13:53:17,108 - server - INFO - Response: 200 - Duration: 0.352s
+2024-11-21 13:53:28,836 - server - INFO - Request: GET http://127.0.0.1:8000//auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTczMjE5Mzg5N30.4OXFZbidrz7Mm1jAmkCpsHh3n5RxM-xz54nF0vbyhM0
+2024-11-21 13:53:28,837 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-21 13:53:44,490 - server - INFO - Request: GET http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTczMjE5Mzg5N30.4OXFZbidrz7Mm1jAmkCpsHh3n5RxM-xz54nF0vbyhM0
+2024-11-21 13:53:44,491 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-21 13:53:54,510 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTczMjE5Mzg5N30.4OXFZbidrz7Mm1jAmkCpsHh3n5RxM-xz54nF0vbyhM0
+2024-11-21 13:53:54,515 - server - ERROR - Error processing request: (sqlite3.IntegrityError) NOT NULL constraint failed: users.password
+[SQL: INSERT INTO users (role, email, name, created_at, updated_at, is_banned_until) VALUES (?, ?, ?, ?, ?, ?)]
+[parameters: ('admin', 'nateml.mac@gmail.com', 'Nate Macdonald', '2024-11-21 13:53:54.512937', '2024-11-21 13:53:54.512937', None)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-11-21 13:56:11,093 - server - INFO - Server shutting down...
+2024-11-21 13:57:20,763 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 13:57:20,923 - server - INFO - Server starting up...
+2024-11-21 13:57:26,727 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTczMjE5Mzg5N30.4OXFZbidrz7Mm1jAmkCpsHh3n5RxM-xz54nF0vbyhM0
+2024-11-21 13:57:26,762 - server - ERROR - Error processing request: 'admin' is not among the defined enum values. Enum name: userrole. Possible values: ADMIN, STUDENT, TUTOR
+2024-11-21 14:00:07,975 - server - INFO - Server shutting down...
+2024-11-21 14:00:10,766 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:00:10,931 - server - INFO - Server starting up...
+2024-11-21 14:00:12,805 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTczMjE5Mzg5N30.4OXFZbidrz7Mm1jAmkCpsHh3n5RxM-xz54nF0vbyhM0
+2024-11-21 14:00:12,811 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-21 14:00:47,479 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:00:47,844 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:00:47,845 - server - ERROR - Error processing request: 'dict_keys' object is not subscriptable
+2024-11-21 14:01:39,405 - server - INFO - Server shutting down...
+2024-11-21 14:01:42,175 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:01:42,331 - server - INFO - Server starting up...
+2024-11-21 14:01:51,150 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:01:51,473 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:01:51,495 - server - ERROR - Error processing request: 'admin' is not among the defined enum values. Enum name: userrole. Possible values: ADMIN, STUDENT, TUTOR
+2024-11-21 14:04:20,907 - server - INFO - Server shutting down...
+2024-11-21 14:04:27,939 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:04:28,093 - server - INFO - Server starting up...
+2024-11-21 14:04:31,708 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:04:32,073 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:04:32,074 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:04:32,075 - server - INFO - UserRole.ADMIN
+2024-11-21 14:04:32,093 - server - ERROR - Error processing request: 'admin' is not among the defined enum values. Enum name: userrole. Possible values: ADMIN, STUDENT, TUTOR
+2024-11-21 14:05:39,355 - server - INFO - Server shutting down...
+2024-11-21 14:05:42,091 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:05:42,262 - server - INFO - Server starting up...
+2024-11-21 14:05:44,110 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:05:44,433 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:05:44,434 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:05:44,434 - server - INFO - ADMIN
+2024-11-21 14:05:44,453 - server - ERROR - Error processing request: 'admin' is not among the defined enum values. Enum name: userrole. Possible values: ADMIN, STUDENT, TUTOR
+2024-11-21 14:08:08,849 - server - INFO - Server shutting down...
+2024-11-21 14:08:24,020 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:08:24,181 - server - INFO - Server starting up...
+2024-11-21 14:08:26,625 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:08:26,925 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:08:26,925 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:08:26,926 - server - INFO - ADMIN
+2024-11-21 14:08:26,950 - server - INFO - Response: 200 - Duration: 0.325s
+2024-11-21 14:09:13,285 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTczMjE5NDgwNn0.TRpTphG_9MmNyEePGYJ-8Qnitl-07nu8KkO4w1XwLOY
+2024-11-21 14:09:13,296 - server - ERROR - Error processing request: Object of type UserRole is not JSON serializable
+2024-11-21 14:11:17,462 - server - INFO - Server shutting down...
+2024-11-21 14:11:19,740 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:11:19,896 - server - INFO - Server starting up...
+2024-11-21 14:11:21,822 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImV4cCI6MTczMjE5NDgwNn0.TRpTphG_9MmNyEePGYJ-8Qnitl-07nu8KkO4w1XwLOY
+2024-11-21 14:11:21,847 - server - INFO - Response: 400 - Duration: 0.025s
+2024-11-21 14:11:44,019 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:11:44,383 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:11:44,384 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:11:44,384 - server - INFO - ADMIN
+2024-11-21 14:11:44,386 - server - INFO - Response: 200 - Duration: 0.367s
+2024-11-21 14:12:32,415 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:12:32,416 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-21 14:13:29,488 - server - INFO - Server shutting down...
+2024-11-21 14:13:32,235 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:13:32,417 - server - INFO - Server starting up...
+2024-11-21 14:13:36,895 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:13:36,899 - server - INFO - {'id': '20302303', 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'exp': 1732196504}
+2024-11-21 14:13:36,900 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-21 14:14:45,518 - server - INFO - Server shutting down...
+2024-11-21 14:14:48,767 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:14:48,932 - server - INFO - Server starting up...
+2024-11-21 14:14:50,942 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:14:50,947 - server - INFO - {'id': '20302303', 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'exp': 1732196504}
+2024-11-21 14:14:50,947 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-21 14:14:56,888 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:14:57,230 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:14:57,231 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:14:57,231 - server - INFO - ADMIN
+2024-11-21 14:14:57,253 - server - ERROR - Error processing request: 'NoneType' object has no attribute 'copy'
+2024-11-21 14:18:06,525 - server - INFO - Server shutting down...
+2024-11-21 14:18:09,918 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:18:10,075 - server - INFO - Server starting up...
+2024-11-21 14:18:12,856 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:18:13,398 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:18:13,399 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:18:13,400 - server - INFO - ADMIN
+2024-11-21 14:18:13,417 - server - ERROR - Error processing request: name 'data' is not defined
+2024-11-21 14:18:40,848 - server - INFO - Server shutting down...
+2024-11-21 14:18:43,077 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:18:43,229 - server - INFO - Server starting up...
+2024-11-21 14:18:44,353 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:18:44,676 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:18:44,677 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:18:44,677 - server - INFO - ADMIN
+2024-11-21 14:18:44,702 - server - INFO - Response: 200 - Duration: 0.348s
+2024-11-21 14:19:04,930 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:19:04,931 - server - INFO - {'id': 1, 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732196924}
+2024-11-21 14:19:04,932 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-21 14:19:39,736 - server - INFO - Server shutting down...
+2024-11-21 14:19:44,760 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:19:44,925 - server - INFO - Server starting up...
+2024-11-21 14:19:47,540 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:19:47,544 - server - INFO - {'id': 1, 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732196924}
+2024-11-21 14:19:47,544 - server - INFO - Response: 200 - Duration: 0.005s
+2024-11-21 14:20:08,454 - server - INFO - Server shutting down...
+2024-11-21 14:20:26,302 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:20:26,468 - server - INFO - Server starting up...
+2024-11-21 14:21:38,453 - server - INFO - Server shutting down...
+2024-11-21 14:21:41,820 - server - INFO - GitLab OAuth initialized successfully
+2024-11-21 14:21:41,992 - server - INFO - Server starting up...
+2024-11-21 14:22:11,096 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=97e1c863768d40741d2b53b51553fc80623893341bcafe951d3a92b77a0ab792
+2024-11-21 14:22:11,099 - server - INFO - Response: 400 - Duration: 0.003s
+2024-11-21 14:23:35,242 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=79d26899a42b438de6e0505a268f3b645d3be3f204699901f5e21a7b5e503c32
+2024-11-21 14:23:35,244 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-21 14:23:43,819 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-21 14:23:44,141 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-21 14:23:44,142 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-21 14:23:44,142 - server - INFO - ADMIN
+2024-11-21 14:23:44,167 - server - INFO - Response: 200 - Duration: 0.347s
+2024-11-21 14:24:13,823 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMzAyMzAzIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyMTk1NzI0fQ.pNpEpSYFeAcqf2YmEOnrETCbEoGW_tBut5WvBX8otGs
+2024-11-21 14:24:13,843 - server - INFO - Response: 200 - Duration: 0.020s
+2024-11-21 14:24:26,916 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-21 14:24:26,918 - server - INFO - {'id': 1, 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732197253}
+2024-11-21 14:24:26,918 - server - INFO - Response: 200 - Duration: 0.002s

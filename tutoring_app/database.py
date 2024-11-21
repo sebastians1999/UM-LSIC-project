@@ -65,7 +65,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     role = Column(Enum(UserRole), nullable=False)  # Use Enum for role
     email = Column(String(255), unique=True, nullable=False, index=True)  # Email should be unique and indexed
-    password = Column(String(255), nullable=False)  # Store hashed passwords
+    #password = Column(String(255), nullable=False)  # Store hashed passwords
     name = Column(String(100), nullable=False)  # Added length constraint
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
@@ -95,13 +95,13 @@ class User(Base):
         cascade='all, delete-orphan'
     )
 
-    def set_password(self, password: str):
-        """Hash and set the user's password."""
-        self.password = pwd_context.hash(password)
+    #def set_password(self, password: str):
+        #"""Hash and set the user's password."""
+        #self.password = pwd_context.hash(password)
 
-    def check_password(self, password: str) -> bool:
-        """Verify the user's password."""
-        return pwd_context.verify(password, self.password)
+    #def check_password(self, password: str) -> bool:
+        #"""Verify the user's password."""
+        #return pwd_context.verify(password, self.password)
 
     def __repr__(self):
         """String representation of the User object."""
@@ -235,7 +235,7 @@ Index('idx_appointment_date', Appointment.date)
 Index('idx_message_timestamp', Message.timestamp)
 
 # Database setup
-DATABASE_URL = "sqlite:///tutoring_platform.db"
+DATABASE_URL = "sqlite:///new_db.db"
 engine = create_engine(
     DATABASE_URL, 
     echo=False,

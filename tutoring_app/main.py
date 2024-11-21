@@ -74,7 +74,7 @@ load_dotenv()
 
 required_env_vars = [
     'SECRET_KEY',
-    'FRONTEND_URL',
+    #'FRONTEND_URL',
     'SESSION_EXPIRE_MINUTES',
     'HTTPS_ENABLED'
 ]
@@ -99,7 +99,8 @@ app.add_middleware(
 # Add CORS middleware with environment configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.environ.get("FRONTEND_URL")],
+    #allow_origins=[os.environ.get("FRONTEND_URL")],
+    allow_origins=['*'], # Allow all origins for now
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],

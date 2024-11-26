@@ -16,6 +16,7 @@ from database import get_db, User, UserRole, verify_password_strength, Message, 
 import httpx
 import os
 import requests
+from Redis import redis_client
 
 # Load environment variables
 load_dotenv()
@@ -122,6 +123,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 
 # Role-based authentication dependencies
 def verify_user_role(user: dict, allowed_roles: List[UserRole]):
+    
     if not user or user['role'] not in [role.value for role in allowed_roles]:
         raise HTTPException(
             status_code=403,
@@ -162,7 +164,7 @@ def create_access_token(data: dict, expires_in=TOKEN_EXPIRE_MINUTES):
     expire = datetime.utcnow() + timedelta(minutes=expires_in)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
+#Now storing this in Redis
 def create_refresh_token(data: dict):
     """Create a new refresh token with longer expiration"""
     to_encode = data.copy()
@@ -170,7 +172,7 @@ def create_refresh_token(data: dict):
     to_encode.update({"exp": expire, "refresh": True})
     # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    refresh_token_store[refresh_token] = {"user_id": data["id"], "expires_at": expire}
+    redis_client.set_refresh_token(refresh_token, data["id"], REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60)  # Expiration in second
     return refresh_token
 
 def verify_token(token: str = Depends(oauth2_scheme)):
@@ -182,19 +184,26 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.post("/auth/refresh")
-async def refresh_token(request: Request):
+async def refresh_token(request: Request, refresh_token: str = Depends(oauth2_scheme)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
-        refresh_token = request.cookies.get("refresh_token")
         if not refresh_token:
             raise HTTPException(status_code=401, detail="Refresh token missing")
-            
+
+        # Validate token
+        user_id = redis_client.get_refresh_token(refresh_token)
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
+                
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         if not payload.get("refresh"):
             raise HTTPException(status_code=401, detail="Invalid refresh token")
-            
+        
+        if user_id != payload.get("id"):
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+        
         # Create new access token
-        access_token = create_access_token({"sub": payload["sub"]})
+        access_token = create_access_token({"id": user_id, "name": payload.name, "email": payload.email, "role": payload.role, "logged_in": "true"})
 
         return {"access_token": access_token, "token_type": "bearer"}
     except JWTError:
@@ -370,5 +379,7 @@ def secure_data(user: dict = Depends(get_current_user)):
 
 @router.get("/auth/logout")
 async def logout(request: Request):
-    # Invalidate the access token and refresh token
+    refresh_token = request.cookies.get("refresh_token")
+    if refresh_token:
+        redis_client.delete_refresh_token(refresh_token)
     return RedirectResponse(url='/')

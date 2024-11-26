@@ -1,0 +1,12 @@
+2024-11-26 11:19:52,762 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 11:19:53,088 - server - INFO - Server starting up...
+2024-11-26 11:19:55,778 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 11:19:56,095 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-26 11:19:56,095 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-26 11:19:56,098 - server - INFO - ADMIN
+2024-11-26 11:19:56,138 - server - INFO - Response: 200 - Duration: 0.360s
+2024-11-26 11:20:22,998 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-26 11:20:22,999 - server - INFO - {'id': 1, 'name': 'Nate Macdonald', 'email': 'nateml.mac@gmail.com', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732618196}
+2024-11-26 11:20:23,003 - server - INFO - Response: 200 - Duration: 0.005s
+2024-11-26 12:02:03,558 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-26 12:02:03,561 - server - INFO - Response: 401 - Duration: 0.003s

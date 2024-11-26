@@ -156,22 +156,38 @@ def get_gitlab_user_data(access_token: str):
 
     return response.json()
 
-def create_access_token(data: dict, expires_in=TOKEN_EXPIRE_MINUTES):
+def create_access_token(user_id: int, name: str, email: str, role: str, expires_in=TOKEN_EXPIRE_MINUTES):
     """Create a new access token with configurable expiration"""
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=expires_in)
-    to_encode.update({"exp": expire})
+    to_encode = {
+        "sub": user_id, # Changed id to sub to adhere to JWT standard
+        "name": name,
+        "email": email,
+        "role": role,
+        "logged_in": True,
+        "exp": datetime.utcnow() + timedelta(minutes=expires_in)
+
+    }
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def create_refresh_token(data: dict):
+def create_refresh_token(user_id : int):
     """Create a new refresh token with longer expiration"""
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
-    to_encode.update({"exp": expire, "refresh": True})
+    to_encode = {"sub": user_id, "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh": True}
     # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    refresh_token_store[refresh_token] = {"user_id": data["id"], "expires_at": expire}
+    refresh_token_store[refresh_token] = {"user_id": user_id, "expires_at": to_encode["exp"]}
     return refresh_token
+
+def create_signup_token(user_id: int, name: str, email: str, role: str, expires_in=5):
+    """Create a JWT token for new users to sign up"""
+    to_encode = {
+        "sub": user_id,
+        "name": name,
+        "email": email,
+        "role": role,
+        "logged_in": False,
+        "exp": datetime.utcnow() + timedelta(minutes=expires_in)
+    }
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 def verify_token(token: str = Depends(oauth2_scheme)):
     """Token verification logic"""
@@ -182,7 +198,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.post("/auth/refresh")
-async def refresh_token(request: Request):
+async def refresh_token(request: Request, db = Depends(get_db)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
         refresh_token = request.cookies.get("refresh_token")
@@ -192,9 +208,15 @@ async def refresh_token(request: Request):
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         if not payload.get("refresh"):
             raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+        # Get user data from the database
+        user = db.query(User).filter(User.id == payload["sub"]).first()
             
         # Create new access token
-        access_token = create_access_token({"sub": payload["sub"]})
+        access_token = create_access_token(user_id=payload["sub"],
+                                           name=user.name,
+                                           email=user.email,
+                                           role=user.role.name)
 
         return {"access_token": access_token, "token_type": "bearer"}
     except JWTError:
@@ -219,33 +241,15 @@ async def login(request: Request, gitlab_token = Depends(oauth2_scheme), db = De
 
         if user:
             # Create an access token
-            access_token = create_access_token({
-                'id': user.id,
-                'name': user.name,
-                'email': user.email,
-                'role': user.role.name,
-                'logged_in': 'true'
-            }
-            )
+            access_token = create_access_token(user.id, user.name, user.email, user.role.name)
 
             # Create a refresh token
-            refresh_token = create_refresh_token({
-                'id': user.id,
-                'name': user.name,
-                'email': user.email,
-                'role': user.role.name # IDK if a refresh token needs all this info
-            })
+            refresh_token = create_refresh_token(user.id)
 
             return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
 
         # If the user does not exist, provide the client with a one time token to create an account
-        token = create_access_token({
-            'id': user_info['sub'],
-            'name': user_info['name'],
-            'email': user_info['email'],
-            'role': role,
-            'logged_in': 'false'
-        }, expires_in=5)
+        token = create_signup_token(user_info['sub'], user_info['name'], user_info['email'], role)
     
         return {"message": "New user, sign up required", "status": "signup_required", "redirect_to": "/auth/signup?token=" + token}
 
@@ -286,30 +290,16 @@ async def auth_callback(request: Request, db = Depends(get_db)):
 
     # If the user exists, log them in by giving them a new access token
     if user:
-        data = {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "role": user.role,
-            "logged_in": "true"
-        }
-
         # Create an access token
-        access_token = create_access_token(data)
+        access_token = create_access_token(user.id, user.name, user.email, user.role.name)
 
         # Create a refresh token
-        refresh_token = create_refresh_token(data)
+        refresh_token = create_refresh_token(user.id)
 
         return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
 
     # If the user does not exist, provide the client with a one time token to create an account
-    token = create_access_token({
-        "id": user_data['sub'],
-        "name": user_data['name'],
-        "email": user_data['email'],
-        "role": role,
-        'logged_in': 'false'
-    }, expires_in=5)  # 5 minutes
+    token = create_access_token(user_data['sub'], user_data['name'], user_data['email'], role)
 
     return {'message': 'New user, sign up required.',
             'status': 'signup_required',
@@ -343,21 +333,10 @@ def signup(request : Request, token: str, db = Depends(get_db)):
         db.refresh(user)
 
         # Generate an access token
-        access_token = create_access_token({
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "role": user.role.name,
-            'logged_in': 'true'
-        })
+        access_token = create_access_token(user.id, user.name, user.email, user.role.name)
 
         # Generate a refresh token
-        refresh_token = create_refresh_token({
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
-            "role": user.role.name
-        })
+        refresh_token = create_refresh_token(user.id)
 
         return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
     except JWTError:

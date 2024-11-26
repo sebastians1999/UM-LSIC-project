@@ -1,5 +1,6 @@
 name: Deploy to Google Cloud Run
 
+
 on:
   push:
     branches:
@@ -7,11 +8,23 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      id-token: write
+      contents: read
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        create_credentials_file: true
+        workload_identity_provider: 'projects/60415379904/locations/global/workloadIdentityPools/pool-party/providers/github'
+        service_account: '60415379904@cloudbuild.gserviceaccount.com'
 
     - name: Set up Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v1

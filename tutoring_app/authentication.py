@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
 from typing import List
-from database import UserRole
+from tutoring_app.database import UserRole
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
@@ -12,7 +12,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from database import get_db, User, UserRole, verify_password_strength, Message, Appointment
+from tutoring_app.database import get_db, User, UserRole, verify_password_strength, Message, Appointment
 import httpx
 import os
 import requests

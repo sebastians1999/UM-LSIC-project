@@ -3,12 +3,12 @@ from datetime import datetime
 import os, sys
 from dotenv import load_dotenv
 from logger import logger
-from admin import router as admin_router
-from student import router as student_router
-from tutor import router as tutor_router
-from shared import router as shared_router
-from authentication import router as auth_router
-from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
+from tutoring_app.admin import router as admin_router
+from tutoring_app.student import router as student_router
+from tutoring_app.tutor import router as tutor_router
+from tutoring_app.shared import router as shared_router
+from tutoring_app.authentication import router as auth_router
+from tutoring_app.mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware

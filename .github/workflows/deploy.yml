@@ -24,7 +24,7 @@ jobs:
       with:
         create_credentials_file: true
         workload_identity_provider: 'projects/60415379904/locations/global/workloadIdentityPools/pool-party/providers/github'
-        service_account: '60415379904@cloudbuild.gserviceaccount.com'
+        service_account: 'lsit-tutorapp@appspot.gserviceaccount.com'
 
     - name: Set up Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v1

@@ -26,12 +26,12 @@ jobs:
         workload_identity_provider: 'projects/60415379904/locations/global/workloadIdentityPools/pool-party/providers/github'
         service_account: 'nates-service-account@lsit-tutorapp.iam.gserviceaccount.com'
 
-    #- name: Set up Google Cloud CLI
-     # uses: google-github-actions/setup-gcloud@v1
-      #with:
-       # project_id: lsit-tutorapp
-       # service_account_key: ${{ secrets.GCP_SA_KEY }}
-       # export_default_credentials: true
+    - name: Set up Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: lsit-tutorapp
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
 
     - name: Build and Push Docker Image
       run: |

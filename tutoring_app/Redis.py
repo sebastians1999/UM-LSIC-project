@@ -9,6 +9,7 @@ class RedisClient:
     def __init__(self):
         # Get the hostname or IP address of the Redis instance. If the environment
         # variable REDIS_HOST is not set, default to localhost.
+        
         self.redis_host = os.getenv("REDIS_HOST", "localhost")
 
         # Get the port number of the Redis instance. If the environment variable

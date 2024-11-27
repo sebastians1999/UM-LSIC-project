@@ -1,0 +1,110 @@
+2024-11-26 17:18:41,610 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:18:41,863 - server - INFO - Server starting up...
+2024-11-26 17:19:45,820 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-26 17:19:45,821 - server - INFO - Response: 200 - Duration: 0.002s
+2024-11-26 17:19:53,172 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 17:19:53,173 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-26 17:28:41,592 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=a873a87eabb7d01482106ebe5b2642c220d1aaa685e1a8bd848b9458801fa6ab
+2024-11-26 17:28:41,606 - server - INFO - Response: 400 - Duration: 0.014s
+2024-11-26 17:28:55,928 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 17:28:56,251 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-26 17:28:56,251 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-26 17:28:56,252 - server - INFO - ADMIN
+2024-11-26 17:28:56,305 - server - INFO - Response: 200 - Duration: 0.377s
+2024-11-26 17:29:27,709 - server - INFO - Request: GET http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NzU4MDk4IiwibmFtZSI6IlBpbmd1MjI5ODEiLCJlbWFpbCI6ImIuZmxldGNoZXJAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyNjM4ODM2fQ._72HT2cq8k_MJKQoS_3ddGfdJVRd-3KnOotfqruvw3c
+2024-11-26 17:29:27,710 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-26 17:29:45,062 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NzU4MDk4IiwibmFtZSI6IlBpbmd1MjI5ODEiLCJlbWFpbCI6ImIuZmxldGNoZXJAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyNjM4ODM2fQ._72HT2cq8k_MJKQoS_3ddGfdJVRd-3KnOotfqruvw3c
+2024-11-26 17:29:45,078 - server - ERROR - Error processing request: Error 61 connecting to localhost:6379. Connection refused.
+2024-11-26 17:41:05,080 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NzU4MDk4IiwibmFtZSI6IlBpbmd1MjI5ODEiLCJlbWFpbCI6ImIuZmxldGNoZXJAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyNjM4ODM2fQ._72HT2cq8k_MJKQoS_3ddGfdJVRd-3KnOotfqruvw3c
+2024-11-26 17:41:05,091 - server - INFO - Response: 401 - Duration: 0.011s
+2024-11-26 17:41:07,820 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NzU4MDk4IiwibmFtZSI6IlBpbmd1MjI5ODEiLCJlbWFpbCI6ImIuZmxldGNoZXJAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyNjM4ODM2fQ._72HT2cq8k_MJKQoS_3ddGfdJVRd-3KnOotfqruvw3c
+2024-11-26 17:41:07,822 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-26 17:41:52,539 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=92ff38a4cd1c992b6cf0c812ca5321992e468bd3ab242baa4bb2e3992916c2ab
+2024-11-26 17:41:52,543 - server - INFO - Response: 400 - Duration: 0.004s
+2024-11-26 17:42:00,937 - server - INFO - Request: POST http://127.0.0.1:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NzU4MDk4IiwibmFtZSI6IlBpbmd1MjI5ODEiLCJlbWFpbCI6ImIuZmxldGNoZXJAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ImZhbHNlIiwiZXhwIjoxNzMyNjM4ODM2fQ._72HT2cq8k_MJKQoS_3ddGfdJVRd-3KnOotfqruvw3c
+2024-11-26 17:42:00,940 - server - INFO - Response: 401 - Duration: 0.003s
+2024-11-26 17:42:18,854 - server - INFO - Request: POST http://127.0.0.1:8000/auth/login
+2024-11-26 17:42:18,855 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-26 17:42:20,638 - server - INFO - Request: POST http://127.0.0.1:8000/auth/login
+2024-11-26 17:42:20,639 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-26 17:43:11,264 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 17:43:11,681 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-26 17:43:11,681 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-26 17:43:11,682 - server - INFO - ADMIN
+2024-11-26 17:43:11,694 - server - INFO - Response: 200 - Duration: 0.429s
+2024-11-26 17:44:37,007 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-26 17:44:37,011 - server - INFO - {'id': 2, 'name': 'Pingu22981', 'email': 'b.fletcher@student.maastrichtuniversity.nl', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732641191}
+2024-11-26 17:44:37,012 - server - INFO - Response: 200 - Duration: 0.005s
+2024-11-26 17:47:00,351 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:47:00,352 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:47:00,354 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-26 17:47:00,355 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-26 17:47:11,899 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:47:11,907 - server - INFO - Response: 401 - Duration: 0.008s
+2024-11-26 17:47:13,404 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:47:13,410 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-26 17:47:14,222 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:47:14,227 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-26 17:49:02,940 - server - INFO - Server shutting down...
+2024-11-26 17:49:10,716 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:49:11,053 - server - INFO - Server starting up...
+2024-11-26 17:49:27,544 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 17:49:27,923 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-26 17:49:27,923 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-26 17:49:27,923 - server - INFO - ADMIN
+2024-11-26 17:49:27,971 - server - INFO - Response: 200 - Duration: 0.427s
+2024-11-26 17:49:40,120 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:49:40,124 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-26 17:50:18,423 - server - INFO - Server shutting down...
+2024-11-26 17:50:23,194 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:50:23,290 - server - INFO - Server starting up...
+2024-11-26 17:50:35,507 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-26 17:50:35,919 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-26 17:50:35,919 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-26 17:50:35,919 - server - INFO - ADMIN
+2024-11-26 17:50:35,969 - server - INFO - Response: 200 - Duration: 0.462s
+2024-11-26 17:50:46,867 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:50:46,869 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-26 17:51:25,631 - server - INFO - Server shutting down...
+2024-11-26 17:51:30,887 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:51:30,986 - server - INFO - Server starting up...
+2024-11-26 17:51:35,910 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:51:35,925 - server - INFO - Response: 401 - Duration: 0.015s
+2024-11-26 17:52:10,818 - server - INFO - Server shutting down...
+2024-11-26 17:52:15,186 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:52:15,282 - server - INFO - Server starting up...
+2024-11-26 17:52:26,680 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:52:26,693 - server - INFO - Response: 401 - Duration: 0.013s
+2024-11-26 17:53:56,630 - server - INFO - Server shutting down...
+2024-11-26 17:54:08,894 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:54:08,992 - server - INFO - Server starting up...
+2024-11-26 17:54:13,763 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:54:13,765 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-26 17:54:19,388 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:54:19,412 - server - INFO - 2
+2024-11-26 17:54:19,418 - server - INFO - Response: 401 - Duration: 0.030s
+2024-11-26 17:55:13,917 - server - INFO - Server shutting down...
+2024-11-26 17:55:17,879 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:55:17,973 - server - INFO - Server starting up...
+2024-11-26 17:55:22,649 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:55:22,661 - server - INFO - 2
+2024-11-26 17:55:22,668 - server - INFO - Response: 401 - Duration: 0.018s
+2024-11-26 17:56:51,501 - server - INFO - Server shutting down...
+2024-11-26 17:57:01,187 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:57:01,281 - server - INFO - Server starting up...
+2024-11-26 17:57:11,471 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:57:11,479 - server - INFO - 2
+2024-11-26 17:57:11,484 - server - ERROR - Error processing request: 'dict' object has no attribute 'name'
+2024-11-26 17:58:22,131 - server - INFO - Server shutting down...
+2024-11-26 17:58:26,210 - server - INFO - GitLab OAuth initialized successfully
+2024-11-26 17:58:26,302 - server - INFO - Server starting up...
+2024-11-26 17:58:29,152 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:58:29,160 - server - INFO - 2
+2024-11-26 17:58:29,167 - server - INFO - Response: 200 - Duration: 0.015s
+2024-11-26 17:58:39,493 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:58:39,494 - server - INFO - 2
+2024-11-26 17:58:39,495 - server - INFO - Response: 200 - Duration: 0.002s
+2024-11-26 17:58:40,869 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-26 17:58:40,869 - server - INFO - 2
+2024-11-26 17:58:40,870 - server - INFO - Response: 200 - Duration: 0.002s
+2024-11-27 11:48:29,164 - server - INFO - Server shutting down...

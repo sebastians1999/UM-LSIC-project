@@ -1,0 +1,179 @@
+2024-11-27 12:02:36,878 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:02:36,973 - server - INFO - Server starting up...
+2024-11-27 12:02:47,869 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:02:48,508 - server - INFO - Response: 401 - Duration: 0.639s
+2024-11-27 12:02:53,924 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=964ef262270c78cc8f864eea898dfe4f24e7a0274cd10d6dddc4788f3a6b7a68
+2024-11-27 12:02:53,926 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-27 12:02:54,337 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:02:54,821 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:02:54,822 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:02:54,822 - server - INFO - ADMIN
+2024-11-27 12:02:54,870 - server - ERROR - Error processing request: name 'user_id' is not defined
+2024-11-27 12:03:14,470 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=dd3c5fc622b3864e58189b15374c03964ff53d68ae3c56ea027751a0f544762e
+2024-11-27 12:03:14,472 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-27 12:03:24,579 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:03:24,580 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:05:12,262 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-27 12:05:12,264 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:05:14,760 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-27 12:05:14,763 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:05:19,973 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:05:20,323 - server - INFO - Response: 401 - Duration: 0.349s
+2024-11-27 12:05:31,024 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:05:31,597 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:05:31,597 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:05:31,597 - server - INFO - ADMIN
+2024-11-27 12:05:31,602 - server - ERROR - Error processing request: name 'user_id' is not defined
+2024-11-27 12:09:02,265 - server - INFO - Server shutting down...
+2024-11-27 12:09:04,649 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:09:04,740 - server - INFO - Server starting up...
+2024-11-27 12:09:13,790 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:09:14,255 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:09:14,255 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:09:14,255 - server - INFO - ADMIN
+2024-11-27 12:09:14,293 - server - INFO - Response: 200 - Duration: 0.504s
+2024-11-27 12:09:23,413 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:23,416 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:09:25,140 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:25,145 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-27 12:09:25,975 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:25,976 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:09:30,124 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-27 12:09:30,126 - server - INFO - {'id': 2, 'name': 'Pingu22981', 'email': 'b.fletcher@student.maastrichtuniversity.nl', 'role': 'ADMIN', 'exp': 1733310554, 'refresh': True}
+2024-11-27 12:09:30,126 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:09:39,044 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-27 12:09:39,045 - server - INFO - {'id': 2, 'name': 'Pingu22981', 'email': 'b.fletcher@student.maastrichtuniversity.nl', 'role': 'ADMIN', 'logged_in': 'true', 'exp': 1732707554}
+2024-11-27 12:09:39,046 - server - INFO - Response: 200 - Duration: 0.003s
+2024-11-27 12:09:54,292 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:54,293 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:09:55,022 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:55,027 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-27 12:09:55,596 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:09:55,597 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:12:11,579 - server - INFO - Server shutting down...
+2024-11-27 12:12:14,475 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:12:14,565 - server - INFO - Server starting up...
+2024-11-27 12:12:18,007 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:12:18,017 - server - INFO - Response: 405 - Duration: 0.010s
+2024-11-27 12:12:31,360 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:12:31,361 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:13:09,004 - server - INFO - Server shutting down...
+2024-11-27 12:13:11,821 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:13:11,936 - server - INFO - Server starting up...
+2024-11-27 12:13:17,176 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:13:17,564 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:13:17,564 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:13:17,564 - server - INFO - ADMIN
+2024-11-27 12:13:17,605 - server - INFO - Response: 200 - Duration: 0.429s
+2024-11-27 12:13:26,030 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:13:26,031 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-27 12:13:54,944 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:13:54,944 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:14:58,133 - server - INFO - Server shutting down...
+2024-11-27 12:15:00,810 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:15:00,912 - server - INFO - Server starting up...
+2024-11-27 12:15:03,121 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:15:03,123 - server - ERROR - Refresh token is missing in cookies
+2024-11-27 12:15:03,123 - server - ERROR - An unexpected error occurred: 401: Refresh token missing
+2024-11-27 12:15:03,124 - server - INFO - Response: 401 - Duration: 0.003s
+2024-11-27 12:15:04,031 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:15:04,031 - server - ERROR - Refresh token is missing in cookies
+2024-11-27 12:15:04,031 - server - ERROR - An unexpected error occurred: 401: Refresh token missing
+2024-11-27 12:15:04,032 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:15:08,142 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:15:08,610 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:15:08,610 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:15:08,610 - server - INFO - ADMIN
+2024-11-27 12:15:08,650 - server - INFO - Response: 200 - Duration: 0.508s
+2024-11-27 12:15:16,127 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:15:16,128 - server - ERROR - Refresh token is missing in cookies
+2024-11-27 12:15:16,128 - server - ERROR - An unexpected error occurred: 401: Refresh token missing
+2024-11-27 12:15:16,129 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:22:02,779 - server - INFO - Server shutting down...
+2024-11-27 12:22:05,944 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:22:06,035 - server - INFO - Server starting up...
+2024-11-27 12:22:12,697 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:22:12,701 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-27 12:22:13,739 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:22:13,740 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:22:14,589 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:22:14,590 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:22:26,968 - server - INFO - Server shutting down...
+2024-11-27 12:22:29,037 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:22:29,127 - server - INFO - Server starting up...
+2024-11-27 12:22:32,113 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:22:32,116 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-27 12:25:00,562 - server - INFO - Server shutting down...
+2024-11-27 12:25:02,829 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:25:02,923 - server - INFO - Server starting up...
+2024-11-27 12:25:04,641 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:25:04,643 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:25:06,389 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:25:06,390 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:25:07,172 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:25:07,173 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:25:52,758 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:25:53,160 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:25:53,160 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:25:53,161 - server - INFO - ADMIN
+2024-11-27 12:25:53,204 - server - INFO - Response: 200 - Duration: 0.446s
+2024-11-27 12:26:00,368 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:26:00,370 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:26:01,322 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:26:01,323 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:26:01,936 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:26:01,938 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-27 12:26:05,368 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-11-27 12:26:05,371 - server - INFO - {'id': 2, 'name': 'Pingu22981', 'email': 'b.fletcher@student.maastrichtuniversity.nl', 'role': 'ADMIN', 'exp': 1733311553, 'refresh': True}
+2024-11-27 12:26:05,371 - server - INFO - Response: 401 - Duration: 0.003s
+2024-11-27 12:32:33,594 - server - INFO - Server shutting down...
+2024-11-27 12:32:35,894 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:32:35,986 - server - INFO - Server starting up...
+2024-11-27 12:32:39,282 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:32:39,666 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:32:39,667 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:32:39,667 - server - INFO - ADMIN
+2024-11-27 12:32:39,692 - server - INFO - Response: 200 - Duration: 0.410s
+2024-11-27 12:32:47,296 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:32:47,297 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-27 12:33:07,404 - server - INFO - Server shutting down...
+2024-11-27 12:33:09,508 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:33:09,603 - server - INFO - Server starting up...
+2024-11-27 12:33:12,038 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:33:12,042 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-27 12:35:33,110 - server - INFO - Server shutting down...
+2024-11-27 12:35:34,926 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:35:35,073 - server - INFO - Server starting up...
+2024-11-27 12:35:38,547 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:35:38,549 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-27 12:36:03,375 - server - INFO - Server shutting down...
+2024-11-27 12:36:05,154 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:36:05,243 - server - INFO - Server starting up...
+2024-11-27 12:36:08,754 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:36:08,757 - server - INFO - Response: 405 - Duration: 0.003s
+2024-11-27 12:36:09,567 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:36:09,571 - server - INFO - Response: 405 - Duration: 0.003s
+2024-11-27 12:36:11,215 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:36:11,216 - server - INFO - Response: 405 - Duration: 0.001s
+2024-11-27 12:36:27,098 - server - INFO - Server shutting down...
+2024-11-27 12:36:30,061 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:36:30,148 - server - INFO - Server starting up...
+2024-11-27 12:36:33,694 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:36:33,695 - server - INFO - Response: 401 - Duration: 0.002s
+2024-11-27 12:36:47,173 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:36:47,781 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:36:47,781 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:36:47,781 - server - INFO - ADMIN
+2024-11-27 12:36:47,824 - server - INFO - Response: 200 - Duration: 0.651s
+2024-11-27 12:36:54,261 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:36:54,263 - server - INFO - Response: 200 - Duration: 0.001s
+2024-11-27 12:37:48,293 - server - INFO - Server shutting down...
+2024-11-27 12:37:51,271 - server - INFO - GitLab OAuth initialized successfully
+2024-11-27 12:37:51,361 - server - INFO - Server starting up...
+2024-11-27 12:37:54,948 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-27 12:37:55,329 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins']
+2024-11-27 12:37:55,329 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-27 12:37:55,329 - server - INFO - ADMIN
+2024-11-27 12:37:55,371 - server - INFO - Response: 200 - Duration: 0.423s
+2024-11-27 12:38:01,111 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-11-27 12:38:01,114 - server - INFO - Response: 200 - Duration: 0.004s

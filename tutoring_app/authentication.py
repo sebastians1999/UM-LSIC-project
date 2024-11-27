@@ -18,6 +18,8 @@ import os
 import requests
 from Redis import redis_client
 
+USE_REDIS = False
+
 # Load environment variables
 load_dotenv()
 
@@ -164,16 +166,22 @@ def create_access_token(data: dict, expires_in=TOKEN_EXPIRE_MINUTES):
     expire = datetime.utcnow() + timedelta(minutes=expires_in)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-#Now storing this in Redis
+
 def create_refresh_token(data: dict):
     """Create a new refresh token with longer expiration"""
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
     to_encode.update({"exp": expire, "refresh": True})
-    # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    redis_client.set_refresh_token(refresh_token, data["id"], REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60)  # Expiration in second
+    
+    # Use Redis or in-memory store based on the USE_REDIS flag
+    if USE_REDIS:
+        redis_client.set_refresh_token(refresh_token, data["id"], REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60)  # Expiration in seconds
+    else:
+        refresh_token_store[refresh_token] = {"user_id": data["id"], "expires_at": expire}
+    
     return refresh_token
+
 
 def verify_token(token: str = Depends(oauth2_scheme)):
     """Token verification logic"""
@@ -190,24 +198,39 @@ async def refresh_token(request: Request, refresh_token: str = Depends(oauth2_sc
         if not refresh_token:
             raise HTTPException(status_code=401, detail="Refresh token missing")
 
-        # Validate token
-        user_id = redis_client.get_refresh_token(refresh_token)
-        if not user_id:
-            raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
-                
+        # Validate the refresh token using Redis or in-memory store
+        if USE_REDIS:
+            user_id = redis_client.get_refresh_token(refresh_token)
+            print('REDISWORKS')
+            if not user_id:
+                raise HTTPException(status_code=401, detail="Invalid or expired refresh token REDIS")
+        else:
+            token_data = refresh_token_store.get(refresh_token)
+            if not token_data or token_data["expires_at"] <= datetime.utcnow():
+                raise HTTPException(status_code=401, detail="Invalid or expired refresh token Normal")
+            user_id = token_data["user_id"]
+
+        # Decode the refresh token to confirm it's valid
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         if not payload.get("refresh"):
             raise HTTPException(status_code=401, detail="Invalid refresh token")
-        
-        if user_id != payload.get("id"):
-            raise HTTPException(status_code=401, detail="Invalid refresh token")
-        
-        # Create new access token
-        access_token = create_access_token({"id": user_id, "name": payload.name, "email": payload.email, "role": payload.role, "logged_in": "true"})
+
+        if int(user_id) != int(payload.get("id")):
+            raise HTTPException(status_code=401, detail="Token mismatch")
+
+        # Create a new access token
+        access_token = create_access_token({
+            "id": user_id,
+            "name": payload["name"],
+            "email": payload["email"],
+            "role": payload["role"],
+            "logged_in": "true",
+        })
 
         return {"access_token": access_token, "token_type": "bearer"}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
+
 
 @router.get("/auth/login")
 @limiter.limit("10/minute")
@@ -379,7 +402,16 @@ def secure_data(user: dict = Depends(get_current_user)):
 
 @router.get("/auth/logout")
 async def logout(request: Request):
+    """Logout endpoint to invalidate the refresh token"""
     refresh_token = request.cookies.get("refresh_token")
-    if refresh_token:
+    if not refresh_token:
+        return {"message": "No refresh token found"}
+
+    # Delete the refresh token from Redis or in-memory store
+    if USE_REDIS:
         redis_client.delete_refresh_token(refresh_token)
+    else:
+        refresh_token_store.pop(refresh_token, None)
+
     return RedirectResponse(url='/')
+

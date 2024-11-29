@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Request  # Add Request import
 from sqlalchemy.orm import Session, joinedload
-from tutoring_app.database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
-from tutoring_app.utilities import get_user_by_id, get_chat_with_messages
+from database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
+from utilities import get_user_by_id, get_chat_with_messages
 from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Optional
 import logging
-from tutoring_app.authentication import admin_only, limiter
+from authentication import admin_only, limiter
 
 router = APIRouter()
 

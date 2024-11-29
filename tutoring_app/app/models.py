@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, StringConstraints, validator
 from typing import List, Optional, Annotated
 from datetime import datetime
-from tutoring_app.database import UserRole
+from database import UserRole
 
 class UserBase(BaseModel):
     """Base user data"""

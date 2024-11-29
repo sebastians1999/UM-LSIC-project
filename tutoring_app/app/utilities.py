@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, joinedload
-from tutoring_app.database import User, Chat, Message, UserRole
+from database import User, Chat, Message, UserRole
 from fastapi import HTTPException
 from typing import Optional
 from logger import logger

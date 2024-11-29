@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Request  # Add Request import
 from sqlalchemy.orm import Session, joinedload
-from database.database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
-from utilities import get_user_by_id, get_chat_with_messages
 from datetime import datetime
 from pydantic import BaseModel
 from typing import List, Optional
-import logging
 from routers.authentication import admin_only, limiter
+from database.database import get_db, User, Chat, Message, UserRole, Appointment, pwd_context
+from utilities import get_user_by_id, get_chat_with_messages
+import logging
 
 router = APIRouter()
 

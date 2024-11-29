@@ -1,18 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from tutoring_app.database.database import get_db, User, UserRole, verify_password_strength, Message, Appointment
 from pydantic import BaseModel, EmailStr, validator, StringConstraints
 from typing import List, Annotated
+from jose import jwt, JWTError
+from datetime import datetime
+from database.database import get_db, User, UserRole, verify_password_strength, Message, Appointment
+from routers.authentication import require_roles, admin_only, limiter, ALGORITHM, SECRET_KEY
+from utilities import get_user_by_id, get_chat_with_messages, get_user_chats
+from logger import logger  # Add logger import
 from models import (
     UserCreate, UserResponse, MessageResponse, ChatResponse,
     AppointmentCreate, AppointmentResponse, RatingCreate
 )
-from authentication import require_roles, admin_only, limiter, ALGORITHM, SECRET_KEY
-from utilities import get_user_by_id, get_chat_with_messages, get_user_chats
-from logger import logger  # Add logger import
-from jose import jwt, JWTError
 import bleach
-from datetime import datetime
 import os
 
 router = APIRouter()

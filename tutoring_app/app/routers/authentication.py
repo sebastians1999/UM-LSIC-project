@@ -2,16 +2,16 @@ from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
 from typing import List
-from database.database import *
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
-from logger import logger  # Add this import
 from dotenv import load_dotenv
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from database.database import *
+from logger import logger  # Add this import
 import httpx
 import os
 import requests
@@ -229,23 +229,26 @@ async def login(request: Request, gitlab_token = Depends(oauth2_scheme), db = De
     if gitlab_token:
         user_info = get_gitlab_user_data(gitlab_token)
 
-        logger.info(user_info['groups'])
         role = role_from_gitlab_group(user_info['groups'])
-
-        logger.info(UserRole.__members__)
-        logger.info(role)
 
         # Check if the user exists
         user = db.query(User).filter(User.email == user_info['email']).first()
 
+
         if user:
+            logger.info(f"Logging in user {user.name}.")
+
             # Create an access token
             access_token = create_access_token(user.id, user.name, user.email, user.role.name)
 
             # Create a refresh token
             refresh_token = create_refresh_token(user.id)
 
+            logger.info(f"Success. User {user.name} logged in.")
+
             return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
+
+        logger.info(f"User {user_info['name']} not found in the database.")
 
         # If the user does not exist, provide the client with a one time token to create an account
         token = create_signup_token(user_info['sub'], user_info['name'], user_info['email'], role)

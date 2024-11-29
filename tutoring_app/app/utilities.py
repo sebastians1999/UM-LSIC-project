@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
-from database.database   import User, Chat, Message, UserRole
 from fastapi import HTTPException
 from typing import Optional
+from database.database   import User, Chat, Message, UserRole
 from logger import logger
 
 def get_user_by_id(db: Session, user_id: int) -> Optional[User]:

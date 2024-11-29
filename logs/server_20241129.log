@@ -1,21 +1,32 @@
-2024-11-29 19:19:31,394 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:20:09,341 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:20:24,412 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:23:07,913 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:23:35,228 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:23:56,047 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:24:02,030 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:24:42,376 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:25:33,511 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:25:33,859 - server - INFO - Server starting up...
-2024-11-29 19:25:33,860 - server - INFO - Server shutting down...
-2024-11-29 19:27:34,286 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:27:34,476 - server - INFO - Server starting up...
-2024-11-29 19:27:34,477 - server - INFO - Server shutting down...
-2024-11-29 19:43:58,499 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 19:43:58,655 - server - INFO - Server starting up...
-2024-11-29 19:43:58,655 - server - INFO - Server shutting down...
-2024-11-29 20:02:12,672 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 20:19:50,242 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 20:20:07,641 - server - INFO - GitLab OAuth initialized successfully
-2024-11-29 20:22:40,453 - server - INFO - GitLab OAuth initialized successfully
+2024-11-29 21:07:14,424 - server - INFO - GitLab OAuth initialized successfully
+2024-11-29 21:07:14,589 - server - INFO - Server starting up...
+2024-11-29 21:07:18,715 - server - INFO - Server shutting down...
+2024-11-29 21:08:35,763 - server - INFO - GitLab OAuth initialized successfully
+2024-11-29 21:08:35,919 - server - INFO - Server starting up...
+2024-11-29 21:08:52,920 - server - INFO - Request: GET http://127.0.0.1:8000/
+2024-11-29 21:08:52,922 - server - INFO - Response: 200 - Duration: 0.003s
+2024-11-29 21:08:53,011 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-29 21:08:53,014 - server - INFO - Response: 404 - Duration: 0.003s
+2024-11-29 21:08:53,044 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-29 21:08:53,046 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-29 21:08:57,095 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-29 21:08:57,096 - server - INFO - Response: 401 - Duration: 0.001s
+2024-11-29 21:08:57,127 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-29 21:08:57,130 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-29 21:08:57,137 - server - INFO - Request: GET http://127.0.0.1:8000/favicon.ico
+2024-11-29 21:08:57,138 - server - INFO - Response: 404 - Duration: 0.001s
+2024-11-29 21:10:03,336 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=6ebb61caacbbe52683adf0cb0130a01ccf7134a6439c8fd11f2fa298bb513e85
+2024-11-29 21:10:03,339 - server - INFO - Response: 400 - Duration: 0.002s
+2024-11-29 21:11:15,986 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-29 21:11:16,337 - server - INFO - ['lsit-tutoring-platform/students', 'lsit-tutoring-platform', 'lsit-tutoring-platform/tutors', 'lsit-tutoring-platform/admins', 'lsit-ken3239/students']
+2024-11-29 21:11:16,338 - server - INFO - {'ADMIN': <UserRole.ADMIN: 'admin'>, 'STUDENT': <UserRole.STUDENT: 'student'>, 'TUTOR': <UserRole.TUTOR: 'tutor'>}
+2024-11-29 21:11:16,340 - server - INFO - ADMIN
+2024-11-29 21:11:16,367 - server - INFO - Response: 200 - Duration: 0.381s
+2024-11-29 21:13:54,474 - server - INFO - Server shutting down...
+2024-11-29 21:14:03,652 - server - INFO - GitLab OAuth initialized successfully
+2024-11-29 21:14:03,825 - server - INFO - Server starting up...
+2024-11-29 21:14:17,400 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-29 21:14:17,818 - server - INFO - Logging in user Nate Macdonald.
+2024-11-29 21:14:17,822 - server - INFO - Success. User Nate Macdonald logged in.
+2024-11-29 21:14:17,823 - server - INFO - Response: 200 - Duration: 0.423s
+2024-11-29 21:15:03,943 - server - INFO - Server shutting down...

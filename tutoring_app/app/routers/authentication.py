@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
 from typing import List
-from database import *
+from database.database import *
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth

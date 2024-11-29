@@ -4,7 +4,7 @@ import os, sys
 from dotenv import load_dotenv
 from logger import logger
 from routers.admin import router as admin_router
-from student import router as student_router
+from routers.student import router as student_router
 from tutor import router as tutor_router
 from shared import router as shared_router
 from authentication import router as auth_router

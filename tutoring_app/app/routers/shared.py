@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from database import get_db, User, UserRole, verify_password_strength, Message, Appointment
+from tutoring_app.database.database import get_db, User, UserRole, verify_password_strength, Message, Appointment
 from pydantic import BaseModel, EmailStr, validator, StringConstraints
 from typing import List, Annotated
 from models import (

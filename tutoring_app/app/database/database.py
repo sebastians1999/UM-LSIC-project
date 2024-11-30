@@ -70,7 +70,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
     is_banned_until = Column(DateTime, nullable=True)  # Nullable field for ban duration
-    reports = relationship("UserReport", back_populates="user")
+    #reports = relationship("UserReport", back_populates="user")
 
     # Relationships
     student_profile = relationship("StudentProfile", back_populates="user", uselist=False)
@@ -197,7 +197,7 @@ class Message(Base):
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.now, nullable=False)
     is_deleted = Column(Boolean, default=False, nullable=False)
-    reports = relationship("MessageReport", back_populates="message")
+    #reports = relationship("MessageReport", back_populates="message")
 
     # Relationships
     chat = relationship("Chat", back_populates="messages")
@@ -241,7 +241,7 @@ class MessageReport(Base):
     created_at = Column(DateTime, default=datetime.now, nullable=False)
 
     # Relationships
-    message = relationship("Message", backref="reports")
+    message = relationship("Message", backref="reports", foreign_keys=[message_id])
 
     def __repr__(self):
         """String representation of the MessageReport object."""
@@ -256,7 +256,8 @@ class UserReport(Base):
     created_at = Column(DateTime, default=datetime.now, nullable=False)
 
     # Relationships
-    user = relationship("User", backref="reports")
+    user = relationship("User", backref="reports", foreign_keys=[user_id])
+    reported_by = relationship("User", foreign_keys=[by])
 
     def __repr__(self):
         """String representation of the UserReport object."""

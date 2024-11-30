@@ -13,6 +13,11 @@ class SignUpResponse(BaseModel):
     status: str
     redirect_to: str
 
+class LoggedOutResponse(BaseModel):
+    """Logout response data"""
+    message: str
+    status: str
+
 class DecodedAccessToken(BaseModel):
     """
     Decoded access token data
@@ -30,3 +35,4 @@ class DecodedAccessToken(BaseModel):
     role: str
     logged_in: bool
     exp: int
+    refresh_token_id: str

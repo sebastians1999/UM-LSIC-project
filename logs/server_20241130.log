@@ -43,3 +43,146 @@
 2024-11-30 22:58:19,660 - server - INFO - Server shutting down...
 2024-11-30 22:58:24,605 - server - INFO - GitLab OAuth initialized successfully
 2024-11-30 22:58:24,781 - server - INFO - Server starting up...
+2024-11-30 23:07:40,374 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:07:49,680 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:08:45,243 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:12:47,711 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:12:48,319 - server - INFO - Server starting up...
+2024-11-30 23:14:59,012 - server - INFO - Request: GET http://127.0.0.1:8000/login
+2024-11-30 23:14:59,016 - server - INFO - Response: 404 - Duration: 0.004s
+2024-11-30 23:15:21,313 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-11-30 23:15:23,284 - server - INFO - Response: 302 - Duration: 1.971s
+2024-11-30 23:17:51,692 - server - INFO - Request: GET http://localhost:8000/auth/callback
+2024-11-30 23:17:51,717 - server - INFO - Response: 400 - Duration: 0.024s
+2024-11-30 23:18:55,266 - server - INFO - Request: POST http://localhost:8000/auth/callback
+2024-11-30 23:18:55,270 - server - INFO - Response: 405 - Duration: 0.004s
+2024-11-30 23:18:55,343 - server - INFO - Request: GET http://localhost:8000/auth/callback
+2024-11-30 23:18:55,348 - server - INFO - Response: 400 - Duration: 0.005s
+2024-11-30 23:19:54,861 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-30 23:19:55,673 - server - INFO - Response: 302 - Duration: 0.812s
+2024-11-30 23:23:35,045 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:23:35,055 - server - INFO - Response: 401 - Duration: 0.010s
+2024-11-30 23:28:44,712 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:28:44,717 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-30 23:28:46,378 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:28:46,382 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-30 23:29:30,639 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:29:30,644 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-30 23:29:31,854 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:29:31,860 - server - INFO - Response: 401 - Duration: 0.007s
+2024-11-30 23:29:36,166 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:29:36,171 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-30 23:29:52,556 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:29:52,562 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-30 23:30:14,526 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:30:14,537 - server - INFO - Response: 401 - Duration: 0.011s
+2024-11-30 23:30:38,822 - server - INFO - Request: GET http://localhost:8000/admin/dashboard
+2024-11-30 23:30:38,827 - server - INFO - Response: 401 - Duration: 0.004s
+2024-11-30 23:30:43,746 - server - INFO - Request: GET http://localhost:8000/admin/login
+2024-11-30 23:30:43,751 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-30 23:30:44,591 - server - INFO - Request: GET http://localhost:8000/admin/login
+2024-11-30 23:30:44,596 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-30 23:31:39,784 - server - INFO - Request: GET http://localhost:8000/admin/login
+2024-11-30 23:31:39,790 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-30 23:31:53,096 - server - INFO - Request: GET http://localhost:8000/admin/callback
+2024-11-30 23:31:53,102 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-30 23:32:07,303 - server - INFO - Request: GET http://localhost:8000/admin/signup
+2024-11-30 23:32:07,308 - server - INFO - Response: 401 - Duration: 0.006s
+2024-11-30 23:32:08,291 - server - INFO - Request: GET http://localhost:8000/admin/signup
+2024-11-30 23:32:08,296 - server - INFO - Response: 401 - Duration: 0.005s
+2024-11-30 23:34:11,911 - server - INFO - Request: GET http://localhost:8000/auth/callback
+2024-11-30 23:34:11,915 - server - INFO - Response: 400 - Duration: 0.004s
+2024-11-30 23:34:12,862 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-11-30 23:34:12,864 - server - INFO - Response: 404 - Duration: 0.002s
+2024-11-30 23:34:52,002 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=546433bad3664c8c34508d9fde7f51eb98c02617c3eac1be215a911c652fb28d
+2024-11-30 23:34:52,009 - server - INFO - Response: 400 - Duration: 0.007s
+2024-11-30 23:37:14,662 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-30 23:37:15,145 - server - INFO - User KonradRtz not found in the database.
+2024-11-30 23:37:15,186 - server - INFO - Response: 200 - Duration: 0.524s
+2024-11-30 23:38:17,240 - server - INFO - Request: GET http://localhost:8000/auth/signup
+2024-11-30 23:38:17,242 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-30 23:38:34,211 - server - INFO - Request: GET http://localhost:8000/auth/signup
+2024-11-30 23:38:34,213 - server - INFO - Response: 405 - Duration: 0.002s
+2024-11-30 23:38:41,058 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:38:41,063 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:40:23,041 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:40:23,047 - server - INFO - Response: 422 - Duration: 0.006s
+2024-11-30 23:41:19,559 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:41:19,566 - server - INFO - Response: 422 - Duration: 0.007s
+2024-11-30 23:41:20,542 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:41:20,546 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:42:37,438 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:42:37,441 - server - INFO - Response: 422 - Duration: 0.003s
+2024-11-30 23:43:21,918 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:43:21,921 - server - INFO - Response: 422 - Duration: 0.003s
+2024-11-30 23:43:28,174 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:43:28,176 - server - INFO - Response: 422 - Duration: 0.002s
+2024-11-30 23:43:34,956 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:43:34,958 - server - INFO - Response: 422 - Duration: 0.002s
+2024-11-30 23:44:56,195 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:44:56,199 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:45:49,882 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:49,885 - server - INFO - Response: 422 - Duration: 0.003s
+2024-11-30 23:45:50,595 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:50,598 - server - INFO - Response: 422 - Duration: 0.003s
+2024-11-30 23:45:50,959 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:50,963 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:45:51,168 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:51,173 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:45:51,257 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:51,262 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:45:51,394 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:51,397 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:45:51,596 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:45:51,600 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:46:58,408 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:46:59,088 - server - INFO - Server starting up...
+2024-11-30 23:47:04,284 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:04,298 - server - INFO - Response: 422 - Duration: 0.014s
+2024-11-30 23:47:04,973 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:04,977 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:47:05,152 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:05,157 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:47:05,338 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:05,341 - server - INFO - Response: 422 - Duration: 0.003s
+2024-11-30 23:47:05,523 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:05,529 - server - INFO - Response: 422 - Duration: 0.006s
+2024-11-30 23:47:05,617 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:05,621 - server - INFO - Response: 422 - Duration: 0.005s
+2024-11-30 23:47:05,737 - server - INFO - Request: POST http://localhost:8000/auth/signup
+2024-11-30 23:47:05,741 - server - INFO - Response: 422 - Duration: 0.004s
+2024-11-30 23:47:43,518 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 23:47:43,789 - server - INFO - Server starting up...
+2024-11-30 23:49:27,135 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=5394f5f0ab64b64abb82696bc508f62e0464f7cc292d7e85261cc7803003c2ad
+2024-11-30 23:49:27,141 - server - INFO - Response: 400 - Duration: 0.006s
+2024-11-30 23:49:30,608 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=ccccc429fca64274a80393d786aa2f3b36f74acc2606f7f7ac9045b6b90fe901
+2024-11-30 23:49:30,614 - server - INFO - Response: 400 - Duration: 0.006s
+2024-11-30 23:49:44,186 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-30 23:49:44,615 - server - INFO - User KonradRtz not found in the database.
+2024-11-30 23:49:44,621 - server - INFO - Response: 200 - Duration: 0.435s
+2024-11-30 23:50:30,223 - server - INFO - Request: POST http://localhost:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzAwNzI4NH0.ZOrvaoZGFweylApZmfEe0gWlms-iY3YvI2L3Z2WNYLE
+2024-11-30 23:50:30,259 - server - ERROR - Error processing request: 1 validation errors:
+  {'type': 'missing', 'loc': ('response', 'status'), 'msg': 'Field required', 'input': {'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6dHJ1ZSwiZXhwIjoxNzMzMDEwNjMwfQ.6g9lTQDowDSF3vZrISImDLrn-wCEtSFWQAn0MdEU21A', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImV4cCI6MTczMzYxMTgzMCwicmVmcmVzaCI6dHJ1ZX0.IsVN9OTQ6a4KI5xCnx-xtfMabukJVcEyhMTz8WQaWcQ', 'token_type': 'bearer'}}
+
+2024-11-30 23:51:44,002 - server - INFO - Request: POST http://localhost:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzAwNzI4NH0.ZOrvaoZGFweylApZmfEe0gWlms-iY3YvI2L3Z2WNYLE
+2024-11-30 23:51:44,010 - server - INFO - Response: 400 - Duration: 0.008s
+2024-11-30 23:52:35,332 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-30 23:52:35,781 - server - INFO - Logging in user KonradRtz.
+2024-11-30 23:52:35,783 - server - INFO - Success. User KonradRtz logged in.
+2024-11-30 23:52:35,785 - server - INFO - Response: 200 - Duration: 0.453s
+2024-11-30 23:54:59,843 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=e3b826a107f33f28aa39a57e74ea7d127738abd41fb6648a641b0771667c32c0
+2024-11-30 23:54:59,846 - server - INFO - Response: 400 - Duration: 0.003s
+2024-11-30 23:55:23,800 - server - INFO - Request: GET http://localhost:8000//auth/login
+2024-11-30 23:55:23,803 - server - INFO - Response: 404 - Duration: 0.003s
+2024-11-30 23:55:27,169 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=ecea060fffd1a70f0d52920bb458f9c20de4037ec1086e34f0c8bfffb8468e4c
+2024-11-30 23:55:27,172 - server - INFO - Response: 400 - Duration: 0.003s
+2024-11-30 23:56:36,518 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-11-30 23:56:36,897 - server - INFO - Logging in user KonradRtz.
+2024-11-30 23:56:36,898 - server - INFO - Success. User KonradRtz logged in.
+2024-11-30 23:56:36,900 - server - INFO - Response: 200 - Duration: 0.382s
+2024-12-01 00:00:51,909 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=cdd39f6757abd72ee27f32404e5665136fb1bf774cf66c975cf7423878d8f819
+2024-12-01 00:00:51,914 - server - INFO - Response: 400 - Duration: 0.005s
+2024-12-01 00:01:52,747 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=f4234d622a0e0476af60993c23b5eb5b71db321ad6716b055e9330625e66c229
+2024-12-01 00:01:52,750 - server - INFO - Response: 400 - Duration: 0.003s
+2024-12-01 00:04:20,332 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=375cb6fcaa56838d7d1446b966845552128557c051828a2593700ff81256c2df
+2024-12-01 00:04:20,337 - server - INFO - Response: 400 - Duration: 0.005s

@@ -164,7 +164,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError: # Invalid or expired token
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.post("/auth/refresh", response_model=LoggedInResponse)
+@router.post("/refresh", response_model=LoggedInResponse)
 async def refresh_token(request: Request, db = Depends(get_db)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
@@ -189,7 +189,7 @@ async def refresh_token(request: Request, db = Depends(get_db)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-@router.get("/auth/login", response_model=Union[LoggedInResponse, None])
+@router.get("/login", response_model=Union[LoggedInResponse, None])
 @limiter.limit("10/minute")
 async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
     """Login endpoint"""
@@ -234,7 +234,7 @@ async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db =
         logger.error(f"Login error: {str(e)}")
         raise HTTPException(status_code=500, detail="Authentication failed")
 
-@router.get('/auth/callback', response_model=Union[LoggedInResponse, SignUpResponse])
+@router.get('/callback', response_model=Union[LoggedInResponse, SignUpResponse])
 async def auth_callback(request: Request, db = Depends(get_db)):
     """Callback endpoint after successful authentication with GitLab. Returns a JWT token which should be used by the client"""
     try:
@@ -275,7 +275,7 @@ async def auth_callback(request: Request, db = Depends(get_db)):
             'status': 'signup_required',
             'redirect_to': f'/auth/signup?token={token}'} # Include the token in the redirect URL
 
-@router.post("/auth/signup", response_model=LoggedInResponse)
+@router.post("/signup", response_model=LoggedInResponse)
 @limiter.limit("10/minute")
 def signup(request : Request, token: str, db = Depends(get_db)):
     """Sign up endpoint. Requires a one time JWT token which is generated after successful authentication - see auth_callback."""
@@ -312,12 +312,12 @@ def signup(request : Request, token: str, db = Depends(get_db)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.get("/auth/secure")
+@router.get("/secure")
 def secure_data(user: DecodedAccessToken = Depends(get_current_user)):
     """Secure endpoint that requires a valid token"""
     return {"message": "You have accessed secure data!", "user": user.model_dump()}
 
-@router.get("/auth/logout")
+@router.get("/logout")
 async def logout(request: Request):
     # Invalidate the access token and refresh token
     return RedirectResponse(url='/')

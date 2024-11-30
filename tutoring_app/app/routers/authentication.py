@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter
+from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter, Header
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
 from typing import List
@@ -6,12 +6,14 @@ from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
 from dotenv import load_dotenv
+from typing import Union, Optional
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from database.database import *
 from logger import logger  # Add this import
+from schemas.authentication_schema import LoggedInResponse, SignUpResponse
 import httpx
 import os
 import requests
@@ -119,6 +121,14 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+# Optional gitlab token dependency
+def get_gitlab_token(authorization: Optional[str] = Header(None)):
+    if authorization:
+        # Extract token from the Authorization header
+        token = authorization.split("Bearer ")[-1]
+        return token
+    return None  # Return None if no token is provided
+
 # Role-based authentication dependencies
 def verify_user_role(user: dict, allowed_roles: List[UserRole]):
     if not user or user['role'] not in [role.value for role in allowed_roles]:
@@ -196,7 +206,7 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError: # Invalid or expired token
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.post("/auth/refresh")
+@router.post("/auth/refresh", response_model=LoggedInResponse)
 async def refresh_token(request: Request, db = Depends(get_db)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
@@ -217,13 +227,13 @@ async def refresh_token(request: Request, db = Depends(get_db)):
                                            email=user.email,
                                            role=user.role.name)
 
-        return {"access_token": access_token, "token_type": "bearer"}
+        return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-@router.get("/auth/login")
+@router.get("/auth/login", response_model=Union[LoggedInResponse, RedirectResponse])
 @limiter.limit("10/minute")
-async def login(request: Request, gitlab_token = Depends(oauth2_scheme), db = Depends(get_db)):
+async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
     """Login endpoint"""
     # Fetch user info using the token with the gitlab object
     if gitlab_token:
@@ -266,7 +276,7 @@ async def login(request: Request, gitlab_token = Depends(oauth2_scheme), db = De
         logger.error(f"Login error: {str(e)}")
         raise HTTPException(status_code=500, detail="Authentication failed")
 
-@router.get('/auth/callback')
+@router.get('/auth/callback', response_model=Union[LoggedInResponse, SignUpResponse])
 async def auth_callback(request: Request, db = Depends(get_db)):
     """Callback endpoint after successful authentication with GitLab. Returns a JWT token which should be used by the client"""
     try:
@@ -307,7 +317,7 @@ async def auth_callback(request: Request, db = Depends(get_db)):
             'status': 'signup_required',
             'redirect_to': f'/auth/signup?token={token}'} # Include the token in the redirect URL
 
-@router.post("/auth/signup")
+@router.post("/auth/signup", response_model=LoggedInResponse)
 @limiter.limit("10/minute")
 def signup(request : Request, token: str, db = Depends(get_db)):
     """Sign up endpoint. Requires a one time JWT token which is generated after successful authentication - see auth_callback."""

@@ -9,10 +9,10 @@ from schemas.chat_schema import ChatResponse, MessageResponse
 from schemas.authentication_schema import DecodedAccessToken
 from logger import logger
 
-router = APIRouter('chats')
+router = APIRouter(prefix='/chats')
 
 @router.get('/', response_model=List[ChatResponse])
-def get_chats(current_user = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_chats(request: Request, current_user = Depends(get_current_user), db: Session = Depends(get_db)):
     user = get_user_by_id(db, current_user.sub)
     chats = get_user_chats(db, user.id, user.role)
     detailed_chats = []
@@ -39,7 +39,7 @@ def get_chats(current_user = Depends(get_current_user), db: Session = Depends(ge
     return detailed_chats
 
 @router.get('/{chatID}', response_model=ChatResponse)
-def get_chat(chatID: int, current_user : DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_chat(request: Request, chatID: int, current_user : DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     chat = get_chat_with_messages(db, chatID)
     # Check that the user is part of the chat
     if (current_user.role != UserRole.ADMIN.value) and (chat.student_id != current_user.sub and chat.tutor_id != current_user.sub):
@@ -48,7 +48,7 @@ def get_chat(chatID: int, current_user : DecodedAccessToken = Depends(get_curren
     return get_chat_with_messages(db, chatID)
 
 @router.post('/{chatID}/messages', response_model=MessageResponse)
-def send_message(chatID: int, content: str, current_user : DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def send_message(request: Request, chatID: int, content: str, current_user : DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     """Send a message in an existing chat from the logged in user."""
     try:
         # Ensure the sender exists

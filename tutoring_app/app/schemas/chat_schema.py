@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from user_schema import UserResponse
+from schemas.user_schema import UserResponse
 from datetime import datetime
 from typing import List
 

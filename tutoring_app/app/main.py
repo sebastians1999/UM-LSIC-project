@@ -6,12 +6,16 @@ from logger import logger
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
-from routers.admin import router as admin_router
-from routers.student import router as student_router
-from routers.tutor import router as tutor_router
-from tutoring_app.app.routers.user import router as shared_router
-from routers.authentication import router as auth_router
 from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
+
+### ROUTERS
+from routers.admin import router as admin_router
+from routers.appointment import router as appointment_router
+from routers.authentication import router as auth_router
+from routers.chat import router as chat_router
+from routers.report import router as report_router
+from routers.support import router as support_router
+from routers.user  import router as user_router
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     """
@@ -108,11 +112,13 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(admin_router, prefix='/admin', tags=['admin'])
-app.include_router(student_router, prefix='/student', tags=['student'])
-app.include_router(tutor_router, prefix='/tutor', tags=['tutor'])
-app.include_router(shared_router, tags=['shared'])  # Remove the prefix
-app.include_router(auth_router, tags=['auth'])
+app.include_router(admin_router, tags=['admin'])
+app.include_router(appointment_router, tags=['appointments'])
+app.include_router(auth_router, tags=['authentication'])
+app.include_router(chat_router, tags=['chat'])
+app.include_router(report_router, tags=['report'])
+app.include_router(support_router, tags=['support'])
+app.include_router(user_router, tags=['users'])
 
 @app.get("/")
 def read_root():

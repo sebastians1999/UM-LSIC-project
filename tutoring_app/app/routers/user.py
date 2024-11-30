@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List, Union
 from database.database import get_db, User, UserRole, Appointment
@@ -7,10 +7,10 @@ from schemas.user_schema import ProfileUpdate, StudentProfileReponse, TutorProfi
 from schemas.authentication_schema import DecodedAccessToken
 from schemas.appointment_schema import AppointmentResponse
 
-router = APIRouter('users')
+router = APIRouter(prefix='/users')
 
 @router.put('/profile', response_model=Union[StudentProfileReponse, TutorProfileResponse])
-def update_profile(profile : ProfileUpdate, db: Session = Depends(get_db), current_user : DecodedAccessToken =Depends(require_roles(UserRole.STUDENT, UserRole.TUTOR))): 
+def update_profile(request: Request, profile : ProfileUpdate, db: Session = Depends(get_db), current_user : DecodedAccessToken =Depends(require_roles(UserRole.STUDENT, UserRole.TUTOR))): 
     """
     Updates the profile of the logged in user.
     
@@ -46,7 +46,7 @@ def update_profile(profile : ProfileUpdate, db: Session = Depends(get_db), curre
     return response
 
 @router.get('/{user_id}/appointments', response_model=List[AppointmentResponse])
-def get_appointments(user_id: int, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_appointments(request: Request, user_id: int, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     """Get a list of appointments for a user. Admins can view all appointments, while students and tutors can only view their own appointments."""
     if current_user.role != UserRole.ADMIN.value and current_user.sub != user_id:
         raise HTTPException(status_code=403, detail="User not authorized to view appointments")
@@ -64,7 +64,7 @@ def get_appointments(user_id: int, current_user: DecodedAccessToken = Depends(ge
     return appointments
 
 @router.post('/rate', response_model=dict)
-def submit_rating(user_id: int, rating: float, review: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def submit_rating(request: Request, user_id: int, rating: float, review: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     # Ensure the user exists
     user = db.query(User).filter(User.id == user_id, User.role == UserRole.TUTOR).first()
 

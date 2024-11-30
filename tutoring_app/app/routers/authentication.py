@@ -41,7 +41,7 @@ for var in required_env_vars:
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Initialize app
-router = APIRouter()
+router = APIRouter(prefix='/auth')
 
 # Add rate limiting
 limiter = Limiter(key_func=get_remote_address)
@@ -189,7 +189,7 @@ async def refresh_token(request: Request, db = Depends(get_db)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-@router.get("/auth/login", response_model=Union[LoggedInResponse, RedirectResponse])
+@router.get("/auth/login", response_model=Union[LoggedInResponse, None])
 @limiter.limit("10/minute")
 async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
     """Login endpoint"""

@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
+from typing import List, Union
 from database.database import get_db, UserReport, MessageReport, User, Message
 from auth_tools import get_current_user
 from schemas.authentication_schema import DecodedAccessToken
 from schemas.report_schema import ReportMessage, ReportUser
 
-router = APIRouter('report')
+router = APIRouter(prefix='/report')
 
 @router.post('/message/{messageID}')
-def report_message(report: ReportMessage, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def report_message(request: Request, report: ReportMessage, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     # Report a specific message in a chat
     message = db.query(Message).filter(Message.id == report.message_id).first()
 
@@ -30,7 +31,7 @@ def report_message(report: ReportMessage, current_user:DecodedAccessToken = Depe
     return {**report.model_dump(), "id": message_report.id, "message": f"Message {report.message_id} reported"}
 
 @router.post('/user/{userID}')
-def report_user(report: ReportUser, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def report_user(request: Request, report: ReportUser, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == report.user_id).first()
 
     if not user:

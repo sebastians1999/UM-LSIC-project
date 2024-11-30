@@ -1,0 +1,2 @@
+- Test all endpoints
+- Likely have to fix any "response validation errors" caused by endpoint responses not matching the format specified by the pydantic schema

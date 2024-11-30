@@ -12,3 +12,21 @@ class SignUpResponse(BaseModel):
     message: str
     status: str
     redirect_to: str
+
+class DecodedAccessToken(BaseModel):
+    """
+    Decoded access token data
+        Args:
+        - sub (int): User ID
+        - name (str): User name
+        - email (str): User email
+        - role (str): User role
+        - logged_in (bool): User logged in status
+        - exp (int): Token expiration time
+    """
+    sub: int
+    name: str
+    email: str
+    role: str
+    logged_in: bool
+    exp: int

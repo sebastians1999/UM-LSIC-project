@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routers.admin import router as admin_router
 from routers.student import router as student_router
 from routers.tutor import router as tutor_router
-from routers.shared import router as shared_router
+from tutoring_app.app.routers.user import router as shared_router
 from routers.authentication import router as auth_router
 from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
 

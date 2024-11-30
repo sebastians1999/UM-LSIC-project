@@ -72,6 +72,10 @@ class ProfileCreate(ProfileBase):
     """Profile creation data"""
     pass # Same as ProfileBase, no additional fields
 
+class ProfileUpdate(ProfileBase):
+    """Profile update data"""
+    pass # Same as ProfileBase, no additional fields
+
 class TutorProfileCreate(ProfileBase):
     """Tutor profile data"""
     expertise: list[int] # List of subject IDs
@@ -86,7 +90,7 @@ class TutorProfileCreate(ProfileBase):
     class Config:
         orm_mode = True
 
-class TutorProfileReponse(ProfileResponse):
+class TutorProfileResponse(ProfileResponse):
     """Tutor profile response"""
     expertise: list[SubjectResponse]
     hourly_rate: float

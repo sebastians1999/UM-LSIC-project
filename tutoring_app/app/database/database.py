@@ -70,6 +70,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
     is_banned_until = Column(DateTime, nullable=True)  # Nullable field for ban duration
+    reports = relationship("UserReport", back_populates="user")
 
     # Relationships
     student_profile = relationship("StudentProfile", back_populates="user", uselist=False)
@@ -196,6 +197,7 @@ class Message(Base):
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.now, nullable=False)
     is_deleted = Column(Boolean, default=False, nullable=False)
+    reports = relationship("MessageReport", back_populates="message")
 
     # Relationships
     chat = relationship("Chat", back_populates="messages")
@@ -218,7 +220,9 @@ class Appointment(Base):
     tutor_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     topic = Column(Text, nullable=False)
     date = Column(DateTime, nullable=False)
-    status = Column(String, default="scheduled", nullable=False)  # 'scheduled', 'completed', 'cancelled'
+    duration = Column(Integer, default=60, nullable=False) # Duration in minutes
+    status = Column(String, default="pending", nullable=False)  # 'pending', 'scheduled', 'completed', 'cancelled'
+    created_by = Column(Integer, ForeignKey('users.id'), nullable=False) # User who created the appointment
 
     # Relationships
     student = relationship("User", foreign_keys=[student_id], lazy='joined')
@@ -227,6 +231,36 @@ class Appointment(Base):
     def __repr__(self):
         """String representation of the Appointment object."""
         return f"<Appointment(id={self.id}, student_id={self.student_id}, tutor_id={self.tutor_id}, topic={self.topic})>"
+
+class MessageReport(Base):
+    __tablename__ = 'message_reports'
+    id = Column(Integer, primary_key=True)
+    message_id = Column(Integer, ForeignKey('messages.id'), nullable=False)
+    reason = Column(Text, nullable=False)
+    by = Column(Integer, ForeignKey('users.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
+
+    # Relationships
+    message = relationship("Message", backref="reports")
+
+    def __repr__(self):
+        """String representation of the MessageReport object."""
+        return f"<MessageReport(id={self.id}, message_id={self.message_id}, reason={self.reason})>"
+
+class UserReport(Base):
+    __tablename__ = 'user_reports'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    reason = Column(Text, nullable=False)
+    by = Column(Integer, ForeignKey('users.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
+
+    # Relationships
+    user = relationship("User", backref="reports")
+
+    def __repr__(self):
+        """String representation of the UserReport object."""
+        return f"<UserReport(id={self.id}, user_id={self.user_id}, reason={self.reason})>"
 
 # Add indexes for frequently queried columns
 Index('idx_user_email_role', User.email, User.role)

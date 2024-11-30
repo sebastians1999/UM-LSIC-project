@@ -24,15 +24,15 @@ class AppointmentCreate(AppointmentBase):
     student_id: int
     tutor_id: int
 
-class AppointmentReponse(AppointmentBase):
+class AppointmentResponse(AppointmentBase):
     """Appointment response data"""
     id: int
     student_id: int
     tutor_id: int
-    student_name: str
-    tutor_name: str
+    created_by: int
     created_at: datetime
     updated_at: datetime
+    status: str
 
     class Config:
         orm_mode = True

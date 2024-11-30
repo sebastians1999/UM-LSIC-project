@@ -13,7 +13,8 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from database.database import *
 from logger import logger  # Add this import
-from schemas.authentication_schema import LoggedInResponse, SignUpResponse
+from schemas.authentication_schema import LoggedInResponse, SignUpResponse, DecodedAccessToken
+from auth_tools import get_current_user
 import httpx
 import os
 import requests
@@ -101,26 +102,6 @@ def role_from_gitlab_group(user_groups : list):
 
     return role
 
-# Authentication dependency using bearer token
-def get_current_user(token: str = Depends(oauth2_scheme)):
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-
-        logger.info(payload)
-
-        if not payload.get("id"):
-            raise HTTPException(status_code=401, detail="Invalid token")
-
-        if payload.get("refresh"):
-            raise HTTPException(status_code=401, detail="Invalid token")
-        
-        if payload.get("logged_in") == "false":
-            raise HTTPException(status_code=401, detail="Invalid token")
-
-        return payload
-    except JWTError:
-        raise HTTPException(status_code=401, detail="Invalid token")
-
 # Optional gitlab token dependency
 def get_gitlab_token(authorization: Optional[str] = Header(None)):
     if authorization:
@@ -128,29 +109,6 @@ def get_gitlab_token(authorization: Optional[str] = Header(None)):
         token = authorization.split("Bearer ")[-1]
         return token
     return None  # Return None if no token is provided
-
-# Role-based authentication dependencies
-def verify_user_role(user: dict, allowed_roles: List[UserRole]):
-    if not user or user['role'] not in [role.value for role in allowed_roles]:
-        raise HTTPException(
-            status_code=403,
-            detail=f"User must have one of these roles: {[role.value for role in allowed_roles]}"
-        )
-    return user
-
-def require_roles(*roles: UserRole):
-    def dependency(current_user: dict = Depends(get_current_user)):
-        return verify_user_role(current_user, roles)
-    return dependency
-
-def student_only(current_user: dict = Depends(get_current_user)):
-    return verify_user_role(current_user, [UserRole.STUDENT])
-
-def tutor_only(current_user: dict = Depends(get_current_user)):
-    return verify_user_role(current_user, [UserRole.TUTOR])
-
-def admin_only(current_user: dict = Depends(get_current_user)):
-    return verify_user_role(current_user, [UserRole.ADMIN])
 
 # Function to fetch GitLab user data using the access token
 def get_gitlab_user_data(access_token: str):
@@ -355,9 +313,9 @@ def signup(request : Request, token: str, db = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid token")
 
 @router.get("/auth/secure")
-def secure_data(user: dict = Depends(get_current_user)):
+def secure_data(user: DecodedAccessToken = Depends(get_current_user)):
     """Secure endpoint that requires a valid token"""
-    return {"message": "You have accessed secure data!", "user": user}
+    return {"message": "You have accessed secure data!", "user": user.model_dump()}
 
 @router.get("/auth/logout")
 async def logout(request: Request):

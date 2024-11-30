@@ -29,7 +29,6 @@ class ChatResponse(BaseModel):
 
 class MessageDeletedReponse(BaseModel):
     """Chat deleted response data"""
-    chat_id: int
     message_id: int
     message: str
 

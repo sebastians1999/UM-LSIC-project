@@ -1,2 +1,5 @@
 - Test all endpoints
-- Likely have to fix any "response validation errors" caused by endpoint responses not matching the format specified by the pydantic schema
+- Make sure all endpoint responses conform to the pydantic schema
+- Redis caching
+- Set up google cloud sql integration for the database
+- Set up google cloud memory store for redis

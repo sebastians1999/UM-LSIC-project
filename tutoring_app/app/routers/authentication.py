@@ -15,12 +15,16 @@ from database.database import *
 from logger import logger  # Add this import
 from schemas.authentication_schema import LoggedInResponse, SignUpResponse, DecodedAccessToken
 from auth_tools import get_current_user
+from database.redis import redis_client
 import httpx
 import os
 import requests
 
 # Load environment variables
 load_dotenv()
+
+# Check if we should use Redis
+USE_REDIS = os.getenv("USE_REDIS", "False").lower() == "true"
 
 # Validate required environment variables
 required_env_vars = [
@@ -141,7 +145,13 @@ def create_refresh_token(user_id : int):
     to_encode = {"sub": user_id, "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh": True}
     # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    refresh_token_store[refresh_token] = {"user_id": user_id, "expires_at": to_encode["exp"]}
+
+    # Store the refresh token
+    if USE_REDIS:
+        redis_client.set_refresh_token(refresh_token, user_id, REFRESH_TOKEN_EXPIRE_DAYS * 24 * 60 * 60) # Expiration in seconds
+    else:
+        refresh_token_store[refresh_token] = user_id
+
     return refresh_token
 
 def create_signup_token(user_id: int, name: str, email: str, role: str, expires_in=5):
@@ -164,17 +174,31 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError: # Invalid or expired token
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.post("/refresh", response_model=LoggedInResponse)
+@router.post("/refresh/{refresh_token}", response_model=LoggedInResponse)
 async def refresh_token(request: Request, db = Depends(get_db)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
         refresh_token = request.cookies.get("refresh_token")
         if not refresh_token:
             raise HTTPException(status_code=401, detail="Refresh token missing")
-            
+
+        # Validate the refresh token by checking the memory store
+        if USE_REDIS:
+            user_id = redis_client.get_refresh_token(refresh_token)
+        else:
+            user_id = refresh_token_store.get(refresh_token, None)
+
+        # If the refresh token is not found, then it is invalid
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Invalid refresh token. The refresh token may have expired.")
+
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
         if not payload.get("refresh"):
             raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+        # Check expiry
+        if datetime.utcfromtimestamp(payload["exp"]) < datetime.utcnow():
+            raise HTTPException(status_code=401, detail="Refresh token expired. Please log in again.")
 
         # Get user data from the database
         user = db.query(User).filter(User.id == payload["sub"]).first()
@@ -318,6 +342,9 @@ def secure_data(user: DecodedAccessToken = Depends(get_current_user)):
     return {"message": "You have accessed secure data!", "user": user.model_dump()}
 
 @router.get("/logout")
-async def logout(request: Request):
-    # Invalidate the access token and refresh token
+async def logout(request: Request, user: DecodedAccessToken = Depends(get_current_user)):
+    # TODO: Implement logout by invalidating the refresh token
+    # Currently the redis store only store the refresh tokens as keys and user ids as values
+    # So we can'y just look up the refresh token from the user id.
+    # Solution: We could add a claim to the access token that contains a unique identifier for the refresh token
     return RedirectResponse(url='/')

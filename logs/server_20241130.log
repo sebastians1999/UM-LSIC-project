@@ -40,3 +40,6 @@
 2024-11-30 22:52:46,859 - server - ERROR - Error processing request: 1 validation errors:
   {'type': 'missing', 'loc': ('response', 'status'), 'msg': 'Field required', 'input': {'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJOYXRlIE1hY2RvbmFsZCIsImVtYWlsIjoibmF0ZW1sLm1hY0BnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJsb2dnZWRfaW4iOnRydWUsImV4cCI6MTczMzAwNTM2Nn0.xZAbUblQqDhyMyd1B20MlUKX00AlN3yDOxB80cIo0dc', 'refresh_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImV4cCI6MTczMzYwODM2NiwicmVmcmVzaCI6dHJ1ZX0.BgCKbuB1Wbcinej5ChV06MEzb2uLQBVC9-JQ8kZeyYY', 'token_type': 'bearer'}}
 
+2024-11-30 22:58:19,660 - server - INFO - Server shutting down...
+2024-11-30 22:58:24,605 - server - INFO - GitLab OAuth initialized successfully
+2024-11-30 22:58:24,781 - server - INFO - Server starting up...

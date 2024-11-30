@@ -213,7 +213,7 @@ async def refresh_token(request: Request, db = Depends(get_db)):
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-@router.get("/login", response_model=Union[LoggedInResponse, None])
+@router.get("/login", response_model=Union[LoggedInResponse, SignUpResponse, None])
 @limiter.limit("10/minute")
 async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
     """Login endpoint"""
@@ -238,7 +238,7 @@ async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db =
 
             logger.info(f"Success. User {user.name} logged in.")
 
-            return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer"}
+            return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer", "status": "logged_in"}
 
         logger.info(f"User {user_info['name']} not found in the database.")
 

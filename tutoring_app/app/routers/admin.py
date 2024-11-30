@@ -47,7 +47,7 @@ def delete_chat_message(request: Request, messageID: int, db: Session = Depends(
     return {"message_id" : messageID, "message": f"Message {messageID} deleted"}
 
 @router.post('/chats/{chatID}/messages', response_model=MessageSentResponse)
-def send_chat_message(request: Request, chatID: int, content: str, db: Session = Depends(get_db)):
+def send_chat_message(request: Request, chatID: int, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):
     # Send a message to a specific chat
     message = Message(
         chat_id=chatID,
@@ -62,14 +62,14 @@ def send_chat_message(request: Request, chatID: int, content: str, db: Session =
 
 @router.get('/reports')
 @limiter.limit("10/minute")  # Add rate limiting
-def get_reports(request: Request, db: Session = Depends(get_db)):
+def get_reports(request: Request, db: Session = Depends(get_db), _=Depends(admin_only)):
     # Retrieve all reports
     reports = db.query(Message).filter(Message.is_deleted == True).all()
     return {"reports": reports}
 
 @router.get('/reports/{reportID}', response_model=MessageResponse)
 @limiter.limit("10/minute")  # Add rate limiting
-def get_report(request: Request, reportID: int, db: Session = Depends(get_db)):
+def get_report(request: Request, reportID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
     # Retrieve detailed information about a specific report
     report = db.query(Message).filter(Message.id == reportID, Message.is_deleted == True).first()
     if not report:
@@ -119,7 +119,7 @@ def delete_user(
 
 @router.post('/users/create')
 @limiter.limit("3/minute")
-def create_user(request: Request, user_data: UserCreate, db: Session = Depends(get_db)):
+def create_user(request: Request, user_data: UserCreate, db: Session = Depends(get_db), _=Depends(admin_only)):
     """Create a new user. Only admins can create users this way, normmally it requires gitlab authentication."""
 
     # Check if user already exists

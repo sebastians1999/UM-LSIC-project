@@ -71,7 +71,14 @@ load_dotenv()
 if not os.getenv("GITLAB_CLIENT_ID") or not os.getenv("GITLAB_CLIENT_SECRET"):
     setup_gitlab_oauth()
 
-app = FastAPI()
+app = FastAPI(
+    title="Tutoring API",
+    description="API for the Tutoring Platform",
+    version="1.0.0",
+    openapi_url="/openapi.json",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
 # Load and validate environment variables
 load_dotenv()

@@ -43,36 +43,6 @@ class LoggingMiddleware(BaseHTTPMiddleware):
             logger.error(f"Error processing request: {str(e)}")
             raise
 
-def setup_gitlab_oauth():
-    """Interactive setup for GitLab OAuth credentials"""
-    print("\nGitLab OAuth Setup Required")
-    print("---------------------------")
-    print("1. Go to https://gitlab.com/-/profile/applications")
-    print("2. Create a new application with these settings:")
-    print("   - Name: Tutoring Platform")
-    print("   - Redirect URI: http://localhost:8000/auth/callback")
-    print("   - Scopes: read_user, openid, profile, email")
-    print("3. Copy the provided Client ID and Client Secret")
-    
-    client_id = input("\nEnter your GitLab Client ID: ").strip()
-    client_secret = input("Enter your GitLab Client Secret: ").strip()
-    
-    # Update .env file
-    env_path = os.path.join(os.path.dirname(__file__), '.env')
-    with open(env_path, 'a') as f:
-        f.write(f"\nGITLAB_CLIENT_ID={client_id}")
-        f.write(f"\nGITLAB_CLIENT_SECRET={client_secret}")
-        f.write("\nGITLAB_REDIRECT_URI=http://localhost:8000/auth/callback")
-        f.write("\nGITLAB_BASE_URL=https://gitlab.com")
-    
-    print("\nCredentials saved to .env file")
-    print("Restart the application to apply changes")
-    sys.exit(0)
-
-# Add this before app initialization
-if not get_settings().gitlab_client_id or not get_settings().gitlab_client_secret:
-    setup_gitlab_oauth()
-
 app = FastAPI(
     title=get_settings().app_name,
     version=get_settings().app_version,

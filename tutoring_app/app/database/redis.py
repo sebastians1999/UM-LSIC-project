@@ -34,22 +34,22 @@ class RedisClient:
         )
 
 
-    def set_refresh_token(self, token: str, user_id: str, expiration: int):
+    def set_refresh_token(self, token: str, token_id: str, expiration: int):
         """
         Store the refresh token in Redis with an expiration time.
         """
-        self.client.setex(token, expiration, user_id)
+        self.client.setex(token_id, expiration, token)
 
-    def get_refresh_token(self, token: str):
+    def get_refresh_token(self, token_id: str):
         """
-        Retrieve the user ID associated with the refresh token.
+        Retrieve the refresh token associated with the refresh token id.
         """
-        return self.client.get(token)
+        return self.client.get(token_id)
 
-    def delete_refresh_token(self, token: str):
+    def delete_refresh_token(self, token_id: str):
         """
         Delete the refresh token from Redis.
         """
-        self.client.delete(token)
+        self.client.delete(token_id)
 
 redis_client = RedisClient()

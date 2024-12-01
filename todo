@@ -1,0 +1,5 @@
+- Test all endpoints
+- Make sure all endpoint responses conform to the pydantic schema
+- Redis caching
+- Set up google cloud sql integration for the database
+- Set up google cloud memory store for redis

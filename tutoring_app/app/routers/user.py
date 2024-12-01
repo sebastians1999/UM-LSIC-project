@@ -9,7 +9,7 @@ from schemas.appointment_schema import AppointmentResponse
 from database.redis import redis_client
 import json
 #hi
-from tutoring_app.app.config import get_settings
+from config import get_settings
 
 router = APIRouter(prefix='/users')
 

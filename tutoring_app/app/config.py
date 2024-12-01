@@ -52,7 +52,11 @@ class Settings(BaseSettings):
 
     # Database settings
     db_url: str = "sqlite:///new_db.db" # Default, for local development
-
+    db_password: Optional[str] = None # Optional, required for cloud databases
+    db_user: Optional[str] = None # Optional, required for cloud databases
+    db_name: Optional[str] = None # Optional, required for cloud databases
+    cloud_sql_connection_name: Optional[str] = None # Optional, required for Google Cloud SQL
+    
     # Redis settings
     use_redis: bool = False # Default to not using Redis, change this to True if you have a Redis server set up
     redis_host: str = "localhost"

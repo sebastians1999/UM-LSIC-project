@@ -16,6 +16,9 @@ EXPOSE 8080
 
 # Non-secret environment variables
 ENV LOCAL="false"
+ENV DB_USER="postgres"
+ENV DB_NAME="tutoring-app-production"
+ENV CLOUD_SQL_CONNECTION_NAME="lsit-tutorapp:europe-west1:tutorapp-db"
 
 # Command to run the app with Uvicorn
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]

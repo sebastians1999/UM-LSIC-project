@@ -256,6 +256,11 @@ Index('idx_message_timestamp', Message.timestamp)
 
 # Database setup
 DATABASE_URL = get_settings().db_url
+
+if not get_settings().local:
+    # Use Cloud SQL on production
+    DATABASE_URL = f"postgresql+psycopg2://{get_settings().db_user}:{get_settings().db_password}@/{get_settings().db_name}?host=/cloudsql/{get_settings().cloud_sql_connection_name}"
+
 engine = create_engine(
     DATABASE_URL, 
     echo=False,

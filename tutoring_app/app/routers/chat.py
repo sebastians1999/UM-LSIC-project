@@ -4,13 +4,16 @@ from typing import List
 from datetime import datetime
 from auth_tools import get_current_user
 from database.database import get_db, User, Message, UserRole
+from config import get_settings
 from utilities import get_user_by_id, get_user_chats, get_chat_with_messages
 from schemas.chat_schema import ChatResponse, MessageResponse
 from schemas.authentication_schema import DecodedAccessToken
 from logger import logger
 from database.redis import redis_client
 import json
-
+#hi
+# Check if we should use Redis
+USE_REDIS = get_settings().use_redis
 router = APIRouter(prefix='/chats')
 
 @router.get('/', response_model=List[ChatResponse])

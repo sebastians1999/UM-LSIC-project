@@ -7,7 +7,11 @@ from schemas.appointment_schema import AppointmentResponse
 from schemas.authentication_schema import DecodedAccessToken
 from database.redis import redis_client
 import json
+#hi
+from config import get_settings
 
+# Check if we should use Redis
+USE_REDIS = get_settings().use_redis
 router = APIRouter(prefix='/appointments')
 
 ### The way I want to set up appointments is as follows:

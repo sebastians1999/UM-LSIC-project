@@ -30,10 +30,10 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
     - token (str): The user's token
     
     Returns:
-    - dict: The user's data
+    - DecodedAccessToken: The user's data
     """
     try:
-        payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload: dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         if not payload.get("sub"):
             raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
@@ -49,7 +49,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
             raise HTTPException(status_code=401, detail="Token has expired.")
         
         return DecodedAccessToken(**payload)
-
     except JWTError as e:
         logger.error(f"Error decoding token: {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
@@ -62,40 +61,38 @@ def get_refresh_token(token: str = Depends(oauth2_scheme)) -> DecodedRefreshToke
     - token (str): The user's token
     
     Returns:
-    - dict: The user's data
+    - DecodedRefreshToken: The refresh token data
     """
     try:
-        payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload: dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
         if not payload.get("sub"):
             raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
         
         if not payload.get("refresh"):
-            raise HTTPException(status_code=401, detail="Invalid token. Not a refresh token.")
-
+            raise HTTPException(status_code=401, detail="Invalid token. Access token provided.")
+        
         # Check if token has expired
         if payload.get("exp") < int(datetime.now().timestamp()):
             raise HTTPException(status_code=401, detail="Token has expired.")
         
         return DecodedRefreshToken(**payload)
-
     except JWTError as e:
         logger.error(f"Error decoding token: {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
-
 
 def verify_user_role(user: DecodedAccessToken, allowed_roles: List[UserRole]) -> DecodedAccessToken:
     """
     Verify that the user has the required role.
     
     Args:
-    - user (dict): The user's data
+    - user (DecodedAccessToken): The user's data
     - allowed_roles (list): List of allowed roles
     
     Returns:
-    - None
+    - DecodedAccessToken: The user's data
     """
-    if not user or user['role'] not in [role.value for role in allowed_roles]:
+    if not user or user.role not in [role.value for role in allowed_roles]:
         raise HTTPException(status_code=403,
                             detail=f"User must have one of these roles: {[role.value for role in allowed_roles]}")
     

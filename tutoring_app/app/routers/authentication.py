@@ -75,18 +75,20 @@ REFRESH_TOKEN_EXPIRE_DAYS = get_settings().refresh_token_expire_days
 # like Redis
 refresh_token_store = {}
 
-def role_from_gitlab_group(user_groups : list):
-    # Determine role of user
+def role_from_gitlab_group(user_groups: list) -> UserRole:
     group_pre = 'lsit-tutoring-platform/'
-    group_names = [group_pre + group_stub for group_stub in ['admins', 'students', 'tutors']]
-    role_names = ['ADMIN', 'STUDENT', 'TUTOR']
-    role = ""
-    for i, group in enumerate(group_names):
+    role_mapping = {
+        group_pre + 'admins': UserRole.ADMIN,
+        group_pre + 'students': UserRole.STUDENT,
+        group_pre + 'tutors': UserRole.TUTOR
+    }
+    
+    for group, role in role_mapping.items():
         if group in user_groups:
-            role = role_names[i]
-            break
-
-    return role
+            return role
+            
+    # Default to STUDENT if no matching role found
+    return UserRole.STUDENT
 
 # Optional gitlab token dependency
 def get_gitlab_token(authorization: Optional[str] = Header(None)):
@@ -147,7 +149,7 @@ def create_signup_token(user_id: int, name: str, email: str, role: str, expires_
         "sub": user_id,
         "name": name,
         "email": email,
-        "role": role,
+        "role": role.value if isinstance(role, UserRole) else role,  # Convert UserRole to string
         "logged_in": False,
         "exp": datetime.utcnow() + timedelta(minutes=expires_in)
     }
@@ -201,6 +203,7 @@ async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db =
         user_info = get_gitlab_user_data(gitlab_token)
 
         role = role_from_gitlab_group(user_info['groups'])
+        print(role)
 
         # Check if the user exists
         user = db.query(User).filter(User.email == user_info['email']).first()
@@ -326,4 +329,3 @@ async def logout(request: Request, user: DecodedAccessToken = Depends(get_curren
         del refresh_token_store[user.refresh_token_id]
     
     return {"message": "Logged out successfully. Refresh token invalidated.", "status": "logged_out"}
-    

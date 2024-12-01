@@ -31,6 +31,7 @@ async def admin_dashboard(
     cache_key = "admin_dashboard_data"
     cached_data = redis_client.get_cache(cache_key)
     if cached_data:
+        print('Returning cached data')
         return json.loads(cached_data)
 
     # Fetch admin dashboard data
@@ -44,7 +45,7 @@ async def admin_dashboard(
         "appointment_count": appointment_count
     }
 
-    redis_client.set_cache(cache_key, json.dumps(data), expiration=600)  # Cache for 10 minutes
+    redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
 
     return data
 

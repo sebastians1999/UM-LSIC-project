@@ -17,9 +17,9 @@ Base = declarative_base()
 
 # Enum for user roles
 class UserRole(enum.Enum):
-    ADMIN = "admin"
-    STUDENT = "student"
-    TUTOR = "tutor"
+    ADMIN = "ADMIN"
+    STUDENT = "STUDENT"
+    TUTOR = "TUTOR"
 
 # Subject Model for normalized subject storage
 class Subject(Base):

@@ -1,4 +1,3 @@
-from dotenv import load_dotenv
 from typing import List, Any
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
@@ -6,19 +5,17 @@ from jose import JWTError, jwt
 from logger import logger
 from database.database import UserRole
 from schemas.authentication_schema import DecodedAccessToken
+from config import get_settings
 import requests
 import os
 
-load_dotenv()
-
 # CONSTANTS
-GITLAB_API_URL = os.getenv("GITLAB_API_URL")
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = 'HS256'
+GITLAB_API_URL = get_settings().gitlab_api_url
+SECRET_KEY = get_settings().secret_key
+ALGORITHM = get_settings().hash_algorithm
 
 # security scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
 
 ##################################
 ### AUTHORIZATION DEPENDENCIES ###
@@ -37,8 +34,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
     try:
         payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
-        logger.info(f"Token payload: {payload}")
-
         if not payload.get("id"):
             raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
         
@@ -50,7 +45,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
         
         return DecodedAccessToken(**payload)
 
-    except JWTError:
+    except JWTError as e:
+        logger.error(f"Error decoding token: {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
 
 def verify_user_role(user: DecodedAccessToken, allowed_roles: List[UserRole]) -> DecodedAccessToken:

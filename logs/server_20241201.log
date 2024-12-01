@@ -1,0 +1,31 @@
+2024-12-01 13:38:16,503 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 13:38:16,710 - server - INFO - Server starting up...
+2024-12-01 13:38:25,111 - server - INFO - Server shutting down...
+2024-12-01 13:38:47,150 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 13:38:47,323 - server - INFO - Server starting up...
+2024-12-01 13:39:37,813 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=255dbb017ab05004b2f2cfd3ade85e44c9cb40c842b4ca6e29e96f32dd609ef5
+2024-12-01 13:39:37,816 - server - INFO - Response: 400 - Duration: 0.003s
+2024-12-01 13:39:42,700 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 13:39:43,092 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 13:39:43,108 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 13:39:43,110 - server - INFO - Response: 200 - Duration: 0.410s
+2024-12-01 13:39:52,942 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 13:39:52,945 - server - INFO - Response: 401 - Duration: 0.003s
+2024-12-01 13:39:57,724 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 13:39:57,725 - server - INFO - Response: 401 - Duration: 0.001s
+2024-12-01 13:40:54,236 - server - INFO - Server shutting down...
+2024-12-01 13:40:58,695 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 13:40:58,874 - server - INFO - Server starting up...
+2024-12-01 13:41:01,699 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 13:41:01,703 - server - ERROR - Error decoding token: Subject must be a string.
+2024-12-01 13:41:01,704 - server - INFO - Response: 401 - Duration: 0.005s
+2024-12-01 13:42:11,758 - server - INFO - Server shutting down...
+2024-12-01 13:42:15,372 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 13:42:15,564 - server - INFO - Server starting up...
+2024-12-01 13:42:17,135 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 13:42:17,136 - server - INFO - <class 'str'>
+2024-12-01 13:42:17,136 - server - INFO - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJOYXRlIE1hY2RvbmFsZCIsImVtYWlsIjoibmF0ZW1sLm1hY0BnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJsb2dnZWRfaW4iOnRydWUsImV4cCI6MTczMzA2MDM4MywicmVmcmVzaF90b2tlbl9pZCI6ImVlYjYyYTBhLWEwNTUtNDUwNS05MDc3LWRiZDhhOGZhNDI3OSJ9.Kbt_bydcTVYVCqGBD4sRH8vVxzlDB5-Daw3MSSC1F-E
+2024-12-01 13:42:17,137 - server - INFO - <class 'str'>
+2024-12-01 13:42:17,137 - server - INFO - <class 'str'>
+2024-12-01 13:42:17,141 - server - ERROR - Error decoding token: Subject must be a string.
+2024-12-01 13:42:17,142 - server - INFO - Response: 401 - Duration: 0.006s

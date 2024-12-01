@@ -1,21 +1,18 @@
+from config import get_settings
 import redis
 import os
 
 class RedisClient:
 
     def __init__(self):
-        # Get the hostname or IP address of the Redis instance. If the environment
-        # variable REDIS_HOST is not set, default to localhost.
-        
-        self.redis_host = os.getenv("REDIS_HOST", "localhost")
+        # Get the hostname or IP address of the Redis instance.
+        self.redis_host = get_settings().redis_host
 
-        # Get the port number of the Redis instance. If the environment variable
-        # REDIS_PORT is not set, default to 6379.
-        self.redis_port = int(os.getenv("REDIS_PORT", 6379))
+        # Get the port number of the Redis instance. 
+        self.redis_port = get_settings().redis_port
 
-        # Get the password for the Redis instance. If the environment variable
-        # REDIS_PASSWORD is not set, default to None.
-        self.redis_password = os.getenv("REDIS_PASSWORD", None)
+        # Get the password for the Redis instance.
+        self.redis_password = get_settings().redis_password
 
         # Create a Redis client object. The parameters are:
         # - host: the hostname or IP address of the Redis instance, as determined

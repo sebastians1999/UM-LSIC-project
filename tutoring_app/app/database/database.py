@@ -13,22 +13,7 @@ Uses SQLAlchemy ORM with PostgreSQL/SQLite backend.
 
 # Base class for ORM models
 Base = declarative_base()
-pwd_context = CryptContext(
-    schemes=["argon2"],  # Upgrade to Argon2 from bcrypt
-    deprecated="auto",
-    argon2__memory_cost=65536,
-    argon2__time_cost=3,
-    argon2__parallelism=4
-)
 
-def verify_password_strength(password: str) -> bool:
-    if (len(password) < 12 or
-        not re.search(r"[A-Z]", password) or
-        not re.search(r"[a-z]", password) or
-        not re.search(r"[0-9]", password) or
-        not re.search(r"[^A-Za-z0-9]", password)):
-        return False
-    return True
 
 # Enum for user roles
 class UserRole(enum.Enum):

@@ -186,3 +186,7 @@
 2024-12-01 00:01:52,750 - server - INFO - Response: 400 - Duration: 0.003s
 2024-12-01 00:04:20,332 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=375cb6fcaa56838d7d1446b966845552128557c051828a2593700ff81256c2df
 2024-12-01 00:04:20,337 - server - INFO - Response: 400 - Duration: 0.005s
+2024-12-01 00:18:37,181 - server - INFO - Request: GET http://localhost:8000/docs
+2024-12-01 00:18:37,183 - server - INFO - Response: 200 - Duration: 0.002s
+2024-12-01 00:18:37,597 - server - INFO - Request: GET http://localhost:8000/openapi.json
+2024-12-01 00:18:37,667 - server - INFO - Response: 200 - Duration: 0.070s

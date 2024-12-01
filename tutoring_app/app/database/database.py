@@ -255,7 +255,7 @@ Index('idx_appointment_date', Appointment.date)
 Index('idx_message_timestamp', Message.timestamp)
 
 # Database setup
-DATABASE_URL = get_settings().database_url
+DATABASE_URL = get_settings().db_url
 engine = create_engine(
     DATABASE_URL, 
     echo=False,

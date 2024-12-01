@@ -34,8 +34,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
     try:
         payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
-        logger.info(f"Token payload: {payload}")
-
         if not payload.get("id"):
             raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
         
@@ -47,7 +45,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
         
         return DecodedAccessToken(**payload)
 
-    except JWTError:
+    except JWTError as e:
+        logger.error(f"Error decoding token: {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
 
 def verify_user_role(user: DecodedAccessToken, allowed_roles: List[UserRole]) -> DecodedAccessToken:

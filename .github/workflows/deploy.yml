@@ -4,7 +4,7 @@ name: Deploy to Google Cloud Run
 on:
   push:
     branches:
-      - docker  # Adjust the branch as needed
+      - production  # Adjust the branch as needed
 
 jobs:
   deploy:
@@ -44,4 +44,4 @@ jobs:
           --region europe-west1 \
           --platform managed \
           --allow-unauthenticated \
-          --set-env-vars GITLAB_CLIENT_ID=830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262,GITLAB_CLIENT_SECRET=gloas-e907281d69a987b5bb00024c7da626f8495d13282def115a7caea73f3433a675,GITLAB_REDIRECT_URI=http://localhost:8000/auth/callback,GITLAB_BASE_URL=https://gitlab.com,GITLAB_API_URL=https://gitlab.com//oauth/userinfo,SECRET_KEY=DbFLXVLJVpoGJf0Fifai_2g-UlbWB4xfU1Ve8GIBHSg,TOKEN_EXPIRE_MINUTES=30,REFRESH_TOKEN_EXPIRE_DAYS=7,SESSION_EXPIRE_MINUTES=60,HTTPS_ENABLED=True
+          --set-env-vars GITLAB_CLIENT_ID=830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262

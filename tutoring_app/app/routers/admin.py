@@ -45,7 +45,7 @@ async def admin_dashboard(
         "appointment_count": appointment_count
     }
 
-    redis_client.set_cache(cache_key, json.dumps(data), expiration=600)  # Cache for 10 minutes
+    redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
 
     return data
 

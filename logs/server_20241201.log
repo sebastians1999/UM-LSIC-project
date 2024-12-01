@@ -29,3 +29,106 @@
 2024-12-01 13:42:17,137 - server - INFO - <class 'str'>
 2024-12-01 13:42:17,141 - server - ERROR - Error decoding token: Subject must be a string.
 2024-12-01 13:42:17,142 - server - INFO - Response: 401 - Duration: 0.006s
+2024-12-01 13:56:07,703 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 13:56:07,887 - server - INFO - Server starting up...
+2024-12-01 13:56:09,459 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 13:56:09,865 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 13:56:09,870 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 13:56:09,871 - server - INFO - Response: 200 - Duration: 0.411s
+2024-12-01 13:56:18,014 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 13:56:18,015 - server - ERROR - Error decoding token: Invalid payload padding
+2024-12-01 13:56:18,016 - server - INFO - Response: 401 - Duration: 0.002s
+2024-12-01 14:02:20,409 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 14:02:20,410 - server - INFO - Response: 401 - Duration: 0.002s
+2024-12-01 14:02:47,379 - server - INFO - Server shutting down...
+2024-12-01 14:02:52,138 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:02:52,316 - server - INFO - Server starting up...
+2024-12-01 14:02:54,355 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 14:02:54,360 - server - INFO - Response: 200 - Duration: 0.005s
+2024-12-01 14:03:05,367 - server - INFO - Request: GET http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:03:05,368 - server - INFO - Response: 404 - Duration: 0.001s
+2024-12-01 14:04:14,808 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImV4cCI6MTczMzY2MjU2OSwicmVmcmVzaCI6dHJ1ZSwidG9rZW5faWQiOiIwNjU3NWIwNy0xMDIxLTQwMWEtODVmMy1hNzgzMzNiYTczNjAifQ.GsdsMjy93ZC1rLq2S6vhRYFbRN7VICsfRV578Ceih80
+2024-12-01 14:04:14,811 - server - INFO - Response: 401 - Duration: 0.003s
+2024-12-01 14:06:40,913 - server - INFO - Server shutting down...
+2024-12-01 14:06:44,636 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:06:44,807 - server - INFO - Server starting up...
+2024-12-01 14:07:10,068 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:07:10,073 - server - ERROR - Error decoding token: Subject must be a string.
+2024-12-01 14:07:10,074 - server - INFO - Response: 401 - Duration: 0.006s
+2024-12-01 14:11:00,972 - server - INFO - Server shutting down...
+2024-12-01 14:11:12,428 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:11:12,604 - server - INFO - Server starting up...
+2024-12-01 14:11:15,650 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:11:15,655 - server - ERROR - Error decoding token: Subject must be a string.
+2024-12-01 14:11:15,656 - server - INFO - Response: 401 - Duration: 0.006s
+2024-12-01 14:11:29,068 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:11:29,462 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:11:29,463 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:11:29,464 - server - INFO - Response: 200 - Duration: 0.397s
+2024-12-01 14:11:45,522 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:11:45,524 - server - INFO - Response: 401 - Duration: 0.001s
+2024-12-01 14:12:31,320 - server - INFO - Server shutting down...
+2024-12-01 14:12:35,057 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:12:35,229 - server - INFO - Server starting up...
+2024-12-01 14:12:42,883 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:12:42,888 - server - ERROR - Error processing request: 'DecodedRefreshToken' object has no attribute 'rsplit'
+2024-12-01 14:14:21,384 - server - INFO - Server shutting down...
+2024-12-01 14:14:29,157 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:14:29,325 - server - INFO - Server starting up...
+2024-12-01 14:14:32,102 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:14:32,107 - server - ERROR - Error processing request: 'DecodedRefreshToken' object is not subscriptable
+2024-12-01 14:16:00,101 - server - INFO - Server shutting down...
+2024-12-01 14:16:02,408 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:16:02,577 - server - INFO - Server starting up...
+2024-12-01 14:16:04,276 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:16:04,282 - server - INFO - Response: 401 - Duration: 0.007s
+2024-12-01 14:16:45,375 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:16:45,752 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:16:45,753 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:16:45,753 - server - INFO - Response: 200 - Duration: 0.377s
+2024-12-01 14:16:55,975 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:16:55,977 - server - ERROR - Error processing request: 'DecodedRefreshToken' object is not subscriptable
+2024-12-01 14:17:22,433 - server - INFO - Server shutting down...
+2024-12-01 14:17:25,481 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:17:25,659 - server - INFO - Server starting up...
+2024-12-01 14:17:29,318 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:17:29,675 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:17:29,679 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:17:29,680 - server - INFO - Response: 200 - Duration: 0.362s
+2024-12-01 14:17:36,375 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:17:36,378 - server - ERROR - Error processing request: create_access_token() missing 1 required positional argument: 'refresh_token_id'
+2024-12-01 14:18:00,339 - server - INFO - Server shutting down...
+2024-12-01 14:18:04,109 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:18:04,280 - server - INFO - Server starting up...
+2024-12-01 14:18:06,807 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:18:07,391 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:18:07,394 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:18:07,395 - server - INFO - Response: 200 - Duration: 0.588s
+2024-12-01 14:18:17,544 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:18:17,548 - server - ERROR - Error processing request: 2 validation errors:
+  {'type': 'string_type', 'loc': ('response', 'refresh_token'), 'msg': 'Input should be a valid string', 'input': <function refresh_token at 0x00000205B4264280>}
+  {'type': 'missing', 'loc': ('response', 'status'), 'msg': 'Field required', 'input': {'access_token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwibmFtZSI6Ik5hdGUgTWFjZG9uYWxkIiwiZW1haWwiOiJuYXRlbWwubWFjQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6dHJ1ZSwiZXhwIjoxNzMzMDYyNjk3LCJyZWZyZXNoX3Rva2VuX2lkIjoiYTA2OWFjODMtNzBlOC00MDc2LWFmZTMtZjBmN2Y1Zjg1ODY4In0.OaIoySHBD0xSzvgppJsW63FUgcbKPiblg2ko9GmAQGQ', 'refresh_token': <function refresh_token at 0x00000205B4264280>, 'token_type': 'bearer'}}
+
+2024-12-01 14:18:51,821 - server - INFO - Server shutting down...
+2024-12-01 14:18:55,395 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:18:55,568 - server - INFO - Server starting up...
+2024-12-01 14:18:58,720 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:18:59,096 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:18:59,100 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:18:59,101 - server - INFO - Response: 200 - Duration: 0.381s
+2024-12-01 14:19:06,314 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:19:06,318 - server - ERROR - Error processing request: 1 validation errors:
+  {'type': 'string_type', 'loc': ('response', 'refresh_token'), 'msg': 'Input should be a valid string', 'input': <function refresh_token at 0x000001FEB3E64280>}
+
+2024-12-01 14:20:19,847 - server - INFO - Server shutting down...
+2024-12-01 14:20:23,895 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:20:24,063 - server - INFO - Server starting up...
+2024-12-01 14:20:26,716 - server - INFO - Request: GET http://127.0.0.1:8000/auth/login
+2024-12-01 14:20:27,076 - server - INFO - Logging in user Nate Macdonald.
+2024-12-01 14:20:27,080 - server - INFO - Success. User Nate Macdonald logged in.
+2024-12-01 14:20:27,081 - server - INFO - Response: 200 - Duration: 0.365s
+2024-12-01 14:20:37,125 - server - INFO - Request: POST http://127.0.0.1:8000/auth/refresh
+2024-12-01 14:20:37,129 - server - ERROR - Error processing request: encode() missing 1 required positional argument: 'key'
+2024-12-01 14:21:26,157 - server - INFO - Server shutting down...
+2024-12-01 14:21:31,425 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 14:21:31,608 - server - INFO - Server starting up...

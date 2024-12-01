@@ -12,8 +12,8 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from database.database import *
 from logger import logger  # Add this import
-from schemas.authentication_schema import LoggedInResponse, SignUpResponse, DecodedAccessToken, LoggedOutResponse
-from auth_tools import get_current_user
+from schemas.authentication_schema import LoggedInResponse, SignUpResponse, DecodedAccessToken, LoggedOutResponse, DecodedRefreshToken
+from auth_tools import get_current_user, get_refresh_token
 from database.redis import redis_client
 from config import get_settings
 import uuid
@@ -112,7 +112,7 @@ def get_gitlab_user_data(access_token: str):
 def create_access_token(user_id: int, name: str, email: str, role: str, refresh_token_id: str, expires_in=TOKEN_EXPIRE_MINUTES):
     """Create a new access token with configurable expiration"""
     to_encode = {
-        "sub": user_id, # Changed id to sub to adhere to JWT standard
+        "sub": str(user_id), # Changed id to sub to adhere to JWT standard
         "name": name,
         "email": email,
         "role": role,
@@ -128,7 +128,7 @@ def create_refresh_token(user_id : int) -> Tuple[str, str]:
     # Generate uuid for refresh token
     token_id = str(uuid.uuid4())
 
-    to_encode = {"sub": user_id, "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh": True, "token_id": token_id}
+    to_encode = {"sub": str(user_id), "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh": True, "token_id": token_id}
 
     # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
@@ -161,42 +161,34 @@ def verify_token(token: str = Depends(oauth2_scheme)):
     except JWTError: # Invalid or expired token
         raise HTTPException(status_code=401, detail="Invalid token")
 
-@router.post("/refresh/{refresh_token}", response_model=LoggedInResponse)
-async def refresh_token(request: Request, db = Depends(get_db)):
+@router.post("/refresh", response_model=LoggedInResponse)
+async def refresh_token(request: Request, db = Depends(get_db), payload : DecodedRefreshToken = Depends(get_refresh_token)):
     """Endpoint to refresh an expired access token using refresh token"""
     try:
-        refresh_token = request.cookies.get("refresh_token")
-        if not refresh_token:
+        if not payload:
             raise HTTPException(status_code=401, detail="Refresh token missing")
-
-        payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
-        if not payload.get("refresh"):
-            raise HTTPException(status_code=401, detail="Invalid refresh token")
 
         # Validate the refresh token by checking the memory store
         if USE_REDIS:
-            user_id = redis_client.get_refresh_token(payload["token_id"])
+            user_id = redis_client.get_refresh_token(payload.token_id)
         else:
-            user_id = refresh_token_store.get(payload["token_id"], None)
+            user_id = refresh_token_store.get(payload.token_id, None)
 
         # If the refresh token is not found, then it is invalid
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid refresh token. The refresh token may have expired.")
 
-        # Check expiry
-        if datetime.utcfromtimestamp(payload["exp"]) < datetime.utcnow():
-            raise HTTPException(status_code=401, detail="Refresh token expired. Please log in again.")
-
         # Get user data from the database
-        user = db.query(User).filter(User.id == payload["sub"]).first()
+        user = db.query(User).filter(User.id == payload.sub).first()
             
         # Create new access token
-        access_token = create_access_token(user_id=payload["sub"],
+        access_token = create_access_token(user_id=payload.sub,
                                            name=user.name,
                                            email=user.email,
-                                           role=user.role.name)
+                                           role=user.role.name,
+                                           refresh_token_id=payload.token_id)
 
-        return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+        return {"access_token": access_token, "refresh_token": jwt.encode(payload.model_dump(), key=SECRET_KEY, algorithm=ALGORITHM), "token_type": "bearer", "status": "logged_in"}
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 

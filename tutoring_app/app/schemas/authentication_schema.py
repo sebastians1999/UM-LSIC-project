@@ -22,17 +22,31 @@ class DecodedAccessToken(BaseModel):
     """
     Decoded access token data
         Args:
-        - sub (int): User ID
+        - sub (str): User ID
         - name (str): User name
         - email (str): User email
         - role (str): User role
         - logged_in (bool): User logged in status
         - exp (int): Token expiration time
     """
-    sub: int
+    sub: str
     name: str
     email: str
     role: str
     logged_in: bool
     exp: int
     refresh_token_id: str
+
+class DecodedRefreshToken(BaseModel):
+    """
+    Decoded refresh token data
+        Args:
+        - sub (str): User ID
+        - exp (int): Token expiration time
+        - token_id (str): Token ID
+        - refresh (bool): Refresh token status
+    """
+    sub: str
+    exp: int
+    token_id: str
+    refresh: bool

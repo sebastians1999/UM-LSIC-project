@@ -4,8 +4,9 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from logger import logger
 from database.database import UserRole
-from schemas.authentication_schema import DecodedAccessToken
+from schemas.authentication_schema import DecodedAccessToken, DecodedRefreshToken
 from config import get_settings
+from datetime import datetime
 import requests
 import os
 
@@ -34,7 +35,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
     try:
         payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
-        if not payload.get("id"):
+        if not payload.get("sub"):
             raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
         
         if payload.get("refresh"):
@@ -42,12 +43,46 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> DecodedAccessToken:
         
         if payload.get("logged_in") is False:
             raise HTTPException(status_code=401, detail="User is not logged in.")
+
+        # Check if token has expired
+        if payload.get("exp") < int(datetime.now().timestamp()):
+            raise HTTPException(status_code=401, detail="Token has expired.")
         
         return DecodedAccessToken(**payload)
 
     except JWTError as e:
         logger.error(f"Error decoding token: {str(e)}")
         raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
+
+def get_refresh_token(token: str = Depends(oauth2_scheme)) -> DecodedRefreshToken:
+    """
+    Get the refresh token from the token.
+    
+    Args:
+    - token (str): The user's token
+    
+    Returns:
+    - dict: The user's data
+    """
+    try:
+        payload : dict[str, Any] = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        if not payload.get("sub"):
+            raise HTTPException(status_code=401, detail="Invalid token. Missing user ID.")
+        
+        if not payload.get("refresh"):
+            raise HTTPException(status_code=401, detail="Invalid token. Not a refresh token.")
+
+        # Check if token has expired
+        if payload.get("exp") < int(datetime.now().timestamp()):
+            raise HTTPException(status_code=401, detail="Token has expired.")
+        
+        return DecodedRefreshToken(**payload)
+
+    except JWTError as e:
+        logger.error(f"Error decoding token: {str(e)}")
+        raise HTTPException(status_code=401, detail="Invalid token. Could not decode token.")
+
 
 def verify_user_role(user: DecodedAccessToken, allowed_roles: List[UserRole]) -> DecodedAccessToken:
     """

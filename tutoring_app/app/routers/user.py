@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Union
 from database.database import get_db, User, UserRole, Appointment
 from auth_tools import get_current_user, require_roles
-from schemas.user_schema import ProfileUpdate, StudentProfileReponse, TutorProfileResponse
+from schemas.user_schema import ProfileUpdate, StudentProfileReponse, TutorProfileResponse, UserResponse
 from schemas.authentication_schema import DecodedAccessToken
 from schemas.appointment_schema import AppointmentResponse
 from database.redis import redis_client

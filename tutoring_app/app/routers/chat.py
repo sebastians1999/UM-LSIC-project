@@ -10,7 +10,9 @@ from schemas.authentication_schema import DecodedAccessToken
 from logger import logger
 from database.redis import redis_client
 import json
-
+#hi
+# Check if we should use Redis
+USE_REDIS = get_settings().use_redis
 router = APIRouter(prefix='/chats')
 
 @router.get('/', response_model=List[ChatResponse])

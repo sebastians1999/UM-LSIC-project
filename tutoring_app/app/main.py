@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from functools import lru_cache
 from datetime import datetime
 import os, sys
 from dotenv import load_dotenv
@@ -7,6 +8,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from mock_data import mock_users, mock_chats, mock_messages, mock_appointments, mock_reports, mock_tutors
+from config import get_settings
 
 ### ROUTERS
 from routers.admin import router as admin_router
@@ -16,6 +18,7 @@ from routers.chat import router as chat_router
 from routers.report import router as report_router
 from routers.support import router as support_router
 from routers.user  import router as user_router
+
 
 class LoggingMiddleware(BaseHTTPMiddleware):
     """
@@ -67,33 +70,16 @@ def setup_gitlab_oauth():
     sys.exit(0)
 
 # Add this before app initialization
-load_dotenv()
-if not os.getenv("GITLAB_CLIENT_ID") or not os.getenv("GITLAB_CLIENT_SECRET"):
+if not get_settings().gitlab_client_id or not get_settings().gitlab_client_secret:
     setup_gitlab_oauth()
 
 app = FastAPI(
-    title="Tutoring API",
-    description="API for the Tutoring Platform",
-    version="1.0.0",
+    title=get_settings().app_name,
+    version=get_settings().app_version,
     openapi_url="/openapi.json",
     docs_url="/docs",
     redoc_url="/redoc"
 )
-
-# Load and validate environment variables
-load_dotenv()
-
-required_env_vars = [
-    'SECRET_KEY',
-    #'FRONTEND_URL',
-    'SESSION_EXPIRE_MINUTES',
-    'HTTPS_ENABLED'
-]
-
-# Validate required environment variables
-for var in required_env_vars:
-    if not os.getenv(var):
-        raise ValueError(f"Missing required environment variable: {var}")
 
 # Add logging middleware
 app.add_middleware(LoggingMiddleware)
@@ -101,10 +87,10 @@ app.add_middleware(LoggingMiddleware)
 # More secure session configuration with environment variables
 app.add_middleware(
     SessionMiddleware,
-    secret_key=os.getenv("SECRET_KEY"),
-    max_age=int(os.getenv("SESSION_EXPIRE_MINUTES", 60)) * 60,  # Convert minutes to seconds
+    secret_key=get_settings().secret_key,
+    max_age=get_settings().session_expire_minutes * 60,  # Convert minutes to seconds
     same_site="lax",
-    https_only=os.getenv("HTTPS_ENABLED", "True").lower() == "true"
+    https_only=get_settings().https_enabled
 )
 
 # Add CORS middleware with environment configuration

@@ -1,11 +1,12 @@
 import logging
 import sys
 import json
+from config import get_settings
 from datetime import datetime
 from pathlib import Path
 
 # Create logs directory if it doesn't exist
-Path("logs").mkdir(exist_ok=True)
+Path(get_settings().logs_dir).mkdir(exist_ok=True)
 
 # Configure logging
 def setup_logger(name: str = "server"):
@@ -27,7 +28,7 @@ def setup_logger(name: str = "server"):
 
     # Create file handler
     file_handler = logging.FileHandler(
-        f"logs/server_{datetime.now().strftime('%Y%m%d')}.log"
+        f"{get_settings().logs_dir}/server_{datetime.now().strftime('%Y%m%d')}.log"
     )
     file_handler.setFormatter(file_formatter)
     file_handler.setLevel(logging.INFO)

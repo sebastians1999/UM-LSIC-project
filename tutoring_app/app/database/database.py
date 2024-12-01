@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey, Enum, Index, CheckConstraint, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 from datetime import datetime
-import enum
 from passlib.context import CryptContext
+from config import get_settings
+import enum
 import re
 
 """
@@ -13,7 +14,6 @@ Uses SQLAlchemy ORM with PostgreSQL/SQLite backend.
 
 # Base class for ORM models
 Base = declarative_base()
-
 
 # Enum for user roles
 class UserRole(enum.Enum):
@@ -255,7 +255,7 @@ Index('idx_appointment_date', Appointment.date)
 Index('idx_message_timestamp', Message.timestamp)
 
 # Database setup
-DATABASE_URL = "sqlite:///new_db.db"
+DATABASE_URL = get_settings().database_url
 engine = create_engine(
     DATABASE_URL, 
     echo=False,

@@ -5,7 +5,6 @@ from typing import List
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
-from dotenv import load_dotenv
 from typing import Union, Optional, Tuple
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -16,31 +15,13 @@ from logger import logger  # Add this import
 from schemas.authentication_schema import LoggedInResponse, SignUpResponse, DecodedAccessToken, LoggedOutResponse
 from auth_tools import get_current_user
 from database.redis import redis_client
-import httpx
+from config import get_settings
 import uuid
 import os
 import requests
 
-# Load environment variables
-load_dotenv()
-
 # Check if we should use Redis
-USE_REDIS = os.getenv("USE_REDIS", "False").lower() == "true"
-
-# Validate required environment variables
-required_env_vars = [
-    'SECRET_KEY',
-    'TOKEN_EXPIRE_MINUTES',
-    'REFRESH_TOKEN_EXPIRE_DAYS',
-    'GITLAB_CLIENT_ID',
-    'GITLAB_CLIENT_SECRET',
-    'GITLAB_REDIRECT_URI',
-    'GITLAB_BASE_URL',
-]
-
-for var in required_env_vars:
-    if not os.getenv(var):
-        raise ValueError(f"Missing required environment variable: {var}")
+USE_REDIS = get_settings().use_redis
 
 # Add OAuth2 scheme configuration
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -52,11 +33,11 @@ router = APIRouter(prefix='/auth')
 limiter = Limiter(key_func=get_remote_address)
 
 # Add OAuth configuration constants
-GITLAB_CLIENT_ID = os.getenv("GITLAB_CLIENT_ID")
-GITLAB_CLIENT_SECRET = os.getenv("GITLAB_CLIENT_SECRET")
-GITLAB_REDIRECT_URI = os.getenv("GITLAB_REDIRECT_URI")
-GITLAB_BASE_URL = os.getenv("GITLAB_BASE_URL", "https://gitlab.com")
-GITLAB_API_URL = os.getenv("GITLAB_API_URL", f"{GITLAB_BASE_URL}/oauth/userinfo")
+GITLAB_CLIENT_ID = get_settings().gitlab_client_id
+GITLAB_CLIENT_SECRET = get_settings().gitlab_client_secret
+GITLAB_REDIRECT_URI = get_settings().gitlab_redirect_uri
+GITLAB_BASE_URL = get_settings().gitlab_base_url
+GITLAB_API_URL = get_settings().gitlab_api_url
 
 # Initialize OAuth only if credentials are available
 oauth = None
@@ -84,10 +65,10 @@ except Exception as e:
     raise e
 
 # Add these constants
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = "HS256"
-TOKEN_EXPIRE_MINUTES = int(os.getenv("TOKEN_EXPIRE_MINUTES", "60"))  # Default 60 minutes
-REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", "7"))  # Default 7 days
+SECRET_KEY = get_settings().secret_key
+ALGORITHM = get_settings().hash_algorithm
+TOKEN_EXPIRE_MINUTES = get_settings().access_token_expire_minutes 
+REFRESH_TOKEN_EXPIRE_DAYS = get_settings().refresh_token_expire_days
 
 # Token store
 # This is a simple in-memory store for demonstration purposes, we should replace this with a database
@@ -254,10 +235,7 @@ async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db =
         return {"message": "New user, sign up required", "status": "signup_required", "redirect_to": "/auth/signup?token=" + token}
 
     try:
-        redirect_uri = os.getenv("GITLAB_REDIRECT_URI")
-        if not redirect_uri:
-            raise ValueError("GITLAB_REDIRECT_URI environment variable not set")
-            
+        redirect_uri = GITLAB_REDIRECT_URI
         response = await gitlab.authorize_redirect(request, redirect_uri)
         return response
     except Exception as e:

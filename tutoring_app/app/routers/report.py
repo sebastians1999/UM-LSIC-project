@@ -9,21 +9,16 @@ from schemas.report_schema import ReportMessage, ReportUser
 router = APIRouter(prefix='/report')
 
 @router.post('/message/{messageID}')
-def report_message(request: Request, report: ReportMessage, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-    # Report a specific message in a chat
+def report_message(request: Request, report: ReportMessage, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     message = db.query(Message).filter(Message.id == report.message_id).first()
-
     if not message:
         raise HTTPException(status_code=404, detail="Message not found")
 
-    # Create a report for the message
     message_report = MessageReport(
         message_id=report.message_id,
         reason=report.reason,
-        by=current_user.sub 
+        by=current_user.sub
     )
-
-    message.is_deleted = True
 
     db.add(message_report)
     db.commit()

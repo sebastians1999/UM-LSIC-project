@@ -1,0 +1,18 @@
+2024-12-02 00:05:35,932 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 00:05:36,612 - server - INFO - Server starting up...
+2024-12-02 00:05:45,314 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=224be044cbfe6da67090a6bd4f73eb7e9cedb512b57a82b523338dad1a767812
+2024-12-02 00:05:45,322 - server - INFO - Response: 400 - Duration: 0.008s
+2024-12-02 00:05:57,161 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 00:05:57,685 - server - INFO - User KonradRtz not found in the database.
+2024-12-02 00:05:57,735 - server - INFO - Response: 200 - Duration: 0.575s
+2024-12-02 00:06:20,446 - server - INFO - Request: POST http://localhost:8000/auth/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzA5NDY1N30.fLHWWudW0XiCmifo9U1zlDytihQdGAZz39VFrnIoqwg
+2024-12-02 00:06:20,450 - server - INFO - Response: 404 - Duration: 0.003s
+2024-12-02 00:06:42,315 - server - INFO - Request: POST http://localhost:8000/auth/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzA5NDY1N30.fLHWWudW0XiCmifo9U1zlDytihQdGAZz39VFrnIoqwg
+2024-12-02 00:06:42,318 - server - INFO - Response: 404 - Duration: 0.003s
+2024-12-02 00:07:08,408 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 00:07:08,772 - server - INFO - User KonradRtz not found in the database.
+2024-12-02 00:07:08,778 - server - INFO - Response: 200 - Duration: 0.370s
+2024-12-02 00:07:16,110 - server - INFO - Request: POST http://localhost:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzA5NDY1N30.fLHWWudW0XiCmifo9U1zlDytihQdGAZz39VFrnIoqwg
+2024-12-02 00:07:16,214 - server - INFO - Response: 200 - Duration: 0.104s
+2024-12-02 00:07:30,340 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-02 00:07:30,377 - server - INFO - Response: 200 - Duration: 0.038s

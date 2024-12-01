@@ -7,22 +7,22 @@ class ReportBase(BaseModel):
     """Report request data"""
     reason: str
     created_at: datetime
-    by: int # Reporter ID
+    by: str  # Changed from int to str for UUID
 
 class ReportMessage(ReportBase):
     """Report message request data"""
-    message_id: int
+    message_id: str  # Changed from int to str for UUID
 
 class ReportUser(ReportBase):
     """Report user request data"""
-    user_id: int
+    user_id: str  # Changed from int to str for UUID
 
 class ReportMessageResponse(ReportMessage):
     """Report message response data"""
-    id: int
+    id: str  # Changed from int to str for UUID
     message: str
 
 class ReportUserResponse(ReportUser):
     """Report user response data"""
-    id: int
+    id: str  # Changed from int to str for UUID
     user: str

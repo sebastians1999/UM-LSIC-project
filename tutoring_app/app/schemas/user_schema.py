@@ -24,7 +24,7 @@ class UserCreate(UserBase):
 
 class UserResponse(UserBase):
     """User response data"""
-    id: int
+    id: str  # Changed from int to str for UUID
     role: UserRole
     created_at: datetime
     class Config:
@@ -44,7 +44,7 @@ class SubjectBase(BaseModel):
 
 class SubjectResponse(SubjectBase):
     """Subject response data"""
-    id: int
+    id: str  # Changed from int to str for UUID
     class Config:
         orm_mode = True
 
@@ -54,7 +54,7 @@ class SubjectResponse(SubjectBase):
 
 class ProfileBase(BaseModel):
     """Base profile data"""
-    user_id: int
+    user_id: str  # Changed from int to str for UUID
     availability: str
     bio: Optional[str]
 
@@ -64,7 +64,7 @@ class ProfileBase(BaseModel):
 
 class ProfileResponse(ProfileBase):
     """Profile response data"""
-    id: int
+    id: str  # Changed from int to str for UUID
     class Config:
         orm_mode = True
 
@@ -78,7 +78,7 @@ class ProfileUpdate(ProfileBase):
 
 class TutorProfileCreate(ProfileBase):
     """Tutor profile data"""
-    expertise: list[int] # List of subject IDs
+    expertise: list[str]  # Changed from list[int] to list[str] for UUID subject IDs
     hourly_rate: float
 
     @field_validator('hourly_rate')

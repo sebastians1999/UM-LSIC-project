@@ -68,13 +68,12 @@ def get_profile(
     return user
 
 @router.get('/{user_id}/appointments', response_model=List[AppointmentResponse])
-def get_appointments(request: Request, user_id: int, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def get_appointments(request: Request, user_id: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):  # Changed from int
     """Get a list of appointments for a user. Admins can view all appointments, while students and tutors can only view their own appointments."""
     if current_user.role != UserRole.ADMIN.value and current_user.sub != user_id:
         raise HTTPException(status_code=403, detail="User not authorized to view appointments")
 
-    # Fetch a list of user's scheduled appointments
-    user = db.query(User).filter(User.id == user_id).first()
+    user = User.get_by_id(db, user_id)  # Use get_by_id method
 
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -86,14 +85,11 @@ def get_appointments(request: Request, user_id: int, current_user: DecodedAccess
     return appointments
 
 @router.post('/rate', response_model=dict)
-def submit_rating(request: Request, user_id: int, rating: float, review: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-    # Ensure the user exists
-    user = db.query(User).filter(User.id == user_id, User.role == UserRole.TUTOR).first()
+def submit_rating(request: Request, user_id: str, rating: float, review: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):  # Changed from int to str
+    user = User.get_by_id(db, user_id)  # Using new get_by_id method
+    if not user or user.role != UserRole.TUTOR:
+        raise HTTPException(status_code=404, detail="Tutor not found")
 
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # Submit a rating and review for a user
     user.tutor_profile.rating = (user.tutor_profile.rating * user.tutor_profile.total_reviews + rating) / (user.tutor_profile.total_reviews + 1)
     user.tutor_profile.total_reviews += 1
     db.commit()

@@ -149,7 +149,7 @@ def create_signup_token(user_id: int, name: str, email: str, role: str, expires_
         "sub": user_id,
         "name": name,
         "email": email,
-        "role": role,
+        "role": role.value if isinstance(role, UserRole) else role,  # Convert UserRole to string
         "logged_in": False,
         "exp": datetime.utcnow() + timedelta(minutes=expires_in)
     }

@@ -244,3 +244,42 @@
 2024-12-01 15:42:10,740 - server - INFO - Server starting up...
 2024-12-01 15:42:13,251 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
 2024-12-01 15:42:17,359 - server - ERROR - Error processing request: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2024-12-01 16:12:38,065 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 16:12:38,456 - server - INFO - Server starting up...
+2024-12-01 16:12:48,356 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=7ed5c06febdcad4fea4764f3d68c56258c8ca6d9164d89978ad6184c292af50e
+2024-12-01 16:12:48,363 - server - INFO - Response: 400 - Duration: 0.007s
+2024-12-01 16:12:59,180 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 16:13:00,204 - server - INFO - Logging in user KonradRtz.
+2024-12-01 16:13:00,307 - server - INFO - Success. User KonradRtz logged in.
+2024-12-01 16:13:00,322 - server - INFO - Response: 200 - Duration: 1.142s
+2024-12-01 16:13:19,261 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 16:13:19,303 - server - ERROR - Error processing request: (sqlite3.OperationalError) no such column: appointments.duration
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT appointments.id AS appointments_id, appointments.student_id AS appointments_student_id, appointments.tutor_id AS appointments_tutor_id, appointments.topic AS appointments_topic, appointments.date AS appointments_date, appointments.duration AS appointments_duration, appointments.status AS appointments_status, appointments.created_by AS appointments_created_by 
+FROM appointments) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2024-12-01 16:15:15,617 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 16:15:15,932 - server - INFO - Server starting up...
+2024-12-01 16:15:31,929 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=860d851254174e55527588c3cc81521aa273beaa9690c4bd9b98ee59b696474f
+2024-12-01 16:15:31,933 - server - INFO - Response: 400 - Duration: 0.004s
+2024-12-01 16:15:43,783 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 16:15:44,285 - server - INFO - User KonradRtz not found in the database.
+2024-12-01 16:15:44,287 - server - ERROR - Error processing request: Object of type UserRole is not JSON serializable
+2024-12-01 16:17:33,053 - server - INFO - Server shutting down...
+2024-12-01 16:17:38,156 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 16:17:38,411 - server - INFO - Server starting up...
+2024-12-01 16:18:09,144 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=bc9c81c4493c3b6cb9ef5d2eb5c7559a5b94dcae9ab73051253bd8077992d6ca
+2024-12-01 16:18:09,165 - server - INFO - Response: 400 - Duration: 0.021s
+2024-12-01 16:18:22,778 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 16:18:23,428 - server - INFO - Response: 401 - Duration: 0.650s
+2024-12-01 16:20:52,065 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=85acda984452186097d8fd4c791d38dcec169f832056abce98a27f852033294f
+2024-12-01 16:20:52,068 - server - INFO - Response: 400 - Duration: 0.003s
+2024-12-01 16:21:06,230 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 16:21:06,641 - server - INFO - User KonradRtz not found in the database.
+2024-12-01 16:21:06,650 - server - INFO - Response: 200 - Duration: 0.420s
+2024-12-01 16:21:37,988 - server - INFO - Request: POST http://localhost:8000/auth/signup?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNDc2NTE1MCIsIm5hbWUiOiJLb25yYWRSdHoiLCJlbWFpbCI6ImsucmV0emxhZmZAc3R1ZGVudC5tYWFzdHJpY2h0dW5pdmVyc2l0eS5ubCIsInJvbGUiOiJBRE1JTiIsImxvZ2dlZF9pbiI6ZmFsc2UsImV4cCI6MTczMzA2Njc2Nn0.bZ5vpeLvaKmbXxJpCcoVnEnprEwN9hLGD1DOcRqBa68
+2024-12-01 16:21:38,033 - server - INFO - Response: 200 - Duration: 0.045s
+2024-12-01 16:22:10,439 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 16:22:10,886 - server - INFO - Response: 401 - Duration: 0.447s
+2024-12-01 16:22:38,749 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 16:22:38,788 - server - INFO - Response: 200 - Duration: 0.039s

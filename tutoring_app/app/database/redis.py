@@ -1,39 +1,24 @@
 import redis
 import os
+import json
 
 class RedisClient:
 
     def __init__(self):
-        # Get the hostname or IP address of the Redis instance. If the environment
-        # variable REDIS_HOST is not set, default to localhost.
-        
+        # Get Redis configuration from environment variables
         self.redis_host = os.getenv("REDIS_HOST", "localhost")
-
-        # Get the port number of the Redis instance. If the environment variable
-        # REDIS_PORT is not set, default to 6379.
         self.redis_port = int(os.getenv("REDIS_PORT", 6379))
-
-        # Get the password for the Redis instance. If the environment variable
-        # REDIS_PASSWORD is not set, default to None.
         self.redis_password = os.getenv("REDIS_PASSWORD", None)
 
-        # Create a Redis client object. The parameters are:
-        # - host: the hostname or IP address of the Redis instance, as determined
-        #         above.
-        # - port: the port number of the Redis instance, as determined above.
-        # - password: the password for the Redis instance, as determined above.
-        # - decode_responses: whether to decode all responses from Redis as
-        #                    strings (True) or not (False). We set this to True
-        #                    so that we don't have to manually decode all the
-        #                    responses.
+        # Initialize the Redis client
         self.client = redis.StrictRedis(
             host=self.redis_host,
             port=self.redis_port,
             password=self.redis_password,
-            decode_responses=True
+            decode_responses=True  # Automatically decode Redis responses as strings
         )
 
-
+    # Existing methods for refresh tokens
     def set_refresh_token(self, token: str, token_id: str, expiration: int):
         """
         Store the refresh token in Redis with an expiration time.
@@ -52,4 +37,29 @@ class RedisClient:
         """
         self.client.delete(token_id)
 
+    # New generic caching methods
+    def set_cache(self, key: str, value, expiration: int = 600):
+        """
+        Store a value in Redis with an optional expiration time.
+        The value is automatically serialized to JSON.
+        """
+        serialized_value = json.dumps(value)
+        self.client.setex(key, expiration, serialized_value)
+
+    def get_cache(self, key: str):
+        """
+        Retrieve a cached value from Redis by key.
+        The value is automatically deserialized from JSON.
+        """
+        cached_value = self.client.get(key)
+        return json.loads(cached_value) if cached_value else None
+
+    def delete_cache(self, key: str):
+        """
+        Delete a cached value from Redis by key.
+        """
+        self.client.delete(key)
+
+
+# Instantiate the Redis client
 redis_client = RedisClient()

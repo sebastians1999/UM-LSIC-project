@@ -44,4 +44,5 @@ jobs:
           --region europe-west1 \
           --platform managed \
           --allow-unauthenticated \
-          --set-env-vars GITLAB_CLIENT_ID=830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262,GITLAB_CLIENT_SECRET=projects/lsit-tutorapp/secrets/GITLAB_CLIENT_SECRET:latest,SECRET_KEY=projects/lsit-tutorapp/secrets/SECRET_KEY:latest,DB_PASSWORD=projects/lsit-tutorapp/secrets/DATABASE_PASSWORD:latest
+          --set-env-vars GITLAB_CLIENT_ID=830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262 \
+          --update-secrets GITLAB_CLIENT_SECRET=GITLAB_CLIENT_SECRET:latest,SECRET_KEY=SECRET_KEY:latest,DB_PASSWORD=DATABASE_PASSWORD:latest

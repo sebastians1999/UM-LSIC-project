@@ -135,3 +135,27 @@
 2024-12-01 14:53:15,133 - server - INFO - GitLab OAuth initialized successfully
 2024-12-01 14:59:55,647 - server - INFO - GitLab OAuth initialized successfully
 2024-12-01 14:59:56,083 - server - INFO - Server starting up...
+2024-12-01 15:00:49,637 - server - INFO - Request: GET http://localhost:8000/auth/callback?code=a2b5e0aaab0a4b21b0d08e771dff55417d1ab46ab2b67b5ddd42aca694193225
+2024-12-01 15:00:49,642 - server - INFO - Response: 400 - Duration: 0.005s
+2024-12-01 15:01:02,137 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 15:01:02,574 - server - INFO - Logging in user KonradRtz.
+2024-12-01 15:01:02,580 - server - INFO - Success. User KonradRtz logged in.
+2024-12-01 15:01:02,583 - server - INFO - Response: 200 - Duration: 0.445s
+2024-12-01 15:02:30,862 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 15:02:30,867 - server - ERROR - Error processing request: 'DecodedAccessToken' object is not subscriptable
+2024-12-01 15:08:36,817 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 15:08:36,821 - server - ERROR - Error processing request: 'DecodedAccessToken' object is not subscriptable
+2024-12-01 15:08:38,328 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 15:08:38,334 - server - ERROR - Error processing request: 'DecodedAccessToken' object is not subscriptable
+2024-12-01 15:09:03,451 - server - INFO - GitLab OAuth initialized successfully
+2024-12-01 15:09:03,864 - server - INFO - Server starting up...
+2024-12-01 15:09:14,023 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-01 15:09:14,509 - server - INFO - Logging in user KonradRtz.
+2024-12-01 15:09:14,512 - server - INFO - Success. User KonradRtz logged in.
+2024-12-01 15:09:14,515 - server - INFO - Response: 200 - Duration: 0.493s
+2024-12-01 15:09:27,541 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 15:09:27,546 - server - INFO - Response: 403 - Duration: 0.005s
+2024-12-01 15:13:07,561 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
+2024-12-01 15:13:07,567 - server - INFO - Response: 403 - Duration: 0.007s
+2024-12-01 15:18:51,356 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-01 15:18:51,362 - server - INFO - Response: 200 - Duration: 0.006s

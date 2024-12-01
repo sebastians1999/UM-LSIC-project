@@ -8,7 +8,7 @@ from schemas.authentication_schema import DecodedAccessToken
 from database.redis import redis_client
 import json
 #hi
-from tutoring_app.app.config import get_settings
+from config import get_settings
 
 # Check if we should use Redis
 USE_REDIS = get_settings().use_redis

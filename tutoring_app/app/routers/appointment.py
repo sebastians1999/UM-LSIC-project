@@ -101,6 +101,7 @@ def get_meeting(
     cache_key = f"appointment_{meetingID}"
     cached_data = redis_client.get_cache(cache_key)
     if cached_data:
+        print('returning cached data (Appointments)')
         return json.loads(cached_data)
 
     # Fetch details about a specific meeting

@@ -56,6 +56,7 @@ def get_profile(
     cache_key = f"profile_{current_user.sub}"
     cached_data = redis_client.get_cache(cache_key)
     if (cached_data):
+        print('returning cached data (user)')
         return json.loads(cached_data)
 
     user = db.query(User).filter(User.id == current_user.sub).first()

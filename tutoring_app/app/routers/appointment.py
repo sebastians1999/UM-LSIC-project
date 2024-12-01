@@ -5,6 +5,8 @@ from database.database import get_db, User, UserRole, Appointment
 from auth_tools import get_current_user
 from schemas.appointment_schema import AppointmentResponse
 from schemas.authentication_schema import DecodedAccessToken
+from database.redis import redis_client
+import json
 
 router = APIRouter(prefix='/appointments')
 
@@ -90,7 +92,17 @@ def reject_meeting(request: Request, meetingID: int, db: Session = Depends(get_d
     return appointment
 
 @router.get('/{meetingID}', response_model=AppointmentResponse)
-def get_meeting(request: Request, meetingID: int, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
+def get_meeting(
+    request: Request,
+    meetingID: int,
+    current_user: DecodedAccessToken = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    cache_key = f"appointment_{meetingID}"
+    cached_data = redis_client.get_cache(cache_key)
+    if cached_data:
+        return json.loads(cached_data)
+
     # Fetch details about a specific meeting
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
 
@@ -103,6 +115,8 @@ def get_meeting(request: Request, meetingID: int, current_user:DecodedAccessToke
 
     if not appointment:
         raise HTTPException(status_code=404, detail="Meeting not found")
+
+    redis_client.set_cache(cache_key, json.dumps(appointment), expiration=600)  # Cache for 10 minutes
 
     return appointment
 

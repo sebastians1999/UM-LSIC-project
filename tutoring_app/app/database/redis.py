@@ -49,4 +49,16 @@ class RedisClient:
         """
         self.client.delete(token_id)
 
+    def set_cache(self, key: str, value: str, expiration: int):
+        """Set a cached value with expiration in seconds."""
+        self.client.setex(key, expiration, value)
+
+    def get_cache(self, key: str):
+        """Get a cached value."""
+        return self.client.get(key)
+
+    def delete_cache(self, key: str):
+        """Delete a cached value."""
+        self.client.delete(key)
+
 redis_client = RedisClient()

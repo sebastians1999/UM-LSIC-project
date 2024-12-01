@@ -10,6 +10,8 @@ from schemas.admin_schema import AdminDashboardResponse
 from schemas.chat_schema import ChatResponse, MessageDeletedReponse, MessageSentResponse, MessageResponse, BanUserReponse
 from schemas.user_schema import UserCreate, UserResponse
 import logging
+from database.redis import redis_client
+import json
 
 router = APIRouter(prefix='/admin')
 
@@ -21,16 +23,30 @@ MAX_ADMINS = 7  # Add this constant at the top after imports
 
 @router.get('/dashboard', response_model=AdminDashboardResponse)
 @limiter.limit("10/minute")
-async def admin_dashboard(request: Request, db: Session = Depends(get_db), _=Depends(admin_only)):
+async def admin_dashboard(
+    request: Request,
+    db: Session = Depends(get_db),
+    _=Depends(admin_only)
+):
+    cache_key = "admin_dashboard_data"
+    cached_data = redis_client.get_cache(cache_key)
+    if cached_data:
+        return json.loads(cached_data)
+
     # Fetch admin dashboard data
     user_count = db.query(User).count()
     chat_count = db.query(Chat).count()
     appointment_count = db.query(Appointment).count()
-    return {
+
+    data = {
         "user_count": user_count,
         "chat_count": chat_count,
         "appointment_count": appointment_count
     }
+
+    redis_client.set_cache(cache_key, json.dumps(data), expiration=600)  # Cache for 10 minutes
+
+    return data
 
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)
 def get_chat_messages(request: Request, chatID: int, db: Session = Depends(get_db), _=Depends(admin_only)):

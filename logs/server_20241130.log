@@ -190,3 +190,4 @@
 2024-12-01 00:18:37,183 - server - INFO - Response: 200 - Duration: 0.002s
 2024-12-01 00:18:37,597 - server - INFO - Request: GET http://localhost:8000/openapi.json
 2024-12-01 00:18:37,667 - server - INFO - Response: 200 - Duration: 0.070s
+2024-12-01 14:11:09,179 - server - INFO - Server shutting down...

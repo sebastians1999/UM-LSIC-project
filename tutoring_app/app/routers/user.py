@@ -6,6 +6,8 @@ from auth_tools import get_current_user, require_roles
 from schemas.user_schema import ProfileUpdate, StudentProfileReponse, TutorProfileResponse
 from schemas.authentication_schema import DecodedAccessToken
 from schemas.appointment_schema import AppointmentResponse
+from database.redis import redis_client
+import json
 
 router = APIRouter(prefix='/users')
 
@@ -44,6 +46,23 @@ def update_profile(request: Request, profile : ProfileUpdate, db: Session = Depe
 
     db.commit()
     return response
+
+@router.get('/profile', response_model=UserResponse)
+def get_profile(
+    request: Request,
+    current_user: DecodedAccessToken = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    cache_key = f"profile_{current_user.sub}"
+    cached_data = redis_client.get_cache(cache_key)
+    if (cached_data):
+        return json.loads(cached_data)
+
+    user = db.query(User).filter(User.id == current_user.sub).first()
+
+    redis_client.set_cache(cache_key, json.dumps(user), expiration=300)  # Cache for 5 minutes
+
+    return user
 
 @router.get('/{user_id}/appointments', response_model=List[AppointmentResponse])
 def get_appointments(request: Request, user_id: int, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):

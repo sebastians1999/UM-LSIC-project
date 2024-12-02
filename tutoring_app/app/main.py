@@ -91,7 +91,7 @@ def read_root():
     Returns:
     - dict: Welcome message
     """
-    return {"message": "Welcome to the Tutoring API!"}
+    return {"message": "Welcome to the Tutoring API!!!"}
 
 @app.get("/mock/users")
 def get_mock_users():

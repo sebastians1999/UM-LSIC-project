@@ -12,8 +12,11 @@ from schemas.user_schema import UserCreate, UserResponse
 import logging
 from database.redis import redis_client
 import json
+from config import get_settings  # Add the missing import for get_settings
+
 #hi
 router = APIRouter(prefix='/admin')
+USE_REDIS = get_settings().use_redis
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,11 +31,12 @@ async def admin_dashboard(
     db: Session = Depends(get_db),
     _=Depends(admin_only)
 ):
-    cache_key = "admin_dashboard_data"
-    cached_data = redis_client.get_cache(cache_key)
-    if cached_data:
-        print('Returning cached data')
-        return json.loads(cached_data)
+    if USE_REDIS:
+        cache_key = "admin_dashboard_data"
+        cached_data = redis_client.get_cache(cache_key)
+        if cached_data:
+            print('Returning cached data')
+            return json.loads(cached_data)
 
     # Fetch admin dashboard data
     user_count = db.query(User).count()
@@ -44,9 +48,9 @@ async def admin_dashboard(
         "chat_count": chat_count,
         "appointment_count": appointment_count
     }
-
-    redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
-
+    if USE_REDIS:
+        redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
+    
     return data
 
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)

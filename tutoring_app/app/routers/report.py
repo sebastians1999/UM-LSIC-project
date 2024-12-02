@@ -5,8 +5,10 @@ from database.database import get_db, UserReport, MessageReport, User, Message
 from auth_tools import get_current_user
 from schemas.authentication_schema import DecodedAccessToken
 from schemas.report_schema import ReportMessage, ReportUser
+from config import get_settings
 
 router = APIRouter(prefix='/report')
+USE_REDIS = get_settings().use_redis
 
 @router.post('/message/{messageID}')
 def report_message(request: Request, report: ReportMessage, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):

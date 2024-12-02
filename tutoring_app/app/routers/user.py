@@ -12,6 +12,7 @@ import json
 from config import get_settings
 
 router = APIRouter(prefix='/users')
+USE_REDIS = get_settings().use_redis
 
 @router.put('/profile', response_model=Union[StudentProfileReponse, TutorProfileResponse])
 def update_profile(request: Request, profile : ProfileUpdate, db: Session = Depends(get_db), current_user : DecodedAccessToken =Depends(require_roles(UserRole.STUDENT, UserRole.TUTOR))): 
@@ -55,15 +56,17 @@ def get_profile(
     current_user: DecodedAccessToken = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    cache_key = f"profile_{current_user.sub}"
-    cached_data = redis_client.get_cache(cache_key)
+    if USE_REDIS:
+        cache_key = f"profile_{current_user.sub}"
+        cached_data = redis_client.get_cache(cache_key)
     if (cached_data):
         print('returning cached data (user)')
         return json.loads(cached_data)
 
     user = db.query(User).filter(User.id == current_user.sub).first()
 
-    redis_client.set_cache(cache_key, json.dumps(user), expiration=300)  # Cache for 5 minutes
+    if USE_REDIS:
+        redis_client.set_cache(cache_key, json.dumps(user), expiration=300)  # Cache for 5 minutes
 
     return user
 

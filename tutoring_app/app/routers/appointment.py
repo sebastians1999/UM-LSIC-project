@@ -22,7 +22,7 @@ router = APIRouter(prefix='/appointments')
 ###      the appropriate endpoint with the meeting id.
 
 @router.post('/', response_model=AppointmentResponse)
-def schedule_meeting(request: Request, other_user_id: int, topic: str, date: datetime, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+def schedule_meeting(request: Request, other_user_id: str, topic: str, date: datetime, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
     # Ensure the target user exists
     target = db.query(User).filter(User.id == other_user_id).first()
 
@@ -58,7 +58,7 @@ def schedule_meeting(request: Request, other_user_id: int, topic: str, date: dat
     return appointment
 
 @router.get('/approve/{meetingID}', response_model=AppointmentResponse)
-def approve_meeting(request: Request, meetingID: int, db: Session = Depends(get_db), current_user: DecodedAccessToken = Depends(get_current_user)):
+def approve_meeting(request: Request, meetingID: str, db: Session = Depends(get_db), current_user: DecodedAccessToken = Depends(get_current_user)):
     # Approve a meeting request
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
     if not appointment:
@@ -77,7 +77,7 @@ def approve_meeting(request: Request, meetingID: int, db: Session = Depends(get_
     return appointment
 
 @router.get('/reject/{meetingID}', response_model=AppointmentResponse)
-def reject_meeting(request: Request, meetingID: int, db: Session = Depends(get_db), current_user: DecodedAccessToken = Depends(get_current_user)):
+def reject_meeting(request: Request, meetingID: str, db: Session = Depends(get_db), current_user: DecodedAccessToken = Depends(get_current_user)):
     # Reject a meeting request
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
     if not appointment:
@@ -98,15 +98,16 @@ def reject_meeting(request: Request, meetingID: int, db: Session = Depends(get_d
 @router.get('/{meetingID}', response_model=AppointmentResponse)
 def get_meeting(
     request: Request,
-    meetingID: int,
+    meetingID: str,
     current_user: DecodedAccessToken = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    cache_key = f"appointment_{meetingID}"
-    cached_data = redis_client.get_cache(cache_key)
-    if cached_data:
-        print('returning cached data (Appointments)')
-        return json.loads(cached_data)
+    if USE_REDIS:
+        cache_key = f"appointment_{meetingID}"
+        cached_data = redis_client.get_cache(cache_key)
+        if cached_data:
+            print('returning cached data (Appointments)')
+            return json.loads(cached_data)
 
     # Fetch details about a specific meeting
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
@@ -120,13 +121,13 @@ def get_meeting(
 
     if not appointment:
         raise HTTPException(status_code=404, detail="Meeting not found")
-
-    redis_client.set_cache(cache_key, json.dumps(appointment), expiration=600)  # Cache for 10 minutes
+    if USE_REDIS:
+        redis_client.set_cache(cache_key, json.dumps(appointment), expiration=600)  # Cache for 10 minutes
 
     return appointment
 
 @router.patch('/update/{meetingID}', response_model=AppointmentResponse)
-def update_meeting(request: Request, meetingID: int, topic: str = None, date: datetime = None, status: str = None, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
+def update_meeting(request: Request, meetingID: str, topic: str = None, date: datetime = None, status: str = None, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
     # Update details of a specific meeting
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
 
@@ -154,7 +155,7 @@ def update_meeting(request: Request, meetingID: int, topic: str = None, date: da
     return appointment
 
 @router.delete('/cancel/{meetingID}', response_model=AppointmentResponse)
-def cancel_meeting(request: Request, meetingID: int, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
+def cancel_meeting(request: Request, meetingID: str, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
     # Cancel a specific meeting
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
 

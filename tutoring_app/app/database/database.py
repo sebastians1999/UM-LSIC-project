@@ -25,15 +25,21 @@ class UserRole(enum.Enum):
 
 def is_valid_uuid(uuid_str: str) -> bool:
     """Validate UUID string format."""
+    if not uuid_str:
+        return False
     try:
+        # Validate length and format
+        if len(uuid_str) != 36:
+            return False
+        # Try to parse as UUID to validate format
         uuid_obj = uuid.UUID(uuid_str)
-        return str(uuid_obj) == uuid_str
-    except ValueError:
+        return str(uuid_obj) == uuid_str.lower()
+    except (ValueError, AttributeError, TypeError):
         return False
 
 def generate_uuid() -> str:
     """Generate a string UUID."""
-    return str(uuid.uuid4())
+    return str(uuid.uuid4()).lower()
 
 # Subject Model for normalized subject storage
 class Subject(Base):

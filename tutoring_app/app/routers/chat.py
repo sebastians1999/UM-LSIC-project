@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
 from auth_tools import get_current_user
-from database.database import get_db, User, Message, UserRole
+from database.database import get_db, User, Message, UserRole, is_valid_uuid
 from config import get_settings
 from utilities import get_user_by_id, get_user_chats, get_chat_with_messages
 from schemas.chat_schema import ChatResponse, MessageResponse
@@ -11,6 +11,7 @@ from schemas.authentication_schema import DecodedAccessToken
 from logger import logger
 from database.redis import redis_client
 import json
+from config import get_settings
 #hi
 # Check if we should use Redis
 USE_REDIS = get_settings().use_redis
@@ -48,6 +49,8 @@ def get_chats(request: Request, current_user=Depends(get_current_user), db: Sess
 
 @router.get('/{chatID}', response_model=ChatResponse)
 def get_chat(request: Request, chatID: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):  # Changed from int to str
+    if not is_valid_uuid(chatID):
+        raise HTTPException(status_code=400, detail="Invalid chat ID format")
     chat = db.query(Chat).filter(Chat.id == chatID).first()
     if not chat:
         raise HTTPException(status_code=404, detail="Chat not found")
@@ -67,6 +70,8 @@ def send_message(
     db: Session = Depends(get_db)
 ):
     """Send a message in an existing chat from the logged in user."""
+    if not is_valid_uuid(chatID):
+        raise HTTPException(status_code=400, detail="Invalid chat ID format")
     try:
         sender = User.get_by_id(db, current_user.sub)  # Use get_by_id method
         
@@ -82,8 +87,9 @@ def send_message(
         db.refresh(message)
         
         # Invalidate cache after sending a message
-        redis_client.delete_cache(f"chat_{chatID}")
-        redis_client.delete_cache(f"chats_{current_user.sub}")
+        if USE_REDIS:
+            redis_client.delete_cache(f"chat_{chatID}")
+            redis_client.delete_cache(f"chats_{current_user.sub}")
         # Optionally, delete cache for the other user involved in the chat
         
         return message

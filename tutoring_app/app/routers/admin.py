@@ -1,3 +1,7 @@
+"""
+Admin router providing administrative endpoints for managing users, chats, reports and dashboard.
+Requires admin authentication for all endpoints.
+"""
 from fastapi import APIRouter, Depends, HTTPException, Request  # Add Request import
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -12,8 +16,11 @@ from schemas.user_schema import UserCreate, UserResponse
 import logging
 from database.redis import redis_client
 import json
+from config import get_settings  # Add the missing import for get_settings
 
+#hi
 router = APIRouter(prefix='/admin')
+USE_REDIS = get_settings().use_redis
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,11 +35,19 @@ async def admin_dashboard(
     db: Session = Depends(get_db),
     _=Depends(admin_only)
 ):
-    cache_key = "admin_dashboard_data"
-    cached_data = redis_client.get_cache(cache_key)
-    if cached_data:
-        print('Returning cached data')
-        return json.loads(cached_data)
+    """
+    Fetch admin dashboard data including user count, chat count and appointment count.
+    Rate limited to 10 requests per minute.
+    
+    Returns:
+        AdminDashboardResponse: Dashboard statistics
+    """
+    if USE_REDIS:
+        cache_key = "admin_dashboard_data"
+        cached_data = redis_client.get_cache(cache_key)
+        if cached_data:
+            print('Returning cached data')
+            return json.loads(cached_data)
 
     # Fetch admin dashboard data
     user_count = db.query(User).count()
@@ -44,17 +59,45 @@ async def admin_dashboard(
         "chat_count": chat_count,
         "appointment_count": appointment_count
     }
-
-    redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
-
+    if USE_REDIS:
+        redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
+    
     return data
 
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)
-def get_chat_messages(request: Request, chatID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def get_chat_messages(request: Request, chatID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  
+    """
+Fetches messages for a specific chat.
+
+Args:
+    request (Request): The request object.
+    chatID (str): The ID of the chat to fetch messages for.
+    db (Session): The database session dependency.
+    _ (Depends): Dependency to ensure the user is an admin.
+
+Returns:
+    ChatResponse: The response model containing chat messages.
+"""
     return get_chat_with_messages(db, chatID)
 
 @router.delete('/chats/delete/{messageID}', response_model=MessageDeletedReponse)
-def delete_chat_message(request: Request, messageID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def delete_chat_message(request: Request, messageID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
+    def delete_chat_message(request: Request, messageID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+        """
+        Delete a specific message in a chat.
+
+        Args:
+            request (Request): The request object.
+            messageID (str): The ID of the message to be deleted.
+            db (Session, optional): The database session. Defaults to Depends(get_db).
+            _ (Depends, optional): Dependency to ensure the user is an admin. Defaults to Depends(admin_only).
+
+        Raises:
+            HTTPException: If the message with the given ID is not found.
+
+        Returns:
+            dict: A dictionary containing the message ID and a confirmation message.
+        """
     # Delete a specific message in a chat
     message = db.query(Message).filter(Message.id == messageID).first()
     if not message:
@@ -64,7 +107,21 @@ def delete_chat_message(request: Request, messageID: int, db: Session = Depends(
     return {"message_id" : messageID, "message": f"Message {messageID} deleted"}
 
 @router.post('/chats/{chatID}/messages', response_model=MessageSentResponse)
-def send_chat_message(request: Request, chatID: int, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+def send_chat_message(request: Request, chatID: str, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
+    def send_chat_message(request: Request, chatID: str, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+        """
+        Sends a message to a specific chat.
+
+        Args:
+            request (Request): The request object.
+            chatID (str): The ID of the chat to which the message will be sent.
+            content (str): The content of the message to be sent.
+            db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+            _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+
+        Returns:
+            dict: A dictionary containing the message ID, chat ID, and a confirmation message.
+        """
     # Send a message to a specific chat
     message = Message(
         chat_id=chatID,
@@ -80,13 +137,40 @@ def send_chat_message(request: Request, chatID: int, content: str, db: Session =
 @router.get('/reports')
 @limiter.limit("10/minute")  # Add rate limiting
 def get_reports(request: Request, db: Session = Depends(get_db), _=Depends(admin_only)):
+    """
+    Retrieve all deleted reports from the database.
+
+    Args:
+        request (Request): The HTTP request object.
+        db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+        _ (Depends, optional): Dependency to ensure the user has admin privileges. Defaults to Depends(admin_only).
+
+    Returns:
+        dict: A dictionary containing a list of deleted reports.
+    """
     # Retrieve all reports
     reports = db.query(Message).filter(Message.is_deleted == True).all()
     return {"reports": reports}
 
 @router.get('/reports/{reportID}', response_model=MessageResponse)
 @limiter.limit("10/minute")  # Add rate limiting
-def get_report(request: Request, reportID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def get_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int to str
+    def get_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+        """
+        Retrieve detailed information about a specific report.
+
+        Args:
+            request (Request): The request object.
+            reportID (str): The ID of the report to retrieve.
+            db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+            _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+
+        Raises:
+            HTTPException: If the report is not found, raises a 404 HTTP exception.
+
+        Returns:
+            dict: A dictionary containing the report details.
+        """
     # Retrieve detailed information about a specific report
     report = db.query(Message).filter(Message.id == reportID, Message.is_deleted == True).first()
     if not report:
@@ -95,17 +179,54 @@ def get_report(request: Request, reportID: int, db: Session = Depends(get_db), _
     
 @router.get('/users', response_model=List[UserResponse])
 def get_all_users(db: Session = Depends(get_db), _=Depends(admin_only)):
+    """
+    Retrieve all users from the database.
+
+    Args:
+        db (Session): Database session dependency.
+        _ (Depends): Dependency to ensure the user has admin privileges.
+
+    Returns:
+        List[User]: A list of all users in the database.
+    """
     # Retrieve all users
     users = db.query(User).all()
     return users
 
 @router.get('/{id}', response_model=UserResponse)
 @limiter.limit("10/minute")
-def get_user(request: Request, id: int, db: Session = Depends(get_db), _=Depends(admin_only)):
-    return get_user_by_id(db, id)
+def get_user(request: Request, id: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
+    def get_user(request: Request, id: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+        """
+        Retrieve a user by their ID.
+
+        Args:
+            request (Request): The request object.
+            id (str): The ID of the user to retrieve.
+            db (Session, optional): The database session. Defaults to Depends(get_db).
+            _ (Depends, optional): Dependency to ensure the user has admin privileges. Defaults to Depends(admin_only).
+
+        Returns:
+            User: The user object retrieved from the database.
+        """
+    return User.get_by_id(db, id)  # Use get_by_id method
 
 @router.post('/users/{userID}/ban', response_model=BanUserReponse)
-def ban_user(request: Request, userID: int, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):
+def ban_user(request: Request, userID: str, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):  # Changed from int to str
+    def ban_user(request: Request, userID: str, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):
+        """
+        Ban a user until a specified datetime.
+
+        Args:
+            request (Request): The request object.
+            userID (str): The ID of the user to be banned.
+            ban_until (datetime): The datetime until which the user is banned.
+            db (Session, optional): The database session. Defaults to Depends(get_db).
+            admin (Admin, optional): The admin issuing the ban. Defaults to Depends(admin_only).
+
+        Returns:
+            dict: A dictionary containing the user ID, ban expiration datetime, admin ID, and a message.
+        """
     user = get_user_by_id(db, userID)
     user.is_banned_until = ban_until
     db.commit()
@@ -115,11 +236,26 @@ def ban_user(request: Request, userID: int, ban_until: datetime, db: Session = D
 @limiter.limit("3/minute")
 def delete_user(
     request: Request,
-    userID: int,
+    userID: str,  # Changed from int to str
     db: Session = Depends(get_db),
     current_user: dict = Depends(admin_only)
 ):
-    """Delete user with admin authentication and logging"""
+
+    """
+    Delete user with admin authentication and logging.
+
+    Args:
+        request (Request): The request object.
+        userID (str): The ID of the user to delete.
+        db (Session): The database session dependency.
+        current_user (dict): The current authenticated admin user.
+
+    Returns:
+        dict: A message indicating the user has been deleted.
+
+    Raises:
+        HTTPException: If the user is not found or an error occurs during deletion.
+    """
     try:
         user = db.query(User).filter(User.id == userID).first()
         if not user:
@@ -137,6 +273,19 @@ def delete_user(
 @router.post('/users/create')
 @limiter.limit("3/minute")
 def create_user(request: Request, user_data: UserCreate, db: Session = Depends(get_db), _=Depends(admin_only)):
+    """
+    Create a new user. Only admins can create users this way, normally it requires GitLab authentication.
+    Args:
+        request (Request): The request object.
+        user_data (UserCreate): The data required to create a new user.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        _ (Depends, optional): Dependency to ensure only admins can access this function. Defaults to Depends(admin_only).
+    Raises:
+        HTTPException: If the email is already registered.
+        HTTPException: If there is an error creating the user.
+    Returns:
+        dict: A dictionary containing a success message and the user ID of the newly created user.
+    """
     """Create a new user. Only admins can create users this way, normmally it requires gitlab authentication."""
 
     # Check if user already exists

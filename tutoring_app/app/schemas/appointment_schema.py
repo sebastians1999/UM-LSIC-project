@@ -21,15 +21,15 @@ class AppointmentBase(BaseModel):
 
 class AppointmentCreate(AppointmentBase):
     """Appointment creation data"""
-    student_id: int
-    tutor_id: int
+    student_id: str  # Changed from int to str for UUID
+    tutor_id: str    # Changed from int to str for UUID
 
 class AppointmentResponse(AppointmentBase):
     """Appointment response data"""
-    id: int
-    student_id: int
-    tutor_id: int
-    created_by: int
+    id: str          # Changed from int to str for UUID
+    student_id: str  # Changed from int to str for UUID 
+    tutor_id: str    # Changed from int to str for UUID
+    created_by: str  # Changed from int to str for UUID
     created_at: datetime
     updated_at: datetime
     status: str

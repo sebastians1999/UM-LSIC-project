@@ -1,10 +1,41 @@
+"""
+Database Models and Configuration Module
+
+This module defines the SQLAlchemy ORM models and database configuration for the tutoring platform.
+It implements a complete data model for managing users, profiles, educational content, and interactions.
+
+Key Components:
+- User Management: Role-based access control with admin, student, and tutor roles
+- Profile System: Separate student and tutor profiles with specific attributes
+- Subject Management: Normalized storage of academic subjects with many-to-many relationships
+- Chat System: Direct messaging between students and tutors
+- Appointment System: Scheduling and management of tutoring sessions
+- Reporting System: User and message reporting functionality
+
+Database Features:
+- UUID-based primary keys for enhanced security
+- Proper relationship definitions with cascading deletes
+- Indexed columns for performance optimization
+- Data integrity constraints
+- Connection pooling
+
+Usage:
+    from database.database import User, get_db
+    
+    @app.get("/users/{user_id}")
+    def get_user(user_id: str, db: Session = Depends(get_db)):
+        return User.get_by_id(db, user_id)
+"""
+
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey, Enum, Index, CheckConstraint, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 from datetime import datetime
+import uuid
 from passlib.context import CryptContext
 from config import get_settings
 import enum
 import re
+from typing import Optional
 
 """
 Database models for the tutoring platform.
@@ -17,15 +48,65 @@ Base = declarative_base()
 
 # Enum for user roles
 class UserRole(enum.Enum):
+    """
+    Enumeration of possible user roles.
+
+    Attributes:
+        ADMIN: System administrator with full access
+        STUDENT: Student user seeking tutoring
+        TUTOR: Tutor user providing tutoring services
+    """
     ADMIN = "ADMIN"
     STUDENT = "STUDENT"
     TUTOR = "TUTOR"
+
+def is_valid_uuid(uuid_str: str) -> bool:
+    """
+    Validate that a string matches UUID format.
+
+    Performs format validation without trying to parse the UUID if basic checks fail.
+    
+    Args:
+        uuid_str (str): String to validate as UUID
+
+    Returns:
+        bool: True if string is a valid UUID format, False otherwise
+        
+    Example:
+        >>> is_valid_uuid("123e4567-e89b-12d3-a456-426614174000")
+        True
+        >>> is_valid_uuid("invalid-uuid")
+        False
+    """
+    if not uuid_str:
+        return False
+    try:
+        # Validate length and format
+        if len(uuid_str) != 36:
+            return False
+        # Try to parse as UUID to validate format
+        uuid_obj = uuid.UUID(uuid_str)
+        return str(uuid_obj) == uuid_str.lower()
+    except (ValueError, AttributeError, TypeError):
+        return False
+
+def generate_uuid() -> str:
+    """
+    Generate a new UUID string.
+
+    Returns:
+        str: Lowercase string representation of a UUID4
+
+    Note:
+        Used as default value for model primary keys
+    """
+    return str(uuid.uuid4()).lower()
 
 # Subject Model for normalized subject storage
 class Subject(Base):
     """Represents academic subjects that can be taught/studied."""
     __tablename__ = 'subjects'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
     name = Column(String(100), nullable=False, unique=True)
     
     def __repr__(self):
@@ -33,21 +114,42 @@ class Subject(Base):
 
 # Junction table for student-subject relationship
 student_subjects = Table('student_subjects', Base.metadata,
-    Column('student_profile_id', Integer, ForeignKey('student_profiles.id', ondelete='CASCADE'), primary_key=True),
-    Column('subject_id', Integer, ForeignKey('subjects.id', ondelete='CASCADE'), primary_key=True)
+    Column('student_profile_id', String(36), ForeignKey('student_profiles.id', ondelete='CASCADE'), primary_key=True),
+    Column('subject_id', String(36), ForeignKey('subjects.id', ondelete='CASCADE'), primary_key=True)
 )
 
 # Junction table for tutor-expertise relationship
 tutor_expertise = Table('tutor_expertise', Base.metadata,
-    Column('tutor_profile_id', Integer, ForeignKey('tutor_profiles.id', ondelete='CASCADE'), primary_key=True),
-    Column('subject_id', Integer, ForeignKey('subjects.id', ondelete='CASCADE'), primary_key=True)
+    Column('tutor_profile_id', String(36), ForeignKey('tutor_profiles.id', ondelete='CASCADE'), primary_key=True),
+    Column('subject_id', String(36), ForeignKey('subjects.id', ondelete='CASCADE'), primary_key=True)
 )
 
 # User Model
 class User(Base):
-    """User model with role-based access control and profile relationships."""
+    """
+    User model with role-based access control and profile relationships.
+
+    This is the core user model that handles authentication and authorization.
+    Each user can have either a student or tutor profile, but not both.
+
+    Attributes:
+        id (str): UUID primary key
+        role (UserRole): User's role in the system
+        email (str): Unique email address
+        name (str): User's display name
+        created_at (datetime): Account creation timestamp
+        updated_at (datetime): Last update timestamp
+        is_banned_until (datetime): Optional ban expiration time
+
+    Relationships:
+        student_profile: One-to-one with StudentProfile
+        tutor_profile: One-to-one with TutorProfile
+        chats_as_student: One-to-many with Chat (as student)
+        chats_as_tutor: One-to-many with Chat (as tutor)
+        messages_sent: One-to-many with Message
+    """
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
     role = Column(Enum(UserRole), nullable=False)  # Use Enum for role
     email = Column(String(255), unique=True, nullable=False, index=True)  # Email should be unique and indexed
     #password = Column(String(255), nullable=False)  # Store hashed passwords
@@ -81,6 +183,18 @@ class User(Base):
         cascade='all, delete-orphan'
     )
 
+    @classmethod
+    def get_by_id(cls, db, user_id: str) -> Optional['User']:
+        """Get user by UUID string."""
+        if not is_valid_uuid(user_id):
+            return None
+        return db.query(cls).filter(cls.id == user_id).first()
+    
+    @property
+    def uuid(self) -> str:
+        """Get UUID as string."""
+        return str(self.id)
+
     #def set_password(self, password: str):
         #"""Hash and set the user's password."""
         #self.password = pwd_context.hash(password)
@@ -97,8 +211,8 @@ class User(Base):
 class StudentProfile(Base):
     """Student profile with normalized subject relationships."""
     __tablename__ = 'student_profiles'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False, unique=True)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, unique=True)
     grade_level = Column(String(20), nullable=False)
     availability = Column(String(255), nullable=False)
     bio = Column(Text)
@@ -109,6 +223,10 @@ class StudentProfile(Base):
     # Relationships
     user = relationship("User", back_populates="student_profile", lazy='joined')
 
+    @property
+    def uuid(self) -> str:
+        return str(self.id)
+
     def __repr__(self):
         """String representation of the StudentProfile object."""
         return f"<StudentProfile(id={self.id}, user_id={self.user_id}, grade_level={self.grade_level})>"
@@ -117,8 +235,8 @@ class StudentProfile(Base):
 class TutorProfile(Base):
     """Tutor profile with expertise and rating system."""
     __tablename__ = 'tutor_profiles'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False, unique=True)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False, unique=True)
     hourly_rate = Column(Float, nullable=False)
     availability = Column(String(255), nullable=False)
     bio = Column(Text, nullable=False)
@@ -137,6 +255,10 @@ class TutorProfile(Base):
     # Relationships
     user = relationship("User", back_populates="tutor_profile", lazy='joined')
 
+    @property
+    def uuid(self) -> str:
+        return str(self.id)
+
     def __repr__(self):
         """String representation of the TutorProfile object."""
         return f"<TutorProfile(id={self.id}, user_id={self.user_id}, expertise={self.expertise})>"
@@ -144,9 +266,9 @@ class TutorProfile(Base):
 # Chat Model
 class Chat(Base):
     __tablename__ = 'chats'
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    tutor_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    student_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    tutor_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
 
@@ -176,9 +298,9 @@ class Chat(Base):
 # Message Model
 class Message(Base):
     __tablename__ = 'messages'
-    id = Column(Integer, primary_key=True)
-    chat_id = Column(Integer, ForeignKey('chats.id'), nullable=False)
-    sender_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    chat_id = Column(String(36), ForeignKey('chats.id', ondelete='CASCADE'), nullable=False)
+    sender_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     content = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.now, nullable=False)
     is_deleted = Column(Boolean, default=False, nullable=False)
@@ -200,14 +322,14 @@ class Message(Base):
 # Appointment Model
 class Appointment(Base):
     __tablename__ = 'appointments'
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    tutor_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    student_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    tutor_id = Column(String(36), ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     topic = Column(Text, nullable=False)
     date = Column(DateTime, nullable=False)
     duration = Column(Integer, default=60, nullable=False) # Duration in minutes
     status = Column(String, default="pending", nullable=False)  # 'pending', 'scheduled', 'completed', 'cancelled'
-    created_by = Column(Integer, ForeignKey('users.id'), nullable=False) # User who created the appointment
+    created_by = Column(String(36), ForeignKey('users.id'), nullable=False) # User who created the appointment
 
     # Relationships
     student = relationship("User", foreign_keys=[student_id], lazy='joined')
@@ -219,10 +341,10 @@ class Appointment(Base):
 
 class MessageReport(Base):
     __tablename__ = 'message_reports'
-    id = Column(Integer, primary_key=True)
-    message_id = Column(Integer, ForeignKey('messages.id'), nullable=False)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    message_id = Column(String(36), ForeignKey('messages.id'), nullable=False)
     reason = Column(Text, nullable=False)
-    by = Column(Integer, ForeignKey('users.id'), nullable=False)
+    by = Column(String(36), ForeignKey('users.id'), nullable=False)
     created_at = Column(DateTime, default=datetime.now, nullable=False)
 
     # Relationships
@@ -234,10 +356,10 @@ class MessageReport(Base):
 
 class UserReport(Base):
     __tablename__ = 'user_reports'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    id = Column(String(36), primary_key=True, default=generate_uuid)
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False)
     reason = Column(Text, nullable=False)
-    by = Column(Integer, ForeignKey('users.id'), nullable=False)
+    by = Column(String(36), ForeignKey('users.id'), nullable=False)
     created_at = Column(DateTime, default=datetime.now, nullable=False)
 
     # Relationships

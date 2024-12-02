@@ -5,8 +5,8 @@ from typing import List
 
 class MessageResponse(BaseModel):
     """Message response data"""
-    id: int
-    chat_id: int
+    id: str  # Changed from int
+    chat_id: str  # Changed from int
     sender: UserResponse
     content: str
     timestamp: datetime
@@ -17,7 +17,7 @@ class MessageResponse(BaseModel):
 
 class ChatResponse(BaseModel):
     """Chat response data. A chat is a conversation between a student and tutor and is like a container for messages."""
-    id: int
+    id: str  # Changed from int
     student: UserResponse
     tutor: UserResponse
     created_at: datetime
@@ -29,18 +29,18 @@ class ChatResponse(BaseModel):
 
 class MessageDeletedReponse(BaseModel):
     """Chat deleted response data"""
-    message_id: int
+    message_id: str  # Changed from int
     message: str
 
 class MessageSentResponse(BaseModel):
     """Message sent response data"""
-    message_id: int
-    chat_id: int
+    message_id: str  # Changed from int
+    chat_id: str  # Changed from int
     message: str
 
 class BanUserReponse(BaseModel):
     """Ban user response data"""
-    user_id: int
+    user_id: str  # Changed from int
     banned_until: datetime
-    issued_by: int # Admin ID
+    issued_by: str  # Changed from int
     message: str

@@ -1,3 +1,7 @@
+"""
+Authentication router handling OAuth2 login flow with GitLab, user signup, token refresh and logout.
+Implements JWT token based authentication with access and refresh tokens.
+"""
 from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter, Header
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse
@@ -124,14 +128,15 @@ def create_access_token(user_id: int, name: str, email: str, role: str, refresh_
     }
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-def create_refresh_token(user_id : int) -> Tuple[str, str]:
+def create_refresh_token(user_id: str) -> Tuple[str, str]:  # Changed from int to str
     """Create a refresh token. Returns the token and the token id"""
-
-    # Generate uuid for refresh token
     token_id = str(uuid.uuid4())
-
-    to_encode = {"sub": str(user_id), "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS), "refresh": True, "token_id": token_id}
-
+    to_encode = {
+        "sub": user_id,  # No need to convert to str since it's already a string UUID
+        "exp": datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS),
+        "refresh": True,
+        "token_id": token_id
+    }
     # Store the refresh token
     refresh_token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
@@ -143,13 +148,13 @@ def create_refresh_token(user_id : int) -> Tuple[str, str]:
 
     return refresh_token, token_id
 
-def create_signup_token(user_id: int, name: str, email: str, role: str, expires_in=5):
+def create_signup_token(user_id: str, name: str, email: str, role: str, expires_in=5):  # Changed from int
     """Create a JWT token for new users to sign up"""
     to_encode = {
-        "sub": user_id,
+        "sub": user_id,  # Already a string, no conversion needed
         "name": name,
         "email": email,
-        "role": role.value if isinstance(role, UserRole) else role,  # Convert UserRole to string
+        "role": role.value if isinstance(role, UserRole) else role,
         "logged_in": False,
         "exp": datetime.utcnow() + timedelta(minutes=expires_in)
     }
@@ -199,7 +204,7 @@ async def refresh_token(request: Request, db = Depends(get_db), payload : Decode
 async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
     """Login endpoint"""
     # Fetch user info using the token with the gitlab object
-    if gitlab_token:
+    if (gitlab_token):
         user_info = get_gitlab_user_data(gitlab_token)
 
         role = role_from_gitlab_group(user_info['groups'])

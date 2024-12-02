@@ -5,8 +5,10 @@ from routers.authentication import limiter
 from auth_tools import get_current_user
 from logger import logger
 from schemas.authentication_schema import DecodedAccessToken
+from config import get_settings
 
 router = APIRouter(prefix='/support')
+USE_REDIS = get_settings().use_redis
 
 @router.post('/support/contact')
 @limiter.limit("5/minute")

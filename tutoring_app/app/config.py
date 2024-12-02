@@ -54,7 +54,7 @@ class Settings(BaseSettings):
     db_url: str = "sqlite:///new_db.db" # Default, for local development
 
     # Redis settings
-    use_redis: bool = True # Default to not using Redis, change this to True if you have a Redis server set up
+    use_redis: bool = False # Default to not using Redis, change this to True if you have a Redis server set up
     redis_host: str = "localhost"
     redis_port: int = 6379
     redis_password: Optional[str] = None

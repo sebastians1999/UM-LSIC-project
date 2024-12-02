@@ -12,8 +12,11 @@ from schemas.user_schema import UserCreate, UserResponse
 import logging
 from database.redis import redis_client
 import json
+from config import get_settings  # Add the missing import for get_settings
+
 #hi
 router = APIRouter(prefix='/admin')
+USE_REDIS = get_settings().use_redis
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -28,11 +31,12 @@ async def admin_dashboard(
     db: Session = Depends(get_db),
     _=Depends(admin_only)
 ):
-    cache_key = "admin_dashboard_data"
-    cached_data = redis_client.get_cache(cache_key)
-    if cached_data:
-        print('Returning cached data')
-        return json.loads(cached_data)
+    if USE_REDIS:
+        cache_key = "admin_dashboard_data"
+        cached_data = redis_client.get_cache(cache_key)
+        if cached_data:
+            print('Returning cached data')
+            return json.loads(cached_data)
 
     # Fetch admin dashboard data
     user_count = db.query(User).count()
@@ -44,17 +48,17 @@ async def admin_dashboard(
         "chat_count": chat_count,
         "appointment_count": appointment_count
     }
-
-    redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
-
+    if USE_REDIS:
+        redis_client.set_cache(cache_key, json.dumps(data, default=str), expiration=600)  # Cache for 10 minutes
+    
     return data
 
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)
-def get_chat_messages(request: Request, chatID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def get_chat_messages(request: Request, chatID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
     return get_chat_with_messages(db, chatID)
 
 @router.delete('/chats/delete/{messageID}', response_model=MessageDeletedReponse)
-def delete_chat_message(request: Request, messageID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def delete_chat_message(request: Request, messageID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
     # Delete a specific message in a chat
     message = db.query(Message).filter(Message.id == messageID).first()
     if not message:
@@ -64,7 +68,7 @@ def delete_chat_message(request: Request, messageID: int, db: Session = Depends(
     return {"message_id" : messageID, "message": f"Message {messageID} deleted"}
 
 @router.post('/chats/{chatID}/messages', response_model=MessageSentResponse)
-def send_chat_message(request: Request, chatID: int, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+def send_chat_message(request: Request, chatID: str, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
     # Send a message to a specific chat
     message = Message(
         chat_id=chatID,
@@ -86,7 +90,7 @@ def get_reports(request: Request, db: Session = Depends(get_db), _=Depends(admin
 
 @router.get('/reports/{reportID}', response_model=MessageResponse)
 @limiter.limit("10/minute")  # Add rate limiting
-def get_report(request: Request, reportID: int, db: Session = Depends(get_db), _=Depends(admin_only)):
+def get_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int to str
     # Retrieve detailed information about a specific report
     report = db.query(Message).filter(Message.id == reportID, Message.is_deleted == True).first()
     if not report:
@@ -101,11 +105,11 @@ def get_all_users(db: Session = Depends(get_db), _=Depends(admin_only)):
 
 @router.get('/{id}', response_model=UserResponse)
 @limiter.limit("10/minute")
-def get_user(request: Request, id: int, db: Session = Depends(get_db), _=Depends(admin_only)):
-    return get_user_by_id(db, id)
+def get_user(request: Request, id: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
+    return User.get_by_id(db, id)  # Use get_by_id method
 
 @router.post('/users/{userID}/ban', response_model=BanUserReponse)
-def ban_user(request: Request, userID: int, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):
+def ban_user(request: Request, userID: str, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):  # Changed from int to str
     user = get_user_by_id(db, userID)
     user.is_banned_until = ban_until
     db.commit()
@@ -115,7 +119,7 @@ def ban_user(request: Request, userID: int, ban_until: datetime, db: Session = D
 @limiter.limit("3/minute")
 def delete_user(
     request: Request,
-    userID: int,
+    userID: str,  # Changed from int to str
     db: Session = Depends(get_db),
     current_user: dict = Depends(admin_only)
 ):

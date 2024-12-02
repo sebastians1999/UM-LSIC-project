@@ -1,3 +1,32 @@
+"""
+Database Models and Configuration Module
+
+This module defines the SQLAlchemy ORM models and database configuration for the tutoring platform.
+It implements a complete data model for managing users, profiles, educational content, and interactions.
+
+Key Components:
+- User Management: Role-based access control with admin, student, and tutor roles
+- Profile System: Separate student and tutor profiles with specific attributes
+- Subject Management: Normalized storage of academic subjects with many-to-many relationships
+- Chat System: Direct messaging between students and tutors
+- Appointment System: Scheduling and management of tutoring sessions
+- Reporting System: User and message reporting functionality
+
+Database Features:
+- UUID-based primary keys for enhanced security
+- Proper relationship definitions with cascading deletes
+- Indexed columns for performance optimization
+- Data integrity constraints
+- Connection pooling
+
+Usage:
+    from database.database import User, get_db
+    
+    @app.get("/users/{user_id}")
+    def get_user(user_id: str, db: Session = Depends(get_db)):
+        return User.get_by_id(db, user_id)
+"""
+
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey, Enum, Index, CheckConstraint, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 from datetime import datetime
@@ -19,12 +48,36 @@ Base = declarative_base()
 
 # Enum for user roles
 class UserRole(enum.Enum):
+    """
+    Enumeration of possible user roles.
+
+    Attributes:
+        ADMIN: System administrator with full access
+        STUDENT: Student user seeking tutoring
+        TUTOR: Tutor user providing tutoring services
+    """
     ADMIN = "ADMIN"
     STUDENT = "STUDENT"
     TUTOR = "TUTOR"
 
 def is_valid_uuid(uuid_str: str) -> bool:
-    """Validate UUID string format."""
+    """
+    Validate that a string matches UUID format.
+
+    Performs format validation without trying to parse the UUID if basic checks fail.
+    
+    Args:
+        uuid_str (str): String to validate as UUID
+
+    Returns:
+        bool: True if string is a valid UUID format, False otherwise
+        
+    Example:
+        >>> is_valid_uuid("123e4567-e89b-12d3-a456-426614174000")
+        True
+        >>> is_valid_uuid("invalid-uuid")
+        False
+    """
     if not uuid_str:
         return False
     try:
@@ -38,7 +91,15 @@ def is_valid_uuid(uuid_str: str) -> bool:
         return False
 
 def generate_uuid() -> str:
-    """Generate a string UUID."""
+    """
+    Generate a new UUID string.
+
+    Returns:
+        str: Lowercase string representation of a UUID4
+
+    Note:
+        Used as default value for model primary keys
+    """
     return str(uuid.uuid4()).lower()
 
 # Subject Model for normalized subject storage
@@ -65,7 +126,28 @@ tutor_expertise = Table('tutor_expertise', Base.metadata,
 
 # User Model
 class User(Base):
-    """User model with role-based access control and profile relationships."""
+    """
+    User model with role-based access control and profile relationships.
+
+    This is the core user model that handles authentication and authorization.
+    Each user can have either a student or tutor profile, but not both.
+
+    Attributes:
+        id (str): UUID primary key
+        role (UserRole): User's role in the system
+        email (str): Unique email address
+        name (str): User's display name
+        created_at (datetime): Account creation timestamp
+        updated_at (datetime): Last update timestamp
+        is_banned_until (datetime): Optional ban expiration time
+
+    Relationships:
+        student_profile: One-to-one with StudentProfile
+        tutor_profile: One-to-one with TutorProfile
+        chats_as_student: One-to-many with Chat (as student)
+        chats_as_tutor: One-to-many with Chat (as tutor)
+        messages_sent: One-to-many with Message
+    """
     __tablename__ = 'users'
     id = Column(String(36), primary_key=True, default=generate_uuid)
     role = Column(Enum(UserRole), nullable=False)  # Use Enum for role

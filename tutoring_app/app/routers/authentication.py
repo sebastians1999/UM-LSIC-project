@@ -1,3 +1,7 @@
+"""
+Authentication router handling OAuth2 login flow with GitLab, user signup, token refresh and logout.
+Implements JWT token based authentication with access and refresh tokens.
+"""
 from fastapi import FastAPI, Depends, HTTPException, Request, APIRouter, Header
 from fastapi.security import OAuth2AuthorizationCodeBearer, OAuth2PasswordBearer
 from fastapi.responses import RedirectResponse

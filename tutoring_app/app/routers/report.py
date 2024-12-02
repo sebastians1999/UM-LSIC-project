@@ -1,3 +1,7 @@
+"""
+Report router handling user and message reporting functionality.
+Allows users to report inappropriate content or users for admin review.
+"""
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List, Union
@@ -12,6 +16,18 @@ USE_REDIS = get_settings().use_redis
 
 @router.post('/message/{messageID}')
 def report_message(request: Request, report: ReportMessage, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+    """
+    Report a message by its ID.
+    Args:
+        request (Request): The HTTP request object.
+        report (ReportMessage): The report details containing the message ID and reason.
+        current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    Raises:
+        HTTPException: If the message with the given ID is not found.
+    Returns:
+        dict: A dictionary containing the report details and the ID of the created message report.
+    """
     message = db.query(Message).filter(Message.id == report.message_id).first()
     if not message:
         raise HTTPException(status_code=404, detail="Message not found")
@@ -29,6 +45,19 @@ def report_message(request: Request, report: ReportMessage, current_user: Decode
 
 @router.post('/user/{userID}')
 def report_user(request: Request, report: ReportUser, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+    def report_user(request: Request, report: ReportUser, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+        """
+        Report a user for a specific reason.
+        Args:
+            request (Request): The HTTP request object.
+            report (ReportUser): The report details including user_id and reason.
+            current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
+            db (Session, optional): The database session. Defaults to Depends(get_db).
+        Raises:
+            HTTPException: If the user to be reported is not found.
+        Returns:
+            dict: A dictionary containing the report details, report ID, and a message indicating the user has been reported.
+        """
     user = db.query(User).filter(User.id == report.user_id).first()
 
     if not user:

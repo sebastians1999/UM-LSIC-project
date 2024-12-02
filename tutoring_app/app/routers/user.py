@@ -1,3 +1,7 @@
+"""
+User router handling user profile management.
+Includes endpoints for updating profiles and managing user-specific data.
+"""
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List, Union

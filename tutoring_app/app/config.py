@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     # Application settings
     app_name: str = "Tutoring App"
     app_version: str = "0.1.0"
+    app_host: str = "localhost"
+    app_port: int = 8000
 
     # Local vs production settings
     local: bool = True # Default to local development
@@ -46,7 +48,7 @@ class Settings(BaseSettings):
     # Gitlab OAuth settings
     gitlab_client_id: str
     gitlab_client_secret: str
-    gitlab_redirect_uri: str = "http://localhost:8000/oauth/gitlab" 
+    gitlab_redirect_uri: str = "http://localhost:8000/auth/callback" 
     gitlab_base_url: str = "https://gitlab.com"
     gitlab_api_url: str = "https://gitlab.com/oauth/userinfo"
 

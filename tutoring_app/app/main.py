@@ -137,4 +137,4 @@ async def shutdown_event():
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app)
+    uvicorn.run(app, host=get_settings().app_host, port=get_settings().app_port)

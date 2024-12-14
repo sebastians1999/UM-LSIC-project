@@ -44,20 +44,15 @@ resource "google_cloud_run_service" "default" {
                             key = "latest"
                         }
                     }
-                }
-            }
-
-            metadata {
                 labels = {
                     "last-deployed" = timestamp() # This will force a new revision
                 }
             }
         }
-    }
-
-    traffic {
+    
         percent         = 100
         latest_revision = true
+        }
     }
 }
 

@@ -63,3 +63,50 @@
 2024-12-02 09:40:53,633 - server - INFO - Server starting up...
 2024-12-02 09:40:57,493 - server - INFO - Request: GET http://127.0.0.1:8000/admin/dashboard
 2024-12-02 09:40:57,561 - server - INFO - Response: 200 - Duration: 0.068s
+2024-12-02 12:21:26,806 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 12:21:27,112 - server - INFO - Server starting up...
+2024-12-02 12:21:28,538 - server - INFO - Request: GET http://localhost:8000/
+2024-12-02 12:21:28,548 - server - INFO - Response: 200 - Duration: 0.010s
+2024-12-02 12:21:28,699 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-12-02 12:21:28,702 - server - INFO - Response: 404 - Duration: 0.003s
+2024-12-02 12:21:28,754 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-12-02 12:21:28,755 - server - INFO - Response: 404 - Duration: 0.001s
+2024-12-02 12:21:32,332 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:21:32,577 - server - INFO - Response: 302 - Duration: 0.245s
+2024-12-02 12:23:21,232 - server - INFO - Server shutting down...
+2024-12-02 12:25:41,186 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 12:25:41,501 - server - INFO - Server starting up...
+2024-12-02 12:25:41,578 - server - INFO - Request: GET http://localhost:8000/
+2024-12-02 12:25:41,578 - server - INFO - Response: 200 - Duration: 0.000s
+2024-12-02 12:25:41,624 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-12-02 12:25:41,626 - server - INFO - Response: 404 - Duration: 0.002s
+2024-12-02 12:25:45,978 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:25:46,239 - server - INFO - Response: 302 - Duration: 0.260s
+2024-12-02 12:25:46,921 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:25:46,942 - server - INFO - Response: 302 - Duration: 0.021s
+2024-12-02 12:25:47,202 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:25:47,219 - server - INFO - Response: 302 - Duration: 0.017s
+2024-12-02 12:38:58,801 - server - INFO - Server shutting down...
+2024-12-02 12:39:12,220 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 12:39:12,505 - server - INFO - Server starting up...
+2024-12-02 12:39:22,796 - server - INFO - Request: GET http://localhost:8000/
+2024-12-02 12:39:22,804 - server - INFO - Response: 200 - Duration: 0.008s
+2024-12-02 12:39:22,953 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-12-02 12:39:22,953 - server - INFO - Response: 404 - Duration: 0.000s
+2024-12-02 12:39:27,484 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:39:27,784 - server - INFO - Response: 302 - Duration: 0.300s
+2024-12-02 12:43:20,146 - server - INFO - Server shutting down...
+2024-12-02 12:43:26,576 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 12:43:26,884 - server - INFO - Server starting up...
+2024-12-02 12:43:34,550 - server - INFO - Request: GET http://localhost:8000/
+2024-12-02 12:43:34,558 - server - INFO - Response: 200 - Duration: 0.008s
+2024-12-02 12:43:34,671 - server - INFO - Request: GET http://localhost:8000/favicon.ico
+2024-12-02 12:43:34,671 - server - INFO - Response: 404 - Duration: 0.000s
+2024-12-02 12:43:37,551 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:43:37,809 - server - INFO - Response: 302 - Duration: 0.258s
+2024-12-02 12:43:58,641 - server - INFO - Server shutting down...
+2024-12-02 12:45:52,039 - server - INFO - GitLab OAuth initialized successfully
+2024-12-02 12:45:52,333 - server - INFO - Server starting up...
+2024-12-02 12:46:00,197 - server - INFO - Request: GET http://localhost:8000/auth/login
+2024-12-02 12:46:00,482 - server - INFO - Response: 302 - Duration: 0.285s
+2024-12-02 12:57:38,885 - server - INFO - Server shutting down...

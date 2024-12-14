@@ -277,7 +277,7 @@ async def auth_callback(request: Request, db = Depends(get_db)):
         return {"access_token": access_token, "refresh_token" : refresh_token, "token_type": "bearer", "status": "logged_in"}
 
     # If the user does not exist, provide the client with a one time token to create an account
-    token = create_access_token(user_data.sub, user_data.name, user_data.email, role)
+    token = create_signup_token(user_data['sub'], user_data['name'], user_data['email'], role)
 
     return {'message': 'New user, sign up required.',
             'status': 'signup_required',

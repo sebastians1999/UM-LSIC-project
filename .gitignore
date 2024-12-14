@@ -13,3 +13,12 @@ __pycache__/
 
 # JetBrains
 .idea/
+
+# Secrets
+secrets/
+
+# Terraform
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+.terraform/ 

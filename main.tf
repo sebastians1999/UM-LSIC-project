@@ -3,7 +3,7 @@ resource "google_cloud_run_service" "default" {
     location = "europe-west1"
 
     metadata {
-        namespace = "lsit-tutorapp" # Project ID
+    namespace = "lsit-tutorapp" # Project ID
     }
 
     template {
@@ -44,15 +44,14 @@ resource "google_cloud_run_service" "default" {
                             key = "latest"
                         }
                     }
-                labels = {
-                    "last-deployed" = timestamp() # This will force a new revision
                 }
             }
         }
-    
+    }
+
+    traffic {
         percent         = 100
         latest_revision = true
-        }
     }
 }
 

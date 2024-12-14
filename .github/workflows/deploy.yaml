@@ -4,7 +4,7 @@ name: Deploy to Google Cloud Run
 on:
   push:
     branches:
-      - main-deployment-merge  # Adjust the branch as needed
+      - main  # Adjust the branch as needed
 
 jobs:
   deploy:

@@ -107,20 +107,19 @@ def delete_chat_message(request: Request, messageID: str, db: Session = Depends(
 
 @router.post('/chats/{chatID}/messages', response_model=MessageSentResponse)
 def send_chat_message(request: Request, chatID: str, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
-    def send_chat_message(request: Request, chatID: str, content: str, db: Session = Depends(get_db), _=Depends(admin_only)):
-        """
-        Sends a message to a specific chat.
+    """
+    Sends a message to a specific chat.
 
-        Args:
-            request (Request): The request object.
-            chatID (str): The ID of the chat to which the message will be sent.
-            content (str): The content of the message to be sent.
-            db (Session, optional): The database session dependency. Defaults to Depends(get_db).
-            _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+    Args:
+        request (Request): The request object.
+        chatID (str): The ID of the chat to which the message will be sent.
+        content (str): The content of the message to be sent.
+        db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+        _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
 
-        Returns:
-            dict: A dictionary containing the message ID, chat ID, and a confirmation message.
-        """
+    Returns:
+        dict: A dictionary containing the message ID, chat ID, and a confirmation message.
+    """
     # Send a message to a specific chat
     message = Message(
         chat_id=chatID,
@@ -195,37 +194,35 @@ def get_all_users(db: Session = Depends(get_db), _=Depends(admin_only)):
 @router.get('/{id}', response_model=UserResponse)
 @limiter.limit("10/minute")
 def get_user(request: Request, id: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
-    def get_user(request: Request, id: str, db: Session = Depends(get_db), _=Depends(admin_only)):
-        """
-        Retrieve a user by their ID.
+    """
+    Retrieve a user by their ID.
 
-        Args:
-            request (Request): The request object.
-            id (str): The ID of the user to retrieve.
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-            _ (Depends, optional): Dependency to ensure the user has admin privileges. Defaults to Depends(admin_only).
+    Args:
+        request (Request): The request object.
+        id (str): The ID of the user to retrieve.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        _ (Depends, optional): Dependency to ensure the user has admin privileges. Defaults to Depends(admin_only).
 
-        Returns:
-            User: The user object retrieved from the database.
-        """
-    return User.get_by_id(db, id)  # Use get_by_id method
+    Returns:
+        User: The user object retrieved from the database.
+    """
+    return get_user_by_id(db, id) 
 
 @router.post('/users/{userID}/ban', response_model=BanUserReponse)
 def ban_user(request: Request, userID: str, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):  # Changed from int to str
-    def ban_user(request: Request, userID: str, ban_until: datetime, db: Session = Depends(get_db), admin=Depends(admin_only)):
-        """
-        Ban a user until a specified datetime.
+    """
+    Ban a user until a specified datetime.
 
-        Args:
-            request (Request): The request object.
-            userID (str): The ID of the user to be banned.
-            ban_until (datetime): The datetime until which the user is banned.
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-            admin (Admin, optional): The admin issuing the ban. Defaults to Depends(admin_only).
+    Args:
+        request (Request): The request object.
+        userID (str): The ID of the user to be banned.
+        ban_until (datetime): The datetime until which the user is banned.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        admin (Admin, optional): The admin issuing the ban. Defaults to Depends(admin_only).
 
-        Returns:
-            dict: A dictionary containing the user ID, ban expiration datetime, admin ID, and a message.
-        """
+    Returns:
+        dict: A dictionary containing the user ID, ban expiration datetime, admin ID, and a message.
+    """
     user = get_user_by_id(db, userID)
     user.is_banned_until = ban_until
     db.commit()

@@ -67,37 +67,36 @@ async def admin_dashboard(
 @router.get('/chats/{chatID}/messages', response_model=ChatResponse)
 def get_chat_messages(request: Request, chatID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  
     """
-Fetches messages for a specific chat.
+    Fetches messages for a specific chat.
 
-Args:
-    request (Request): The request object.
-    chatID (str): The ID of the chat to fetch messages for.
-    db (Session): The database session dependency.
-    _ (Depends): Dependency to ensure the user is an admin.
+    Args:
+        request (Request): The request object.
+        chatID (str): The ID of the chat to fetch messages for.
+        db (Session): The database session dependency.
+        _ (Depends): Dependency to ensure the user is an admin.
 
-Returns:
-    ChatResponse: The response model containing chat messages.
-"""
+    Returns:
+        ChatResponse: The response model containing chat messages.
+    """
     return get_chat_with_messages(db, chatID)
 
 @router.delete('/chats/delete/{messageID}', response_model=MessageDeletedReponse)
 def delete_chat_message(request: Request, messageID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int
-    def delete_chat_message(request: Request, messageID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
-        """
-        Delete a specific message in a chat.
+    """
+    Delete a specific message in a chat.
 
-        Args:
-            request (Request): The request object.
-            messageID (str): The ID of the message to be deleted.
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-            _ (Depends, optional): Dependency to ensure the user is an admin. Defaults to Depends(admin_only).
+    Args:
+        request (Request): The request object.
+        messageID (str): The ID of the message to be deleted.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        _ (Depends, optional): Dependency to ensure the user is an admin. Defaults to Depends(admin_only).
 
-        Raises:
-            HTTPException: If the message with the given ID is not found.
+    Raises:
+        HTTPException: If the message with the given ID is not found.
 
-        Returns:
-            dict: A dictionary containing the message ID and a confirmation message.
-        """
+    Returns:
+        dict: A dictionary containing the message ID and a confirmation message.
+    """
     # Delete a specific message in a chat
     message = db.query(Message).filter(Message.id == messageID).first()
     if not message:

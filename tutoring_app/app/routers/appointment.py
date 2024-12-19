@@ -18,7 +18,7 @@ from config import get_settings
 USE_REDIS = get_settings().use_redis
 router = APIRouter(prefix='/appointments')
 
-### The way I want to set up appointments is as follows:
+### The way we set up appointments is as follows:
 ### - A user (student or tutor) can schedule a meeting with another user
 ###      by providing the other user's ID, the topic of the meeting, and the date.
 ### - The meeting is then added to the database with a status of "pending".
@@ -193,23 +193,22 @@ def get_meeting(
 
 @router.patch('/update/{meetingID}', response_model=AppointmentResponse)
 def update_meeting(request: Request, meetingID: str, topic: str = None, date: datetime = None, status: str = None, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
-    def update_meeting(request: Request, meetingID: str, topic: str = None, date: datetime = None, status: str = None, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-        """
-        Update details of a specific meeting.
-        Args:
-            request (Request): The request object.
-            meetingID (str): The ID of the meeting to update.
-            topic (str, optional): The new topic of the meeting. Defaults to None.
-            date (datetime, optional): The new date of the meeting. Defaults to None.
-            status (str, optional): The new status of the meeting. Defaults to None.
-            current_user (DecodedAccessToken): The current authenticated user. Defaults to Depends(get_current_user).
-            db (Session): The database session. Defaults to Depends(get_db).
-        Raises:
-            HTTPException: If the user is not authorized to update the meeting.
-            HTTPException: If the meeting is not found.
-        Returns:
-            Appointment: The updated appointment object.
-        """
+    """
+    Update details of a specific meeting.
+    Args:
+        request (Request): The request object.
+        meetingID (str): The ID of the meeting to update.
+        topic (str, optional): The new topic of the meeting. Defaults to None.
+        date (datetime, optional): The new date of the meeting. Defaults to None.
+        status (str, optional): The new status of the meeting. Defaults to None.
+        current_user (DecodedAccessToken): The current authenticated user. Defaults to Depends(get_current_user).
+        db (Session): The database session. Defaults to Depends(get_db).
+    Raises:
+        HTTPException: If the user is not authorized to update the meeting.
+        HTTPException: If the meeting is not found.
+    Returns:
+        Appointment: The updated appointment object.
+    """
     # Update details of a specific meeting
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
 
@@ -238,20 +237,19 @@ def update_meeting(request: Request, meetingID: str, topic: str = None, date: da
 
 @router.delete('/cancel/{meetingID}', response_model=AppointmentResponse)
 def cancel_meeting(request: Request, meetingID: str, current_user:DecodedAccessToken=Depends(get_current_user), db: Session = Depends(get_db)):
-    def cancel_meeting(request: Request, meetingID: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-        """
-        Cancel a specific meeting.
-        Args:
-            request (Request): The request object.
-            meetingID (str): The ID of the meeting to be canceled.
-            current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-        Raises:
-            HTTPException: If the user is not authorized to cancel the meeting.
-            HTTPException: If the meeting is not found.
-        Returns:
-            Appointment: The canceled appointment object.
-        """
+    """
+    Cancel a specific meeting.
+    Args:
+        request (Request): The request object.
+        meetingID (str): The ID of the meeting to be canceled.
+        current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    Raises:
+        HTTPException: If the user is not authorized to cancel the meeting.
+        HTTPException: If the meeting is not found.
+    Returns:
+        Appointment: The canceled appointment object.
+    """
     appointment = db.query(Appointment).filter(Appointment.id == meetingID).first()
 
     # Check if the user is authorized to cancel the meeting

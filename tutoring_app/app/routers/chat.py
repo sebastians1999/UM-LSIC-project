@@ -146,3 +146,52 @@ def send_message(
         logger.error(f"Error sending message in chat {chatID}: {str(e)}")
         db.rollback()
         raise HTTPException(status_code=500, detail="An error occurred while sending message")
+    
+@router.delete('/{chatID}/messages/{messageID}', response_model=MessageResponse)
+def delete_message(
+        chatID: str,
+        messageID: str,
+        current_user: DecodedAccessToken = Depends(get_current_user),
+        db: Session = Depends(get_db)
+    ):
+        """
+        Delete a message in an existing chat.
+
+        Args:
+            chatID (str): The ID of the chat containing the message.
+            messageID (str): The ID of the message to delete.
+            current_user (DecodedAccessToken): The current authenticated user.
+            db (Session): The database session dependency.
+
+        Returns:
+            Message: The deleted message details.
+
+        Raises:
+            HTTPException: If the chat ID or message ID format is invalid, or if an error occurs while deleting the message.
+        """
+        if not is_valid_uuid(chatID) or not is_valid_uuid(messageID):
+            raise HTTPException(status_code=400, detail="Invalid chat ID or message ID format")
+        
+        message = db.query(Message).filter(Message.id == messageID, Message.chat_id == chatID).first()
+        if not message:
+            raise HTTPException(status_code=404, detail="Message not found")
+        
+        # Verify user has access to delete this message
+        if message.sender_id != current_user.sub:
+            raise HTTPException(status_code=403, detail="Access denied")
+        
+        try:
+            db.delete(message)
+            db.commit()
+            
+            # Invalidate cache after deleting a message
+            if USE_REDIS:
+                redis_client.delete_cache(f"chat_{chatID}")
+                redis_client.delete_cache(f"chats_{current_user.sub}")
+            
+            return message
+        except Exception as e:
+            logger.error(f"Error deleting message {messageID} in chat {chatID}: {str(e)}")
+            db.rollback()
+            raise HTTPException(status_code=500, detail="An error occurred while deleting message")
+

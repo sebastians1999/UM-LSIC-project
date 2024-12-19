@@ -309,7 +309,7 @@ def create_user(request: Request, user_data: UserCreate, db: Session = Depends(g
     
 @router.delete('/reports/{reportID}', response_model=MessageResponse)
 @limiter.limit("10/minute")  # Add rate limiting
-def delete_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+def delete_report(request: Request, reportID: str, db: Session = Depends(get_db), admin=Depends(admin_only)):
     """
     Delete a specific report by ID.
 
@@ -317,7 +317,7 @@ def delete_report(request: Request, reportID: str, db: Session = Depends(get_db)
         request (Request): The request object.
         reportID (str): The ID of the report to delete.
         db (Session, optional): The database session dependency. Defaults to Depends(get_db).
-        _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+        admin (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
 
     Raises:
         HTTPException: If the report is not found or an error occurs during deletion.
@@ -331,6 +331,7 @@ def delete_report(request: Request, reportID: str, db: Session = Depends(get_db)
             raise HTTPException(status_code=404, detail="Report not found")
         db.delete(report)
         db.commit()
+        logger.info(f"Report {reportID} deleted by admin {admin.id}")
         return {"message": f"Report {reportID} deleted"}
     except Exception as e:
         logger.error(f"Error deleting report {reportID}: {str(e)}")

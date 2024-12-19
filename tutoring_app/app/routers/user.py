@@ -101,3 +101,39 @@ def submit_rating(request: Request, user_id: str, rating: float, review: str, cu
     user.tutor_profile.total_reviews += 1
     db.commit()
     return {"message": "Rating submitted"}
+
+#TODO: someone needs to review if this is correct
+@router.get('/tutors', response_model=List[TutorProfileResponse])
+def get_tutors(
+        request: Request,
+        subjects: Union[str, None] = None,
+        min_rating: Union[float, None] = None,
+        max_hourly_rate: Union[float, None] = None,
+        current_user: DecodedAccessToken = Depends(require_roles(UserRole.STUDENT)),
+        db: Session = Depends(get_db)
+    ):
+        """
+        Get a list of tutors based on specific filters.
+        
+        Parameters:
+        - subjects: Filter by subjects (comma-separated string)
+        - min_rating: Minimum rating of the tutor
+        - max_hourly_rate: Maximum hourly rate of the tutor
+        
+        Returns:
+        - List of tutors matching the filters
+        """
+        query = db.query(User).filter(User.role == UserRole.TUTOR)
+
+        if subjects:
+            subject_list = subjects.split(',')
+            query = query.filter(User.tutor_profile.subjects.any(subject in subject_list for subject in User.tutor_profile.subjects))
+
+        if min_rating:
+            query = query.filter(User.tutor_profile.rating >= min_rating)
+
+        if max_hourly_rate:
+            query = query.filter(User.tutor_profile.rate <= max_hourly_rate)
+
+        tutors = query.all()
+        return tutors

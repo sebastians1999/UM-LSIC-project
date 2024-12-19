@@ -10,6 +10,7 @@ from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from authlib.integrations.starlette_client import OAuth
 from typing import Union, Optional, Tuple
+from sqlalchemy.orm import Session
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from jose import JWTError, jwt
@@ -78,6 +79,50 @@ REFRESH_TOKEN_EXPIRE_DAYS = get_settings().refresh_token_expire_days
 # This is a simple in-memory store for demonstration purposes, we should replace this with a database
 # like Redis
 refresh_token_store = {}
+
+def verify_localhost(request: Request):
+    """Verify that the request is coming from localhost"""
+    host = request.client.host
+    if host not in ["127.0.0.1", "localhost", "::1"]:
+        raise HTTPException(status_code=403, detail="Forbidden. This endpoint can only be accessed from localhost.")
+
+def create_user_in_db(db: Session, user_data: dict, is_temp_admin: bool = False, replace: bool = False) -> User:
+    """Create a new user in the database using the provided data.
+    If is_temp_admin is True, the user will be created as a temporary admin account,
+    which has the name "Admin" and email "admin@example.com".
+    """
+    if is_temp_admin:
+        user_data = {
+            "name": get_settings().admin_name,
+            "email": get_settings().admin_email,
+            "role": UserRole.ADMIN.name
+        }
+    else:
+        assert 'name' in user_data, "Name is required to create a user"
+        assert 'email' in user_data, "Email is required to create a user"
+        assert 'role' in user_data, "Role is required to create a user"
+        assert 'name' != "Admin", "Name cannot be 'Admin', as it is reserved for temporary admin accounts"
+        assert 'email' != 'admin@example.com', "Email cannot be 'admin@example.com', as it is reserved for temporary admin accounts"
+
+    # Check if the user already exists
+    user = db.query(User).filter(User.email == user_data['email']).first()
+    if user:
+        if not replace:
+            return user # Return the existing user
+        
+        # Remove the existing user
+        db.delete(user)
+        db.commit()
+
+    user = User(
+        name=user_data['name'],
+        email=user_data['email'],
+        role=user_data['role']
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
 
 def role_from_gitlab_group(user_groups: list) -> UserRole:
     group_pre = 'lsit-tutoring-platform/'
@@ -174,6 +219,13 @@ async def refresh_token(request: Request, db = Depends(get_db), payload : Decode
     try:
         if not payload:
             raise HTTPException(status_code=401, detail="Refresh token missing")
+
+        # Check if payload.refresh is not set
+        if "refresh_token_id" not in payload or not payload.refresh_token_id:
+            if payload.role.name == "ADMIN":
+                raise HTTPException(status_code=401, detail="Cannot refresh this token. Refresh token ID missing. This might be because you are using a temporary admin access token.")
+            else:
+                raise HTTPException(status_code=401, detail="Cannot refresh this token. Refresh token ID missing.")
 
         # Validate the refresh token by checking the memory store
         if USE_REDIS:
@@ -296,19 +348,8 @@ def signup(request : Request, token: str, db = Depends(get_db)):
         if user:
             raise HTTPException(status_code=400, detail="User already exists")
 
-        # Create a new user
-        user = User(
-            name=payload['name'],
-            email=payload['email'],
-            role=payload['role'],
-            created_at = datetime.now(),
-            updated_at = datetime.now()
-        )
-
-        # Add the user to the database
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        # Create the user
+        user = create_user_in_db(db, payload)
 
         # Generate a refresh token
         refresh_token, refresh_token_id = create_refresh_token(user.id)
@@ -334,3 +375,25 @@ async def logout(request: Request, user: DecodedAccessToken = Depends(get_curren
         del refresh_token_store[user.refresh_token_id]
     
     return {"message": "Logged out successfully. Refresh token invalidated.", "status": "logged_out"}
+
+@router.get("/generate-admin-token")
+def generate_admin_token(request: Request, response_model=LoggedInResponse, db : Session = Depends(get_db), _ = Depends(verify_localhost)):
+    """
+    Generate a temporary admin token for development purposes.
+    Creates an admin user if it does not exist.
+    Returns an access token associated with the admin user.
+    This endpoint is only available in development, and can only be accessed from localhost.
+    """
+
+    # Only allow this endpoint in development
+    if not get_settings().local:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    # Create a temporary admin account if it does not exist
+    user = create_user_in_db(db, {}, is_temp_admin=True, replace=True)
+
+    # Generate an access token
+    access_token = create_access_token(user.id, user.name, user.email, user.role.name, "") # No refresh token for this type of token
+
+    return {"access_token": access_token, "refresh_token": "", "token_type": "bearer", "status": "logged_in"}
+

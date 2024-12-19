@@ -153,22 +153,21 @@ def get_reports(request: Request, db: Session = Depends(get_db), _=Depends(admin
 @router.get('/reports/{reportID}', response_model=MessageResponse)
 @limiter.limit("10/minute")  # Add rate limiting
 def get_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):  # Changed from int to str
-    def get_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
-        """
-        Retrieve detailed information about a specific report.
+    """
+    Retrieve detailed information about a specific report.
 
-        Args:
-            request (Request): The request object.
-            reportID (str): The ID of the report to retrieve.
-            db (Session, optional): The database session dependency. Defaults to Depends(get_db).
-            _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+    Args:
+        request (Request): The request object.
+        reportID (str): The ID of the report to retrieve.
+        db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+        _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
 
-        Raises:
-            HTTPException: If the report is not found, raises a 404 HTTP exception.
+    Raises:
+        HTTPException: If the report is not found, raises a 404 HTTP exception.
 
-        Returns:
-            dict: A dictionary containing the report details.
-        """
+    Returns:
+        dict: A dictionary containing the report details.
+    """
     # Retrieve detailed information about a specific report
     report = db.query(Message).filter(Message.id == reportID, Message.is_deleted == True).first()
     if not report:
@@ -307,3 +306,33 @@ def create_user(request: Request, user_data: UserCreate, db: Session = Depends(g
         logger.error(f"Error creating user: {str(e)}")
         db.rollback()
         raise HTTPException(status_code=500, detail="Error creating user")
+    
+@router.delete('/reports/{reportID}', response_model=MessageResponse)
+@limiter.limit("10/minute")  # Add rate limiting
+def delete_report(request: Request, reportID: str, db: Session = Depends(get_db), _=Depends(admin_only)):
+    """
+    Delete a specific report by ID.
+
+    Args:
+        request (Request): The request object.
+        reportID (str): The ID of the report to delete.
+        db (Session, optional): The database session dependency. Defaults to Depends(get_db).
+        _ (Depends, optional): The admin-only dependency. Defaults to Depends(admin_only).
+
+    Raises:
+        HTTPException: If the report is not found or an error occurs during deletion.
+
+    Returns:
+        dict: A dictionary containing a success message.
+    """
+    try:
+        report = db.query(Message).filter(Message.id == reportID).first()
+        if not report:
+            raise HTTPException(status_code=404, detail="Report not found")
+        db.delete(report)
+        db.commit()
+        return {"message": f"Report {reportID} deleted"}
+    except Exception as e:
+        logger.error(f"Error deleting report {reportID}: {str(e)}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail="Error deleting report")

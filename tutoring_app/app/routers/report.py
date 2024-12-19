@@ -44,20 +44,19 @@ def report_message(request: Request, report: ReportMessage, current_user: Decode
     return {**report.model_dump(), "id": message_report.id, "message": f"Message {report.message_id} reported"}
 
 @router.post('/user/{userID}')
-def report_user(request: Request, report: ReportUser, current_user:DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-    def report_user(request: Request, report: ReportUser, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-        """
-        Report a user for a specific reason.
-        Args:
-            request (Request): The HTTP request object.
-            report (ReportUser): The report details including user_id and reason.
-            current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-        Raises:
-            HTTPException: If the user to be reported is not found.
-        Returns:
-            dict: A dictionary containing the report details, report ID, and a message indicating the user has been reported.
-        """
+def report_user(request: Request, report: ReportUser, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
+    """
+    Report a user for a specific reason.
+    Args:
+        request (Request): The HTTP request object.
+        report (ReportUser): The report details including user_id and reason.
+        current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    Raises:
+        HTTPException: If the user to be reported is not found.
+    Returns:
+        dict: A dictionary containing the report details, report ID, and a message indicating the user has been reported.
+    """
     user = db.query(User).filter(User.id == report.user_id).first()
 
     if not user:

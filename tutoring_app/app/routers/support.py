@@ -42,6 +42,7 @@ def contact_support(
     try:
         # Log support request
         logger.info(f"Support request from user {current_user.sub}: {message}")
+
         # Here you would typically save to database or send email
         return {"message": "Support request received"}
     except Exception as e:

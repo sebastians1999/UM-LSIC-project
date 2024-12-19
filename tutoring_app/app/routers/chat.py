@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
 from auth_tools import get_current_user
-from database.database import get_db, User, Message, UserRole, is_valid_uuid
+from database.database import get_db, User, Message, UserRole, is_valid_uuid, Chat
 from config import get_settings
 from utilities import get_user_by_id, get_user_chats, get_chat_with_messages
 from schemas.chat_schema import ChatResponse, MessageResponse
@@ -69,22 +69,20 @@ def get_chats(request: Request, current_user=Depends(get_current_user), db: Sess
     return detailed_chats
 
 @router.get('/{chatID}', response_model=ChatResponse)
-def get_chat(request: Request, chatID: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):  # Changed from int to str
-    def get_chat(request: Request, chatID: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):
-        """
-        Retrieve a chat by its ID.
-        Args:
-            request (Request): The request object.
-            chatID (str): The ID of the chat to retrieve.
-            current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
-            db (Session, optional): The database session. Defaults to Depends(get_db).
-        Raises:
-            HTTPException: If the chat ID format is invalid (status code 400).
-            HTTPException: If the chat is not found (status code 404).
-            HTTPException: If the user does not have access to the chat (status code 403).
-        Returns:
-            Chat: The chat object if found and accessible by the user.
-        """
+def get_chat(chatID: str, current_user: DecodedAccessToken = Depends(get_current_user), db: Session = Depends(get_db)):  # Changed from int to str
+    """
+    Retrieve a chat by its ID.
+    Args:
+        chatID (str): The ID of the chat to retrieve.
+        current_user (DecodedAccessToken, optional): The current authenticated user. Defaults to Depends(get_current_user).
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+    Raises:
+        HTTPException: If the chat ID format is invalid (status code 400).
+        HTTPException: If the chat is not found (status code 404).
+        HTTPException: If the user does not have access to the chat (status code 403).
+    Returns:
+        Chat: The chat object if found and accessible by the user.
+    """
     if not is_valid_uuid(chatID):
         raise HTTPException(status_code=400, detail="Invalid chat ID format")
     chat = db.query(Chat).filter(Chat.id == chatID).first()

@@ -69,6 +69,11 @@ class Settings(BaseSettings):
     session_expire_minutes: int = 60
     https_enabled: bool = True
 
+    # Temporary admin account settings
+    admin_name: str = "Admin"
+    admin_email: str = "admin@example.com"
+
+
     # Load settings from .env file
     model_config = SettingsConfigDict(env_file=".env")
 

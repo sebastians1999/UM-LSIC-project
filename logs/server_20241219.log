@@ -1,0 +1,14 @@
+2024-12-19 13:05:10,664 - server - INFO - GitLab OAuth initialized successfully
+2024-12-19 13:05:10,996 - server - INFO - Server starting up...
+2024-12-19 13:06:11,232 - server - INFO - Request: GET http://localhost:8000/auth/generate-admin-token
+2024-12-19 13:06:11,294 - server - ERROR - Error processing request: 'role'
+2024-12-19 13:08:18,642 - server - INFO - Server shutting down...
+2024-12-19 13:08:24,820 - server - INFO - GitLab OAuth initialized successfully
+2024-12-19 13:08:25,133 - server - INFO - Server starting up...
+2024-12-19 13:08:35,268 - server - INFO - Request: GET http://localhost:8000/auth/generate-admin-token
+2024-12-19 13:08:35,349 - server - INFO - Response: 200 - Duration: 0.081s
+2024-12-19 13:08:57,440 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-19 13:08:57,443 - server - ERROR - Error decoding token: Signature verification failed.
+2024-12-19 13:08:57,443 - server - INFO - Response: 401 - Duration: 0.003s
+2024-12-19 13:09:02,183 - server - INFO - Request: GET http://127.0.0.1:8000/auth/secure
+2024-12-19 13:09:02,183 - server - INFO - Response: 200 - Duration: 0.000s

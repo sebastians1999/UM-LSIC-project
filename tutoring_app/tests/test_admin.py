@@ -2,11 +2,10 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.main import app #how do i correctly call the app
-from app.database.database import Base, get_db #how do i correctly call the database
-from app.routers import user #how do i create mock users correctly
+from app.main import app 
+from app.database.database import Base, get_db
+from app.routers.authentication import create_user_in_db, generate_admin_token
 from app.auth_tools import create_access_token, UserRole
-from app.schemas import UserCreate
 
 # Create a test database
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -36,46 +35,18 @@ def test_db():
     yield db
     db.close()
 
-@pytest.fixture(scope="module")
-def admin_user(test_db):
-    # Manually insert an admin user into the database
-    admin = user(
-        email="admin@example.com",
-        hashed_password="hashedpassword",  # This should be a hashed password
-        role=UserRole.ADMIN
-    )
-    test_db.add(admin)
-    test_db.commit()
-    test_db.refresh(admin)
-    return admin
 
-def test_create_user(test_db, admin_user):
-    # Generate a valid access token for the admin user
-    access_token = create_access_token(data={"sub": admin_user.id, "role": UserRole.ADMIN})
+def test_get_users(admin_user):
+    # Generate a valid access token for the admin user using generate_admin_token
+    access_token = generate_admin_token(test_db)
 
-    # Define the new user data
-    new_user_data = {
-        "email": "newuser@example.com",
-        "password": "password123",
-        "name": "New User",
-        "role": "student"
-    }
-
-    # Send a POST request to the create_user endpoint
-    response = client.post(
-        "/users/create",
-        json=new_user_data,
+    # Send a GET request to the get_users endpoint
+    response = client.get(
+        "/users",
         headers={"Authorization": f"Bearer {access_token}"}
     )
-
     # Assert the response status code and content
     assert response.status_code == 200
-    assert response.json()["message"] == "User created successfully"
-    assert "user_id" in response.json()
-
-    # Verify the user was added to the database
-    db_user = test_db.query(User).filter(User.email == new_user_data["email"]).first()
-    assert db_user is not None
-    assert db_user.email == new_user_data["email"]
-    assert db_user.name == new_user_data["name"]
-    assert db_user.role == new_user_data["role"]
+    users = response.json()
+    assert len(users) == 1
+    assert users[0]["role"] == UserRole.ADMIN

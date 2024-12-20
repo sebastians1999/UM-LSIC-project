@@ -5,7 +5,6 @@ from sqlalchemy.orm import sessionmaker
 from app.main import app 
 from app.database.database import Base, get_db
 from app.routers.authentication import create_user_in_db, generate_admin_token
-from app.auth_tools import create_access_token, UserRole
 
 # Create a test database
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -35,16 +34,21 @@ def test_db():
     yield db
     db.close()
 
-
-def test_get_users(test_db):
-    # Generate a valid access token for the admin user using generate_admin_token
-    access_token = generate_admin_token(test_db)
-
-    # Send a GET request to the get_users endpoint
-
-    # Assert the response status code and content
+#now i want to make test that uses generate_admin_token to automatically create an admin user in the test database
+#and then use the token to access the admin-only endpoint /admin/users and get a list of all users and verify that there is onely 1 user
+def test_admin_user_access(test_db):
+    # Generate an admin token, this also automatically creates an admin user in the test database
+    admin_token = generate_admin_token(test_db)
+    
+    # Access the admin-only endpoint
+    response = client.get(
+        "/admin/users",
+        headers={"Authorization": f"Bearer {admin_token}"}
+    )
+    
+    # Verify the response
     assert response.status_code == 200
     users = response.json()
-    response = client.get("/admin/users", headers={"Authorization": f"Bearer {access_token}"})
     assert len(users) == 1
-    assert users[0]["role"] == UserRole.ADMIN
+    assert users[0]["username"] == "admin"
+

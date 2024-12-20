@@ -36,17 +36,15 @@ def test_db():
     db.close()
 
 
-def test_get_users(admin_user):
+def test_get_users(test_db):
     # Generate a valid access token for the admin user using generate_admin_token
     access_token = generate_admin_token(test_db)
 
     # Send a GET request to the get_users endpoint
-    response = client.get(
-        "/users",
-        headers={"Authorization": f"Bearer {access_token}"}
-    )
+
     # Assert the response status code and content
     assert response.status_code == 200
     users = response.json()
+    response = client.get("/admin/users", headers={"Authorization": f"Bearer {access_token}"})
     assert len(users) == 1
     assert users[0]["role"] == UserRole.ADMIN

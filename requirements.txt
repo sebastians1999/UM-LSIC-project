@@ -38,6 +38,7 @@ pydantic-settings==2.6.1
 pydantic_core==2.23.4
 python-dotenv==1.0.1
 python-jose==3.3.0
+pytest==7.0.0
 redis==5.2.0
 requests==2.32.3
 rsa==4.9

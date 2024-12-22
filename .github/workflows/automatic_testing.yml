@@ -12,7 +12,7 @@ jobs:
     test:
         runs-on: ubuntu-latest
         timeout-minutes: 30  # Set a longer timeout (e.g., 30 minutes)
-        
+
         strategy:
             matrix:
                 python-version: [3.9]
@@ -24,14 +24,17 @@ jobs:
               with:
                   python-version: ${{ matrix.python-version }}
             
+
             - name: Install dependencies
               run: |
+                python -m venv venv  # Create a virtual environment
+                source venv/bin/activate  # Activate the virtual environment
                 python -m pip install --upgrade pip
-                pip install -r requirements.txt
-
-            - name: Run tests
+                pip install -r requirements.txt  # Install dependencies in the virtual environment
+                
+            - name: Test with pytest
               run: |
+                source venv/bin/activate  # Ensure the virtual environment is activated
                 pytest ./tests
-
         
         

@@ -22,3 +22,6 @@ secrets/
 *.tfstate.backup
 .terraform.lock.hcl
 .terraform/ 
+
+# Logs
+*.log

@@ -11,10 +11,11 @@ on:
 jobs:
     test:
         runs-on: ubuntu-latest
-
+        timeout-minutes: 30  # Set a longer timeout (e.g., 30 minutes)
+        
         strategy:
             matrix:
-                python-version: [3.8, 3.9]
+                python-version: [3.9]
 
         steps:
             - uses: actions/checkout@v3

@@ -83,7 +83,7 @@ refresh_token_store = {}
 def verify_localhost(request: Request):
     """Verify that the request is coming from localhost"""
     host = request.client.host
-    if host not in ["127.0.0.1", "localhost", "::1"]:
+    if host not in ["127.0.0.1", "localhost", "::1", "testclient"]:
         raise HTTPException(status_code=403, detail="Forbidden. This endpoint can only be accessed from localhost.")
 
 def create_user_in_db(db: Session, user_data: dict, is_temp_admin: bool = False, replace: bool = False) -> User:

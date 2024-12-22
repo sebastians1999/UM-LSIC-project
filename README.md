@@ -40,10 +40,9 @@ A FastAPI-based backend for a tutoring platform that connects students with tuto
 
 5. Inside this environment, navigate to the app folder
 
-6. Create an .env file to declare keys, follow the config.py file for more instructions. When the file is created, make sure it’s in the same directory as the main.py
+6. Optionally, include the environment variables `GITLAB_CLIENT_ID` and `GITLAB_CLIENT_SECRET` for a Gitlab Oauth appliation. This will allow you to access the auth/login and auth/signup endpoints, which use Gitlab as an identity provider.
 
 7. Run main.py in the virtual environment
-
 
 
 ## Endpoint testing
@@ -58,8 +57,8 @@ Endpoint calls:
 
 1. http://localhost:8000/auth/generate-admin-token 
 
-This will return an acess token. This token can then be used as a bearer for the following endpoint. 
+This will return an acess token. This token can then be used as a bearer token in the authorization header of subsequent requests. To verify the token is working as intended, make a GET request to the following endpoint (using the token in the header as described):
 
 2. http://127.0.0.1:8000/auth/secure
 
-Now you have access to secure data.
+This should validate the token and return the data encoded in it.

@@ -48,32 +48,34 @@ GITLAB_API_URL = get_settings().gitlab_api_url
 oauth = None
 gitlab = None
 
-try:
-    config = Config(environ={
-        "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
-        "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
-        "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
-        "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
-    })
-    
-    oauth = OAuth(config)
-    gitlab = oauth.register(
-        name="gitlab",
-        client_id=GITLAB_CLIENT_ID,
-        client_secret=GITLAB_CLIENT_SECRET,
-        server_metadata_url=f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
-        client_kwargs={"scope": "openid profile email read_user"},
-    )
-    logger.info("GitLab OAuth initialized successfully")
-except Exception as e:
-    logger.error(f"Failed to initialize GitLab OAuth: {str(e)}")
-    raise e
+if GITLAB_CLIENT_ID and GITLAB_CLIENT_SECRET:
+    try:
+        config = Config(environ={
+            "GITLAB_CLIENT_ID": GITLAB_CLIENT_ID,
+            "GITLAB_CLIENT_SECRET": GITLAB_CLIENT_SECRET,
+            "GITLAB_SERVER_METADATA_URL": f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+            "GITLAB_REDIRECT_URI": GITLAB_REDIRECT_URI,
+        })
+        
+        oauth = OAuth(config)
+        gitlab = oauth.register(
+            name="gitlab",
+            client_id=GITLAB_CLIENT_ID,
+            client_secret=GITLAB_CLIENT_SECRET,
+            server_metadata_url=f"{GITLAB_BASE_URL}/.well-known/openid-configuration",
+            client_kwargs={"scope": "openid profile email read_user"},
+        )
+        logger.info("GitLab OAuth initialized successfully")
+    except Exception as e:
+        logger.error(f"Failed to initialize GitLab OAuth: {str(e)}")
+        raise e
 
 # Add these constants
 SECRET_KEY = get_settings().secret_key
 ALGORITHM = get_settings().hash_algorithm
 TOKEN_EXPIRE_MINUTES = get_settings().access_token_expire_minutes 
 REFRESH_TOKEN_EXPIRE_DAYS = get_settings().refresh_token_expire_days
+
 
 # Token store
 # This is a simple in-memory store for demonstration purposes, we should replace this with a database
@@ -254,6 +256,9 @@ async def refresh_token(request: Request, db = Depends(get_db), payload : Decode
 @router.get("/login", response_model=Union[LoggedInResponse, SignUpResponse, None])
 @limiter.limit("10/minute")
 async def login(request: Request, gitlab_token = Depends(get_gitlab_token), db = Depends(get_db)):
+    if not GITLAB_CLIENT_ID or not GITLAB_CLIENT_SECRET:
+        raise HTTPException(status_code=500, detail="GitLab client credentials not set. Cannot use this endpoint.")
+
     """Login endpoint"""
     # Fetch user info using the token with the gitlab object
     if (gitlab_token):
@@ -339,6 +344,10 @@ async def auth_callback(request: Request, db = Depends(get_db)):
 @limiter.limit("10/minute")
 def signup(request : Request, token: str, db = Depends(get_db)):
     """Sign up endpoint. Requires a one time JWT token which is generated after successful authentication - see auth_callback."""
+    
+    if not GITLAB_CLIENT_ID or not GITLAB_CLIENT_SECRET:
+        raise HTTPException(status_code=500, detail="GitLab client credentials not set. Cannot use this endpoint.")
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 

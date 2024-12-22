@@ -76,8 +76,6 @@ ALGORITHM = get_settings().hash_algorithm
 TOKEN_EXPIRE_MINUTES = get_settings().access_token_expire_minutes 
 REFRESH_TOKEN_EXPIRE_DAYS = get_settings().refresh_token_expire_days
 
-if not SECRET_KEY:
-    SECRET_KEY = os.urandom(32)
 
 # Token store
 # This is a simple in-memory store for demonstration purposes, we should replace this with a database

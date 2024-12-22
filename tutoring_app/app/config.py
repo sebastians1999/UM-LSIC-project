@@ -1,6 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
 from typing import Optional
+import base64
+import secrets
 
 class Settings(BaseSettings):
     """
@@ -39,7 +41,7 @@ class Settings(BaseSettings):
     # Token settings
     access_token_expire_minutes: int = 60
     refresh_token_expire_days: int = 7
-    secret_key: Optional[str] = None
+    secret_key: Optional[str] = secrets.token_hex(20)
     hash_algorithm: str = "HS256"
 
     # Logs settings

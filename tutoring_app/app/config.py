@@ -39,15 +39,15 @@ class Settings(BaseSettings):
     # Token settings
     access_token_expire_minutes: int = 60
     refresh_token_expire_days: int = 7
-    secret_key: str
+    secret_key: Optional[str] = None
     hash_algorithm: str = "HS256"
 
     # Logs settings
     logs_dir: str = "logs"
 
     # Gitlab OAuth settings
-    gitlab_client_id: str
-    gitlab_client_secret: str
+    gitlab_client_id: Optional[str] = None
+    gitlab_client_secret: Optional[str] = None
     gitlab_redirect_uri: str = "http://localhost:8000/auth/callback" 
     gitlab_base_url: str = "https://gitlab.com"
     gitlab_api_url: str = "https://gitlab.com/oauth/userinfo"

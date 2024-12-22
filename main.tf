@@ -8,8 +8,8 @@ import {
 
 # Import the Cloud Run service
 import {
-    id = "locations/europe-west1/namespaces/lsit-tutorapp/services/fastapi-app"
-    to = google_cloud_run_service.default
+    id = "projects/lsit-tutorapp/locations/europe-west1/services/fastapi-app"
+    to = google_cloud_run_v2_service.default
 }
 
 # Import the Redis instance
@@ -37,8 +37,9 @@ import {
 }
 
 # Access the database password from Google Secret Manager
-data "google_secret_manager_secret_version" "db_password" {
+data "google_secret_manager_secret_version_access" "DATABASE_PASSWORD" {
     secret = "DATABASE_PASSWORD"
+    project = "lsit-tutorapp"
 }
 
 # Create SQL Database Instance
@@ -48,24 +49,32 @@ resource "google_sql_database_instance" "postgres_instance" {
 
     settings {
         tier = "db-f1-micro"
-        
+
         ip_configuration {
             private_network = google_compute_network.lsit-network.id
         }
+    }
+
+    lifecycle {
+        prevent_destroy = true
     }
 }
 
 # Create SQL Database
 resource "google_sql_database" "tutorapp_db" {
-    name = "tutorapp_db"
+    name = "tutoring-app-production"
     instance = google_sql_database_instance.postgres_instance.name
+
+    lifecycle {
+        prevent_destroy = true
+    }
 }
 
 # Create Database User
 resource "google_sql_user" "db_user" {
     name = "db_user"
     instance = google_sql_database_instance.postgres_instance.name
-    password = data.google_secret_manager_secret_version.db_password.secret_data
+    password = data.google_secret_manager_secret_version_access.DATABASE_PASSWORD.secret_data
 }
 
 # Create Compute Network
@@ -95,96 +104,120 @@ resource "google_vpc_access_connector" "serverless_connector" {
 }
 
 # Create Cloud Run Service
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
     name     = "fastapi-app" # Name of the Cloud Run Service
     location = "europe-west1"
+    deletion_protection = false
+    ingress = "INGRESS_TRAFFIC_ALL"
 
-    metadata {
-        namespace = "lsit-tutorapp" # Project ID
-    }
 
     template {
-        metadata {
-            annotations = {
-                "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.serverless_connector.id
-                "egress" = "ALL_TRAFFIC"
+
+        #service_account = "nates-service-account@lsit-tutorapp.iam.gserviceaccount.com"
+
+        vpc_access {
+            connector = google_vpc_access_connector.serverless_connector.id
+            egress = "ALL_TRAFFIC"
+        }
+
+        volumes {
+            name = "cloudsql"
+            cloud_sql_instance {
+                instances = [google_sql_database_instance.postgres_instance.connection_name]
             }
         }
-        spec {
-            timeout_seconds = 300
-            containers {
-                image = "gcr.io/lsit-tutorapp/fastapi-app:latest"
 
-                # SET THE ENVIRONMENT VARIABLES
-                env {
-                    name = "REDIS_HOST"
-                    value = google_redis_instance.redis_instance.host
-                }
+        containers {
+            image = "gcr.io/lsit-tutorapp/fastapi-app:latest"
 
-                env {
-                    name = "REDIS_PORT"
-                    value = 6379
-                }
+            # SET THE ENVIRONMENT VARIABLES
+            env {
+                name = "REDIS_HOST"
+                value = google_redis_instance.redis_instance.host
+            }
 
-                env {
-                    name = "GITLAB_CLIENT_ID"
-                    value = "830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262"
-                }
+            env {
+                name = "REDIS_PORT"
+                value = 6379
+            }
 
-                env {
-                    name = "GITLAB_CLIENT_SECRET"
-                    value_from {
-                        secret_key_ref {
-                            name = "GITLAB_CLIENT_SECRET"
-                            key = "latest"
-                        }
+            env {
+                name = "GITLAB_CLIENT_ID"
+                value = "830223bc5b3f77464d6f6a8ed40c53f999f0283fca8f1e4c2ca39f5f0bb93262"
+            }
+
+            env {
+                name = "GITLAB_CLIENT_SECRET"
+                value_source {
+                    secret_key_ref {
+                        secret = "GITLAB_CLIENT_SECRET"
+                        version = "latest"
                     }
-                }
-
-                env {
-                    name = "SECRET_KEY"
-                    value_from {
-                        secret_key_ref {
-                            name = "SECRET_KEY"
-                            key = "latest"
-                        }
-                    }
-                }
-
-                env {
-                    name = "DB_PASSWORD"
-                    value_from {
-                        secret_key_ref {
-                            name = "DATABASE_PASSWORD"
-                            key = "latest"
-                        }
-                    }
-                }
-
-                env {
-                    name = "DB_USER"
-                    value = google_sql_user.db_user.name
-                }
-
-                env {
-                    name = "DB_NAME"
-                    value = google_sql_database.tutorapp_db.name
-                }
-
-                env {
-                    name = "CLOUD_SQL_CONNECTION_NAME"
-                    value = google_sql_database_instance.postgres_instance.connection_name
                 }
             }
+
+            env {
+                name = "SECRET_KEY"
+                value_source {
+                    secret_key_ref {
+                        secret = "SECRET_KEY"
+                        version = "latest"
+                    }
+                }
+            }
+
+            env {
+                name = "DB_PASSWORD"
+                value_source {
+                    secret_key_ref {
+                        secret = "DATABASE_PASSWORD"
+                        version = "latest"
+                    }
+                }
+            }
+
+            env {
+                name = "DB_USER"
+                value = google_sql_user.db_user.name
+            }
+
+            env {
+                name = "DB_NAME"
+                value = google_sql_database.tutorapp_db.name
+            }
+
+            env {
+                name = "DB_HOST"
+                value = google_sql_database_instance.postgres_instance.private_ip_address
+            }
+
+            env {
+                name = "DB_PORT"
+                value = "5432"
+            }
+
+            volume_mounts {
+                name = "cloudsql"
+                mount_path = "/cloudsql"
+            }
         }
+
     }
 
     traffic {
+        type = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
         percent         = 100
-        latest_revision = true
     }
+
 }
 
+resource "google_cloud_run_v2_service_iam_member" "member" {
+  project = google_cloud_run_v2_service.default.project
+  location = google_cloud_run_v2_service.default.location
+  name = google_cloud_run_v2_service.default.name
+  role = "roles/run.invoker"
+  member = "allUsers"
+}
 
 output "redis_host" {
  description = "The IP address of the redis memorystore instance."
@@ -193,5 +226,5 @@ output "redis_host" {
 
 output "cloud_run_url" {
     description = "The URL of the deployed Cloud Run service"
-    value       = google_cloud_run_service.default.status[0].url
+    value       = google_cloud_run_v2_service.default.uri
 }

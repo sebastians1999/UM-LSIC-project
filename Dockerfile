@@ -16,9 +16,6 @@ EXPOSE 8080
 
 # Non-secret environment variables
 ENV LOCAL="false"
-ENV DB_USER="postgres"
-ENV DB_NAME="tutoring-app-production"
-ENV CLOUD_SQL_CONNECTION_NAME="lsit-tutorapp:europe-west1:tutorapp-db"
 ENV GITLAB_REDIRECT_URI="https://fastapi-app-60415379904.europe-west1.run.app/auth/callback"
 
 # Command to run the app with Uvicorn

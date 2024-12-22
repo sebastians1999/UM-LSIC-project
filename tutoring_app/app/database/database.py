@@ -29,6 +29,7 @@ Usage:
 
 from sqlalchemy import create_engine, Column, Integer, String, Float, Text, DateTime, Boolean, ForeignKey, Enum, Index, CheckConstraint, Table
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
+from sqlalchemy.engine.url import URL
 from datetime import datetime
 import uuid
 from passlib.context import CryptContext
@@ -381,7 +382,14 @@ DATABASE_URL = get_settings().db_url
 
 if not get_settings().local:
     # Use Cloud SQL on production
-    DATABASE_URL = f"postgresql+psycopg2://{get_settings().db_user}:{get_settings().db_password}@/{get_settings().db_name}?host=/cloudsql/{get_settings().cloud_sql_connection_name}"
+    DATABASE_URL = URL.create(
+        drivername="postgresql+psycopg2",
+        username=get_settings().db_user,
+        password=get_settings().db_password,
+        host = get_settings().db_host,
+        port = get_settings().db_port,
+        database = get_settings().db_name
+        )
 
 engine = create_engine(
     DATABASE_URL, 
@@ -390,6 +398,7 @@ engine = create_engine(
     max_overflow=10,
     pool_timeout=30
 )
+
 Base.metadata.create_all(engine)
 SessionLocal = sessionmaker(bind=engine)
 

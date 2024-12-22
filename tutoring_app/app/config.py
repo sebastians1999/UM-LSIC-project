@@ -57,7 +57,8 @@ class Settings(BaseSettings):
     db_password: Optional[str] = None # Optional, required for cloud databases
     db_user: Optional[str] = None # Optional, required for cloud databases
     db_name: Optional[str] = None # Optional, required for cloud databases
-    cloud_sql_connection_name: Optional[str] = None # Optional, required for Google Cloud SQL
+    db_port: Optional[int] = None # Optional, required for cloud databases
+    db_host: Optional[str] = None # Optional, required for cloud databases
     
     # Redis settings
     use_redis: bool = False # Default to not using Redis, change this to True if you have a Redis server set up

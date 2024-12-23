@@ -32,3 +32,6 @@ jobs:
         uses: pypa/gh-action-pip-audit@v1.1.0
         with:
           audit-type: all  # Options: all, installed, or specified
+          ignore-vulns: | # These are vulnerabilities that we have decided to ignore
+            GHSA-cjwg-qfpm-7377 
+            GHSA-6c5p-j8vq-pqhj

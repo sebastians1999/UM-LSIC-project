@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10  # Adjust this to your Python version
+          python-version: 3.10.6 
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -29,10 +29,10 @@ jobs:
 
       # Step 4: Lint with flake8
       - name: Lint with flake8
-        run: flake8 tutoring_app/app  # Replace `your_project/` with your source directory
+        run: flake8 tutoring_app/app 
         continue-on-error: true
 
       # Step 5: Check formatting with black
       - name: Check formatting with black
-        run: black --check tutoring_app/app/  # Replace `your_project/` with your source directory
+        run: black --check tutoring_app/app/  
         continue-on-error: true

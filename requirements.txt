@@ -55,3 +55,4 @@ urllib3==2.2.3
 uvicorn==0.32.0
 webencodings==0.5.1
 wrapt==1.16.0
+setuptools==75.6.0

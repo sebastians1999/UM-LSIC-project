@@ -62,3 +62,9 @@ This will return an acess token. This token can then be used as a bearer token i
 2. http://127.0.0.1:8000/auth/secure
 
 This should validate the token and return the data encoded in it.
+
+## Things we add after the exam:
+- Terraforming
+- Runs Testsuite after merge into main
+- Google Cloud instead of Redis
+- Temporary access for outsiders

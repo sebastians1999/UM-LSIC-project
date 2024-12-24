@@ -27,6 +27,17 @@ class ChatResponse(BaseModel):
     class Config:
         orm_mode = True
 
+class ChatCreate(BaseModel):
+    """Schema for creating a new chat between a student and tutor"""
+    student_id: str
+    tutor_id: str
+    messages: List[MessageResponse] = []  # Optional list of messages
+    created_at: datetime = datetime.now()
+    updated_at: datetime = datetime.now()
+
+    class Config:
+        orm_mode = True
+
 class MessageDeletedReponse(BaseModel):
     """Chat deleted response data"""
     message_id: str  # Changed from int

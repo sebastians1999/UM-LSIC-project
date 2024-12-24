@@ -10,7 +10,7 @@ from auth_tools import get_current_user
 from database.database import get_db, User, Message, UserRole, is_valid_uuid, Chat
 from config import get_settings
 from utilities import get_user_by_id, get_user_chats, get_chat_with_messages
-from schemas.chat_schema import ChatResponse, MessageResponse
+from schemas.chat_schema import ChatResponse, MessageResponse, ChatCreate
 from schemas.authentication_schema import DecodedAccessToken
 from logger import logger
 from database.redis import redis_client
@@ -94,6 +94,50 @@ def get_chat(chatID: str, current_user: DecodedAccessToken = Depends(get_current
         raise HTTPException(status_code=403, detail="Access denied")
         
     return chat
+
+@router.post('/', response_model=ChatResponse)
+def create_chat(
+    request: Request,
+    chat_data: ChatCreate,
+    current_user: DecodedAccessToken = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Create a new chat between a student and tutor"""
+    try:
+        # Get current user
+        user = User.get_by_id(db, current_user.sub)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Check if chat already exists
+        existing_chat = db.query(Chat).filter(
+            ((Chat.student_id == chat_data.student_id) & (Chat.tutor_id == chat_data.tutor_id)) |
+            ((Chat.student_id == chat_data.tutor_id) & (Chat.tutor_id == chat_data.student_id))
+        ).first()
+
+        if existing_chat:
+            raise HTTPException(status_code=400, detail="Chat already exists")
+
+        # Create new chat
+        chat = Chat(
+            student_id=chat_data.student_id,
+            tutor_id=chat_data.tutor_id,
+            created_at=chat_data.created_at,
+            updated_at=chat_data.updated_at
+        )
+        
+        db.add(chat)
+        db.commit()
+        db.refresh(chat)
+
+        return get_chat_with_messages(db, chat.id)  # Return chat with messages loaded
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating chat: {str(e)}")
+        db.rollback() 
+        raise HTTPException(status_code=500, detail="Error creating chat")
 
 @router.post('/{chatID}/messages', response_model=MessageResponse)
 def send_message(
